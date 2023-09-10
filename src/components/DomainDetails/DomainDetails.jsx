@@ -1,4 +1,4 @@
-import React from "react";
+import { useNavigate } from "react-router-dom";
 import * as S from "./DomainStyled";
 import Zylo from "../../Images/image 7.png";
 import Show from "../../Images/ShowWhite.png";
@@ -12,45 +12,53 @@ import separator from "../../Images/Line 15.png";
 import CustomAccordion from "../Accordian/Accordian";
 import AccLine from "../../Images/Line 35.png";
 function DomainDetails() {
+  const navigate = useNavigate();
+
+  const handleNavigation = () => {
+    navigate("/PaymentDetails");
+  };
   return (
     <>
       <div className="lg:ml-36 lg:mr-36 mt-12 overflow-x-hidden ">
         <div className="flex flex-col items-center lg:flex-row lg:justify-between">
           <div>
             <S.main>
-              <S.container>
-                <S.holder>
-                  <span className="pr-1">
-                    <img src={Show} alt="" className="w-4" />
-                  </span>
-                  <span className="text-white">278</span>
-                </S.holder>
-                <div className="pt-2">
-                  <p className="font-bold text-white">49%</p>
-                  <p className="text-xs leading-[3px] pt-0 text-right uppercase text-white">
-                    off
+              <div className="flex justify-between items-center bg-bgOne py-2 px-3 rounded-t-lg">
+                <div className="flex items-center text-white">
+                  <img src={Show} alt="" className="w-3" />
+                  <span className="text-[10px] ml-1">278</span>
+                </div>
+                <div>
+                  <a href="#" className="font-semibold text-sm text-white">
+                    zylo.com
+                  </a>
+                </div>
+                <div className="invisible lg:visible text-white">
+                  <p className="font-semibold text-sm">$1000</p>
+                  <p className="italic text-[10px] opacity-90">
+                    This week price
                   </p>
                 </div>
-              </S.container>
-              {/* Brand Image */}
-              <div className="my-20 pl-3 lg:pl-0">
+              </div>
+              <div className="py-14 ">
                 <img src={Zylo} alt="" />
               </div>
-              <S.Text>
-                <div className="px-4 pt-2">
-                  <p className="text-xs line-through decoration-[#ff0808] text-white">
+              <div className="hidden lg:flex justify-between items-center bg-bgOne py-2 px-3 rounded-b-lg text-white">
+                <div>
+                  <p className="relative font-semibold text-sm after:content-[''] after:absolute after:top-1/2 after:left-0 after:w-3/4 after:h-[1.5px] after:bg-[#ff0808] after:rotate-6">
                     $1969
                   </p>
-                  <p className="text-sm font-bold text-white">$1500</p>
+                  <p className="italic text-[10px] opacity-90">Actual Price</p>
                 </div>
-                <div className="px-4">
-                  <p className="text-base font-normal text-white">ario.com</p>
+                <div>
+                  <p className="font-semibold text-sm">-49%</p>
+                  <p className="italic text-[10px] opacity-90">OFF</p>
                 </div>
-              </S.Text>
+              </div>
             </S.main>
           </div>
-          <div className=" w-[360px] ml-[10px] mr-[10px] mt-10 lg:ml-0 lg:mr-0 lg:mt-0 ">
-            <div className=" shadow-xl  p-3  h-[360px]">
+          <div className="rounded-lg w-[360px] ml-[10px] mr-[10px] mt-10 lg:ml-0 lg:mr-0 lg:mt-0 shadow-custom ">
+            <div className="p-3  h-[360px]">
               <div className="text-black text-xl font-montserrat font-extrabold text-center ">
                 Get Domain
               </div>
@@ -101,7 +109,10 @@ function DomainDetails() {
                 <div className="text-black font-semibold">$1000</div>
               </div>
             </div>
-            <button className="w-full bg-bgOne py-1 text-white font-Montserrat font-semibold rounded-sm  ">
+            <button
+              onClick={handleNavigation}
+              className="w-full bg-bgOne py-1 text-white font-Montserrat font-semibold rounded-b-lg "
+            >
               Buy
             </button>
           </div>

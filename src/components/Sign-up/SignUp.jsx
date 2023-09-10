@@ -2,12 +2,19 @@ import { useState } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Checkbox from "@mui/material/Checkbox";
 import * as S from "./SignUpStyled";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import CountrySelector from "../CountrySelector";
 
 function SignUp() {
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleNavigation = () => {
+    navigate("/Sign-in");
+  };
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -54,15 +61,10 @@ function SignUp() {
           onChange={handleEmailChange}
           className="ml-[25px] mr-[25px] lg:ml-[70px] lg:mr-[70px] mt-2 h-[40px] "
         />
-        <S.InputHeading>Country</S.InputHeading>
-        <OutlinedInput
-          type="text"
-          placeholder="Select"
-          className="ml-[25px] mr-[25px] lg:ml-[70px] lg:mr-[70px] mt-2 h-[40px] "
-        />
+        <CountrySelector />
         <S.InputHeading>Password</S.InputHeading>
         <OutlinedInput
-          type="text"
+          type="password"
           placeholder="Password"
           onChange={handlePasswordChange}
           className="ml-[25px] mr-[25px] lg:ml-[70px] lg:mr-[70px] mt-2 h-[40px] "
@@ -77,7 +79,7 @@ function SignUp() {
           </S.checkboxStart>
         </S.constainer>
         <button
-          onClick={handleSubmit}
+          onClick={handleNavigation}
           className="ml-[70px] mt-2 mr-[70px] h-[40px] bg-bgOne text-white rounded-lg"
         >
           Login

@@ -1,14 +1,8 @@
 import tw from "tailwind-styled-components";
 
 export const main = tw.div`
-w-[349px] lg:max-w-[300px] rounded-xl shadow-xl  font-montserrat 
+w-[349px] lg:max-w-[400px] shadow-xl rounded-b-lg lg:rounded-none  font-montserrat 
 `;
 export const container = tw.div`
-flex justify-between px-4 bg-bgOne h-[47px]
-`;
-export const holder = tw.div`
-flex items-center text-xs
-`;
-export const Text = tw.div`
-flex items-center justify-between border-t-[1px] bg-bgOne 
+flex justify-between items-center text-white text-xs px-4 bg-bgOne h-[47px]
 `;

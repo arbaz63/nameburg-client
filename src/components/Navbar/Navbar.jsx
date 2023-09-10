@@ -1,29 +1,103 @@
-import * as S from "./NavbarStyled";
+import React, { useState } from "react";
+import { Menu, MenuItem, IconButton } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import logo from "../../Images/Nameburg.png";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import MenuIcon from "@mui/icons-material/Menu";
+
+import * as S from "./NavbarStyled";
 
 function Navbar() {
+  const navigate = useNavigate();
+  const [mobileMenuAnchorEl, setMobileMenuAnchorEl] = useState(null);
+  const [showCategoriesMenu, setShowCategoriesMenu] = useState(false); // New state to manage the categories dropdown
+
+  const handleMobileMenuClick = (event) => {
+    setMobileMenuAnchorEl(event.currentTarget);
+  };
+
+  const handleMobileMenuClose = () => {
+    setMobileMenuAnchorEl(null);
+  };
+
+  const toggleCategoriesMenu = () => {
+    setShowCategoriesMenu(!showCategoriesMenu);
+  };
+
   return (
     <S.NavWrapper>
+      {/* Mobile Menu Button */}
       <S.MenuWrapper>
-        <MenuIcon />
+        <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          onClick={handleMobileMenuClick}
+        >
+          <MenuIcon />
+        </IconButton>
+        {/* Mobile Menu */}
+        <Menu
+          anchorEl={mobileMenuAnchorEl}
+          open={Boolean(mobileMenuAnchorEl)}
+          onClose={handleMobileMenuClose}
+        >
+          <MenuItem onClick={() => navigate("/")}>Home</MenuItem>
+          <MenuItem onClick={() => navigate("/ContactUs")}>Contact Us</MenuItem>
+          <MenuItem onClick={() => navigate("/AboutUs")}>About</MenuItem>
+          <MenuItem onClick={() => navigate("/Sign-in")}>Login</MenuItem>
+          {/* Add more menu items as needed */}
+        </Menu>
       </S.MenuWrapper>
-      <S.Holder>
-        <img src={logo} alt="Nameburg Logo" />
-      </S.Holder>
+
+      <Link to={"/"}>
+        <S.Holder>
+          <img src={logo} alt="Nameburg Logo" />
+        </S.Holder>
+      </Link>
+
       <S.UlWrapper>
-        <ul className="flex gap-10 font-montserrat mr-14 ">
-          <li>
+        <ul className="flex gap-10 font-montserrat mr-14">
+          <li
+            onClick={toggleCategoriesMenu}
+            className="relative group cursor-pointer"
+          >
             <span className="border-b-2 border-bgOne">Categories</span>
             <ArrowDropDownIcon />
+            {/* Categories Dropdown */}
+            {showCategoriesMenu && (
+              <div className="absolute top-full left-0 mt-2 py-2 px-3 bg-white border border-gray-200 shadow-lg rounded-lg z-10">
+                <Link
+                  to="/categories/male"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                >
+                  Male
+                </Link>
+                <Link
+                  to="/categories/female"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                >
+                  Female
+                </Link>
+              </div>
+            )}
           </li>
-          <li>Contact Us</li>
-          <li>About</li>
+          <Link to={"/ContactUs"}>
+            <li>Contact Us</li>
+          </Link>
+          <Link to={"/AboutUs"}>
+            <li>About</li>
+          </Link>
+          {/* Add more menu items as needed */}
         </ul>
       </S.UlWrapper>
+
       <S.ButtonWrapper>
-        <button className="bg-bgOne text-sm text-white font-montserrat font-semibold w-[74px] h-9 rounded-sm mr-12 ">
+        <button
+          onClick={() => navigate("/Sign-in")}
+          className="bg-bgOne text-sm text-white font-montserrat font-semibold w-[74px] h-9 rounded-sm mr-12"
+        >
           Login
         </button>
       </S.ButtonWrapper>

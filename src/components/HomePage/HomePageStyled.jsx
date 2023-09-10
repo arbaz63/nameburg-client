@@ -6,7 +6,7 @@ export const HeroBanner = tw.div`
 `;
 
 export const TextHolder = tw.div`
-flex flex-row gap-4 font-semibold text-3xl lg:text-5xl font-Montserrat
+font-normal text-[28px] lg:text-5xl font-Montserrat
 `;
 
 export const InputHolder = tw.div`
@@ -26,7 +26,7 @@ export const Heading = tw.div`
 text-4xl font-Montserrat text-black font-extrabold mb-10
 `;
 export const Container = tw.div`
-ml-10 mr-10
+mx-8 lg:mx-10
 `;
 export const IconsHolder = tw.div`
 grid grid-cols-2 lg:grid-cols-4 gap-4 

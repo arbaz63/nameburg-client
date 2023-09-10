@@ -1,5 +1,6 @@
 import * as S from "./HomePageStyled";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import Card from "../Card/Card";
 import Button from "../Button/Button";
 import layer1 from "../../Images/layer1.png";
@@ -22,31 +23,41 @@ import smColons from "../../Images/Page 1.png";
 import Profile from "../../Images/Profile Image.png";
 import star from "../../Images/Vector (1).png";
 import SearchIcon from "@mui/icons-material/Search";
+import { Drawer } from "@mui/material";
 
 function HomePage() {
+  //const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [interventionLogDrawOpened, setInterventionLogDrawOpened] =
+    useState(false);
+
   let id = "234nsg";
   return (
     <>
       <S.HeroBanner>
-        <span className="font-semibold text-3xl lg:text-5xl font-Montserrat">
-          Find, Buy, And Dominate
-        </span>
         <S.TextHolder>
-          <span>With</span>
-          <span className="font-bold">Premium Domains.</span>
+          <p>Find, Buy, And Dominate</p>
+
+          <p>
+            <span>With</span>{" "}
+            <span className="font-semibold">Premium Domains.</span>
+          </p>
         </S.TextHolder>
         <S.InputHolder>
-          <div className=" py-2 px-2 rounded">
-            <img src={SearchIcon} alt="" />
+          <div className="py-2 pr-2 rounded">
+            <SearchIcon className="text-gray-400" />
           </div>
           <input
             type="text"
             placeholder="Search domain name"
             className=" border-none text-black bg-white outline-none lg:w-full "
           />
-          <div className=" bg-white py-1 px-2 rounded">
+          <button
+            onClick={() => setInterventionLogDrawOpened(true)}
+            className=" bg-white py-1 px-2 rounded"
+          >
             <img src={layer1} alt="" />
-          </div>
+          </button>
+          {/*<Drawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />*/}
         </S.InputHolder>
       </S.HeroBanner>
       <S.LeadHeading>
@@ -312,6 +323,26 @@ function HomePage() {
             </div>
           </div>
           {/* Cards */}
+          <Drawer
+            anchor="right"
+            open={interventionLogDrawOpened}
+            onClose={() => setInterventionLogDrawOpened(false)}
+            style={{ zIndex: 1300 }}
+          >
+            <div
+              className={
+                " w-[300px] justify-center overflow-auto p-6 pt-8" +
+                " scrollbar-hide"
+              }
+            >
+              <div className="">
+                {/*<InterventionLogForm
+                  profileId={profileId}
+                  onClose={handleClose}
+                />*/}
+              </div>
+            </div>
+          </Drawer>
         </div>
       </S.Container>
     </>

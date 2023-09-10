@@ -25,6 +25,7 @@ function CustomAccordion() {
             isAccordionOpen ? "text-purple-500" : "text-black"
           } transition-colors duration-300`}
         >
+          {/*CR7*/}
           <Typography className="font-montserrat text-black py-2 ">
             Lorem ipsum dolor siiuuu consectetur adipisicing elit.
           </Typography>

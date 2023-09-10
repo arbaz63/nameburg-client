@@ -21,11 +21,11 @@ function Card({ image }) {
         <img src={image} alt="" />
       </div>
       <S.Text>
-        <div className="px-4 pt-2">
+        <div className="pt-2">
           <p className="text-xs line-through decoration-[#ff0808]">$1969</p>
           <p className="text-sm font-bold">$1500</p>
         </div>
-        <div className="px-4">
+        <div>
           <p className="text-base font-normal">ario.com</p>
         </div>
       </S.Text>
