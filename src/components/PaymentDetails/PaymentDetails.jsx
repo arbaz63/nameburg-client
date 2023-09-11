@@ -1,4 +1,5 @@
 import * as S from "./PaymentDetailsStyled";
+import { useState } from "react";
 import Line from "../../Images/Line 14.png";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
@@ -7,6 +8,44 @@ import Paypal from "../../Images/PayPal.png";
 import GPay from "../../Images/Gpay.png";
 
 function PaymentDetails() {
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [companyName, setCompanyName] = useState();
+  const [streetAddress, setStreetAddress] = useState();
+  const [appartment, setAppartment] = useState();
+  const [holderName, setHolderName] = useState();
+  const [cardNumber, setCardNumber] = useState();
+  const [expiryDate, setExpiryDate] = useState();
+  const [cvc, setCvc] = useState();
+
+  const handleName = (e) => {
+    setName(e.target.value);
+  };
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+  };
+  const handleCompanyName = (e) => {
+    setCompanyName(e.target.value);
+  };
+  const handleStreetAddress = (e) => {
+    setStreetAddress(e.target.value);
+  };
+  const handleAppartment = (e) => {
+    setAppartment(e.target.value);
+  };
+  const handleHolderName = (e) => {
+    setHolderName(e.target.value);
+  };
+  const handleCardNumber = (e) => {
+    setCardNumber(e.target.value);
+  };
+  const handleExpiryDate = (e) => {
+    setExpiryDate(e.target.value);
+  };
+  const handleCvc = (e) => {
+    setCvc(e.target.value);
+  };
+
   return (
     <>
       <S.ParentContainer>
@@ -56,17 +95,23 @@ function PaymentDetails() {
               <input
                 type="text"
                 placeholder="Full name"
+                value={name}
+                onChange={handleName}
                 className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
               />
               <input
                 type="email"
                 placeholder="Email"
+                value={email}
+                onChange={handleEmail}
                 className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
               />
               <S.Heading>Billing address</S.Heading>
               <input
                 type="text"
                 placeholder="Company name (optional)"
+                value={companyName}
+                onChange={handleCompanyName}
                 className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
               />
               <div className="flex flex-row w-full gap-2">
@@ -74,6 +119,8 @@ function PaymentDetails() {
                   <input
                     type="text"
                     placeholder="Street address"
+                    value={streetAddress}
+                    onChange={handleStreetAddress}
                     className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
                   />
                 </div>
@@ -81,6 +128,8 @@ function PaymentDetails() {
                   <input
                     type="text"
                     placeholder="Apt/Suite"
+                    value={appartment}
+                    onChange={handleAppartment}
                     className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
                   />
                 </div>
@@ -89,11 +138,15 @@ function PaymentDetails() {
               <input
                 type="text"
                 placeholder="Card holder name"
+                value={holderName}
+                onChange={handleHolderName}
                 className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
               />
               <input
                 type="text"
                 placeholder="Card number 3567-****-****"
+                value={cardNumber}
+                onChange={handleCardNumber}
                 className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
               />
               <div className="flex flex-row w-full gap-2">
@@ -101,6 +154,8 @@ function PaymentDetails() {
                   <input
                     type="text"
                     placeholder="Exp Date"
+                    value={expiryDate}
+                    onChange={handleExpiryDate}
                     className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
                   />
                 </div>
@@ -108,6 +163,8 @@ function PaymentDetails() {
                   <input
                     type="text"
                     placeholder="CVC"
+                    value={cvc}
+                    onChange={handleCvc}
                     className=" border border-gray-200 rounded-md pl-4 my-2 h-[40px] w-full"
                   />
                 </div>

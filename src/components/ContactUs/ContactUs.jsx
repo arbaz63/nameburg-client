@@ -4,7 +4,24 @@ import Line from "../../Images/Line.png";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
+import { useState } from "react";
 function ContactUs() {
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [message, setMessage] = useState();
+
+  const handleName = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleMessage = (e) => {
+    setMessage(e.target.value);
+  };
+
   return (
     <S.ParentContainer>
       <div className="bg-gradient-to-r from-bgOne via-bgOne to-bgTwo h-[420px] w-full lg:w-[425px] mb-16">
@@ -45,18 +62,24 @@ function ContactUs() {
         <input
           type="text"
           placeholder="Enter your full name"
+          value={name}
+          onChange={handleName}
           className=" font-montserrat w-full border-b-2 border-t-0 border-gray-300 focus:outline-none focus:border-blue-500"
         />
         <div className="font-montserrat text-base mt-5">Email</div>
         <input
           type="email"
           placeholder="Enter your email"
+          value={email}
+          onChange={handleEmail}
           className=" font-montserrat w-full border-b-2 border-t-0 border-gray-300 focus:outline-none focus:border-blue-500"
         />
         <div className="font-montserrat text-base mt-5">Message</div>
         <input
           type="text"
           placeholder="Type message here"
+          value={message}
+          onChange={handleMessage}
           className=" font-montserrat w-full border-b-2 border-t-0 border-gray-300 focus:outline-none focus:border-blue-500"
         />
         <div className="w-full mt-4">

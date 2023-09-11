@@ -5,11 +5,23 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import logo from "../../Images/Nameburg.png";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import CartIcon from "../../Images/cartIcon.png";
+import ImgAvatar from "../Avatar/Avatar";
+import { Drawer } from "@mui/material";
 
 import * as S from "./NavbarStyled";
+import CartFilter from "../CartFilter/CartFilter";
 
 function Navbar() {
   const navigate = useNavigate();
+
+  const [interventionLogDrawOpened, setInterventionLogDrawOpened] =
+    useState(false);
+
+  const handleFilterClose = () => {
+    setInterventionLogDrawOpened(false);
+  };
+
   const [mobileMenuAnchorEl, setMobileMenuAnchorEl] = useState(null);
   const [showCategoriesMenu, setShowCategoriesMenu] = useState(false); // New state to manage the categories dropdown
 
@@ -93,7 +105,7 @@ function Navbar() {
         </ul>
       </S.UlWrapper>
 
-      <S.ButtonWrapper>
+      {/* <S.ButtonWrapper>
         <button
           onClick={() => navigate("/Sign-in")}
           className="bg-bgOne text-sm text-white font-montserrat font-semibold w-[74px] h-9 rounded-sm mr-12"
@@ -101,6 +113,33 @@ function Navbar() {
           Login
         </button>
       </S.ButtonWrapper>
+             */}
+      <S.CartAndAvatar>
+        <button onClick={() => setInterventionLogDrawOpened(true)}>
+          <img src={CartIcon} alt="" />
+        </button>
+        <div className="w-[1px] mx-4 h-6 bg-black"></div>
+        <div>
+          <ImgAvatar />
+        </div>
+      </S.CartAndAvatar>
+
+      <Drawer
+        anchor="right"
+        open={interventionLogDrawOpened}
+        onClose={handleFilterClose}
+        style={{ zIndex: 1300 }}
+      >
+        <div
+          className={
+            " w-[300px] overflow-auto  scrollbar-hide h-full bg-gray-100 "
+          }
+        >
+          <div className="">
+            <CartFilter onClose={handleFilterClose} />
+          </div>
+        </div>
+      </Drawer>
     </S.NavWrapper>
   );
 }

@@ -1,4 +1,5 @@
 import * as S from "./AllDomainsStyled";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import Card from "../Card/Card";
 import layer1 from "../../Images/layer1.png";
@@ -15,6 +16,11 @@ import CustomAccordion from "../Accordian/Accordian";
 import AccLine from "../../Images/Line 35.png";
 
 function AllDomains() {
+  const [searchBar, setSearchBar] = useState();
+
+  const handleSearchBar = (e) => {
+    setSearchBar(e.target.value);
+  };
   let id = "234nsg";
   return (
     <>
@@ -33,6 +39,8 @@ function AllDomains() {
           <input
             type="text"
             placeholder="Search domain name"
+            value={searchBar}
+            onChange={handleSearchBar}
             className=" border-none text-black bg-white outline-none lg:w-full "
           />
           <div className=" bg-white py-1 px-2 rounded">

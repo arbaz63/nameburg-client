@@ -24,13 +24,60 @@ import Profile from "../../Images/Profile Image.png";
 import star from "../../Images/Vector (1).png";
 import SearchIcon from "@mui/icons-material/Search";
 import { Drawer } from "@mui/material";
+import Filters from "../Filters/Filters";
 
 function HomePage() {
-  //const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [searchBar, setSearchBar] = useState();
+
+  const handleSearchBar = (e) => {
+    setSearchBar(e.target.value);
+  };
+
   const [interventionLogDrawOpened, setInterventionLogDrawOpened] =
     useState(false);
 
+  const handleFilterClose = () => {
+    setInterventionLogDrawOpened(false);
+  };
+
+  const [maxPrice, setMaxPrice] = useState();
+  const [minPrice, setMinPrice] = useState();
+  const [minLength, setMinLength] = useState();
+  const [maxLength, setMaxLength] = useState();
+  const [searchInFilter, setSearchInFilter] = useState();
+  const [searchTypeFilter, setSearchTypeFilter] = useState();
+  const [sortByFilter, setSortByFilter] = useState();
+
+  const handleMaxPrice = (e) => {
+    setMaxPrice(e.target.value);
+  };
+
+  const handleMinPrice = (e) => {
+    setMinPrice(e.target.value);
+  };
+
+  const handleMinLength = (e) => {
+    setMinLength(e.target.value);
+  };
+
+  const handleMaxLength = (e) => {
+    setMaxLength(e.target.value);
+  };
+
+  const handleSearchInFilter = (e) => {
+    setSearchInFilter(e.target.value);
+  };
+
+  const handleSearchTypeFilter = (e) => {
+    setSearchTypeFilter(e.target.value);
+  };
+
+  const handleSortByFilter = (e) => {
+    setSortByFilter(e.target.value);
+  };
+
   let id = "234nsg";
+
   return (
     <>
       <S.HeroBanner>
@@ -49,6 +96,8 @@ function HomePage() {
           <input
             type="text"
             placeholder="Search domain name"
+            value={searchBar}
+            onChange={handleSearchBar}
             className=" border-none text-black bg-white outline-none lg:w-full "
           />
           <button
@@ -326,20 +375,28 @@ function HomePage() {
           <Drawer
             anchor="right"
             open={interventionLogDrawOpened}
-            onClose={() => setInterventionLogDrawOpened(false)}
+            onClose={handleFilterClose}
             style={{ zIndex: 1300 }}
           >
-            <div
-              className={
-                " w-[300px] justify-center overflow-auto p-6 pt-8" +
-                " scrollbar-hide"
-              }
-            >
+            <div className={" w-[300px] overflow-auto  scrollbar-hide "}>
               <div className="">
-                {/*<InterventionLogForm
-                  profileId={profileId}
-                  onClose={handleClose}
-                />*/}
+                <Filters
+                  maxPrice={maxPrice}
+                  minPrice={minPrice}
+                  minLength={minLength}
+                  maxLength={maxLength}
+                  searchInFilter={searchInFilter}
+                  searchTypeFilter={searchTypeFilter}
+                  sortByFilter={sortByFilter}
+                  handleMaxPrice={handleMaxPrice}
+                  handleMinPrice={handleMinPrice}
+                  handleMinLength={handleMinLength}
+                  handleMaxLength={handleMaxLength}
+                  handleSearchInFilter={handleSearchInFilter}
+                  handleSearchTypeFilter={handleSearchTypeFilter}
+                  handleSortByFilter={handleSortByFilter}
+                  onClose={handleFilterClose}
+                />
               </div>
             </div>
           </Drawer>
