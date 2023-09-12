@@ -8,7 +8,6 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import CartIcon from "../../Images/cartIcon.png";
 import ImgAvatar from "../Avatar/Avatar";
 import { Drawer } from "@mui/material";
-
 import * as S from "./NavbarStyled";
 import CartFilter from "../CartFilter/CartFilter";
 
@@ -23,7 +22,8 @@ function Navbar() {
   };
 
   const [mobileMenuAnchorEl, setMobileMenuAnchorEl] = useState(null);
-  const [showCategoriesMenu, setShowCategoriesMenu] = useState(false); // New state to manage the categories dropdown
+  const [showCategoriesMenu, setShowCategoriesMenu] = useState(false);
+  const [showAvatarDropdown, setShowAvatarDropdown] = useState(false); // Add state for avatar dropdown
 
   const handleMobileMenuClick = (event) => {
     setMobileMenuAnchorEl(event.currentTarget);
@@ -35,6 +35,10 @@ function Navbar() {
 
   const toggleCategoriesMenu = () => {
     setShowCategoriesMenu(!showCategoriesMenu);
+  };
+
+  const toggleAvatarDropdown = () => {
+    setShowAvatarDropdown(!showAvatarDropdown); // Toggle the avatar dropdown
   };
 
   return (
@@ -105,22 +109,27 @@ function Navbar() {
         </ul>
       </S.UlWrapper>
 
-      {/* <S.ButtonWrapper>
-        <button
-          onClick={() => navigate("/Sign-in")}
-          className="bg-bgOne text-sm text-white font-montserrat font-semibold w-[74px] h-9 rounded-sm mr-12"
-        >
-          Login
-        </button>
-      </S.ButtonWrapper>
-             */}
       <S.CartAndAvatar>
         <button onClick={() => setInterventionLogDrawOpened(true)}>
           <img src={CartIcon} alt="" />
         </button>
         <div className="w-[1px] mx-4 h-6 bg-black"></div>
         <div>
-          <ImgAvatar />
+          <div
+            onClick={toggleAvatarDropdown} // Add an onClick event for avatar dropdown
+            className="relative cursor-pointer"
+          >
+            <ImgAvatar />
+            {/* Avatar Dropdown */}
+            {showAvatarDropdown && (
+              <div className="absolute top-full left-0 mt-2 py-2 px-6 bg-white border border-gray-200 shadow-lg rounded-lg z-10">
+                {/* Add avatar dropdown content here */}
+                <div>
+                  <Link to={"/UserSettings"}>User Settings</Link>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </S.CartAndAvatar>
 

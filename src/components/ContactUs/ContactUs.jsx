@@ -1,9 +1,8 @@
 import React from "react";
 import * as S from "./ContactUsStyled";
-import Line from "../../Images/Line.png";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import TwitterIcon from "@mui/icons-material/Twitter";
+import FacebookIcon from "../../Images/facebookC.png";
+import InstagramIcon from "../../Images/instagramC.png";
+import TwitterIcon from "../../Images/twitterC.png";
 import { useState } from "react";
 function ContactUs() {
   const [name, setName] = useState();
@@ -87,20 +86,18 @@ function ContactUs() {
             Send
           </button>
         </div>
-        <div>
-          <img src={FacebookIcon} alt="" />
-        </div>
-        <div>
-          <img src={Line} alt="" />
-        </div>
-        <div>
-          <img src={InstagramIcon} alt="" />
-        </div>
-        <div>
-          <img src={Line} alt="" />
-        </div>
-        <div>
-          <img src={TwitterIcon} alt="" />
+        <div className="flex gap-6 mt-6">
+          <button>
+            <img src={FacebookIcon} alt="Facebookicon" />
+          </button>
+          <div className="w-[1px] h-6 bg-gray-400"></div>
+          <button>
+            <img src={InstagramIcon} alt="Instageram" />
+          </button>
+          <div className="w-[1px] h-6 bg-gray-400"></div>
+          <button>
+            <img src={TwitterIcon} alt="Twitter" />
+          </button>
         </div>
       </div>
     </S.ParentContainer>

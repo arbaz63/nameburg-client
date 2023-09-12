@@ -44,7 +44,7 @@ export const SubtextTwo = tw.div`
 flex justify-center text-es text-gray-500 font-montserrat
 `;
 export const FieldsHolder = tw.div`
-flex flex-row flex-wrap gap-6 mt-5 
+flex flex-row flex-wrap gap-6 mt-5 items-center justify-center 
 `;
 export const ButtonHolderTwo = tw.div`
  flex justify-center mt-5 
