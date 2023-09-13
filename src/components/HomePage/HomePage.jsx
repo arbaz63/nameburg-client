@@ -1,5 +1,6 @@
 import * as S from "./HomePageStyled";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import Card from "../Card/Card";
 import Button from "../Button/Button";
 import layer1 from "../../Images/layer1.png";
@@ -22,31 +23,90 @@ import smColons from "../../Images/Page 1.png";
 import Profile from "../../Images/Profile Image.png";
 import star from "../../Images/Vector (1).png";
 import SearchIcon from "@mui/icons-material/Search";
+import { Drawer } from "@mui/material";
+import Filters from "../Filters/Filters";
 
 function HomePage() {
+  const [searchBar, setSearchBar] = useState();
+
+  const handleSearchBar = (e) => {
+    setSearchBar(e.target.value);
+  };
+
+  const [interventionLogDrawOpened, setInterventionLogDrawOpened] =
+    useState(false);
+
+  const handleFilterClose = () => {
+    setInterventionLogDrawOpened(false);
+  };
+
+  const [maxPrice, setMaxPrice] = useState();
+  const [minPrice, setMinPrice] = useState();
+  const [minLength, setMinLength] = useState();
+  const [maxLength, setMaxLength] = useState();
+  const [searchInFilter, setSearchInFilter] = useState();
+  const [searchTypeFilter, setSearchTypeFilter] = useState();
+  const [sortByFilter, setSortByFilter] = useState();
+
+  const handleMaxPrice = (e) => {
+    setMaxPrice(e.target.value);
+  };
+
+  const handleMinPrice = (e) => {
+    setMinPrice(e.target.value);
+  };
+
+  const handleMinLength = (e) => {
+    setMinLength(e.target.value);
+  };
+
+  const handleMaxLength = (e) => {
+    setMaxLength(e.target.value);
+  };
+
+  const handleSearchInFilter = (e) => {
+    setSearchInFilter(e.target.value);
+  };
+
+  const handleSearchTypeFilter = (e) => {
+    setSearchTypeFilter(e.target.value);
+  };
+
+  const handleSortByFilter = (e) => {
+    setSortByFilter(e.target.value);
+  };
+
   let id = "234nsg";
+
   return (
     <>
       <S.HeroBanner>
-        <span className="font-semibold text-3xl lg:text-5xl font-Montserrat">
-          Find, Buy, And Dominate
-        </span>
         <S.TextHolder>
-          <span>With</span>
-          <span className="font-bold">Premium Domains.</span>
+          <p>Find, Buy, And Dominate</p>
+
+          <p>
+            <span>With</span>{" "}
+            <span className="font-semibold">Premium Domains.</span>
+          </p>
         </S.TextHolder>
         <S.InputHolder>
-          <div className=" py-2 px-2 rounded">
-            <img src={SearchIcon} alt="" />
+          <div className="py-2 pr-2 rounded">
+            <SearchIcon className="text-gray-400" />
           </div>
           <input
             type="text"
             placeholder="Search domain name"
+            value={searchBar}
+            onChange={handleSearchBar}
             className=" border-none text-black bg-white outline-none lg:w-full "
           />
-          <div className=" bg-white py-1 px-2 rounded">
+          <button
+            onClick={() => setInterventionLogDrawOpened(true)}
+            className=" bg-white py-1 px-2 rounded"
+          >
             <img src={layer1} alt="" />
-          </div>
+          </button>
+          {/*<Drawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />*/}
         </S.InputHolder>
       </S.HeroBanner>
       <S.LeadHeading>
@@ -312,6 +372,34 @@ function HomePage() {
             </div>
           </div>
           {/* Cards */}
+          <Drawer
+            anchor="right"
+            open={interventionLogDrawOpened}
+            onClose={handleFilterClose}
+            style={{ zIndex: 1300 }}
+          >
+            <div className={" w-[300px] overflow-auto  scrollbar-hide "}>
+              <div className="">
+                <Filters
+                  maxPrice={maxPrice}
+                  minPrice={minPrice}
+                  minLength={minLength}
+                  maxLength={maxLength}
+                  searchInFilter={searchInFilter}
+                  searchTypeFilter={searchTypeFilter}
+                  sortByFilter={sortByFilter}
+                  handleMaxPrice={handleMaxPrice}
+                  handleMinPrice={handleMinPrice}
+                  handleMinLength={handleMinLength}
+                  handleMaxLength={handleMaxLength}
+                  handleSearchInFilter={handleSearchInFilter}
+                  handleSearchTypeFilter={handleSearchTypeFilter}
+                  handleSortByFilter={handleSortByFilter}
+                  onClose={handleFilterClose}
+                />
+              </div>
+            </div>
+          </Drawer>
         </div>
       </S.Container>
     </>

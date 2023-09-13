@@ -10,5 +10,5 @@ export const holder = tw.div`
 flex items-center text-xs
 `;
 export const Text = tw.div`
-flex items-center justify-between border-t-[1px]
+flex items-center justify-between border-t-[1px] px-2 lg:px-4
 `;

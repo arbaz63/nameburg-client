@@ -7,7 +7,7 @@ export const Conatiner = tw.div`
 flex flex-col gap-7 lg:gap-0 lg:justify-between   lg:flex-row
 `;
 export const PaymentMethods = tw.div`
- shadow-md border border-gray-200  rounded-md w-[350px] mx-auto px-3  lg:mx-0 lg:w-[450px] py-6 lg:px-3
+ shadow-md border border-gray-200  rounded-md w-[350px] mx-auto lg:mx-0 lg:w-[450px]
 `;
 
 export const Heading = tw.div`

@@ -1,4 +1,5 @@
 import * as S from "./PaymentDetailsStyled";
+import { useState } from "react";
 import Line from "../../Images/Line 14.png";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
@@ -7,6 +8,44 @@ import Paypal from "../../Images/PayPal.png";
 import GPay from "../../Images/Gpay.png";
 
 function PaymentDetails() {
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [companyName, setCompanyName] = useState();
+  const [streetAddress, setStreetAddress] = useState();
+  const [appartment, setAppartment] = useState();
+  const [holderName, setHolderName] = useState();
+  const [cardNumber, setCardNumber] = useState();
+  const [expiryDate, setExpiryDate] = useState();
+  const [cvc, setCvc] = useState();
+
+  const handleName = (e) => {
+    setName(e.target.value);
+  };
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+  };
+  const handleCompanyName = (e) => {
+    setCompanyName(e.target.value);
+  };
+  const handleStreetAddress = (e) => {
+    setStreetAddress(e.target.value);
+  };
+  const handleAppartment = (e) => {
+    setAppartment(e.target.value);
+  };
+  const handleHolderName = (e) => {
+    setHolderName(e.target.value);
+  };
+  const handleCardNumber = (e) => {
+    setCardNumber(e.target.value);
+  };
+  const handleExpiryDate = (e) => {
+    setExpiryDate(e.target.value);
+  };
+  const handleCvc = (e) => {
+    setCvc(e.target.value);
+  };
+
   return (
     <>
       <S.ParentContainer>
@@ -29,90 +68,109 @@ function PaymentDetails() {
         </S.TopText>
         <S.Conatiner>
           <S.PaymentMethods>
-            <div className="flex flex-col w-full gap-4 lg:flex-row lg:justify-center lg:gap-7  ">
-              <div>
-                <button className="bg-black py-2 px-8 w-full rounded-lg">
-                  <img src={ApplePay} alt="" className="mx-auto lg:mx-0" />
-                </button>
+            <div className="px-3 py-6">
+              <div className="flex flex-col w-full gap-4 lg:flex-row lg:justify-center lg:gap-7  ">
+                <div>
+                  <button className="bg-black py-2 px-8 w-full rounded-lg">
+                    <img src={ApplePay} alt="" className="mx-auto lg:mx-0" />
+                  </button>
+                </div>
+                <div>
+                  <button className="bg-yellow-400 py-2 px-7 w-full rounded-lg">
+                    <img src={Paypal} alt="" className="mx-auto lg:mx-0" />
+                  </button>
+                </div>
+                <div>
+                  <button className="bg-black py-2 px-8 w-full rounded-lg">
+                    <img src={GPay} alt="" className="mx-auto lg:mx-0" />
+                  </button>
+                </div>
               </div>
-              <div>
-                <button className="bg-yellow-400 py-2 px-7 w-full rounded-lg">
-                  <img src={Paypal} alt="" className="mx-auto lg:mx-0" />
-                </button>
+              <div className="flex items-center justify-center pt-5 gap-2">
+                <span className="w-44 h-[1px] bg-gray-300"></span>
+                <span className="text-gray-300 font-semibold">OR</span>
+                <span className="w-44 h-[1px] bg-gray-300"></span>
               </div>
-              <div>
-                <button className="bg-black py-2 px-8 w-full rounded-lg">
-                  <img src={GPay} alt="" className="mx-auto lg:mx-0" />
-                </button>
+              <S.Heading>Your Details:</S.Heading>
+              <input
+                type="text"
+                placeholder="Full name"
+                value={name}
+                onChange={handleName}
+                className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={handleEmail}
+                className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
+              />
+              <S.Heading>Billing address</S.Heading>
+              <input
+                type="text"
+                placeholder="Company name (optional)"
+                value={companyName}
+                onChange={handleCompanyName}
+                className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
+              />
+              <div className="flex flex-row w-full gap-2">
+                <div className="w-[70%]">
+                  <input
+                    type="text"
+                    placeholder="Street address"
+                    value={streetAddress}
+                    onChange={handleStreetAddress}
+                    className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Apt/Suite"
+                    value={appartment}
+                    onChange={handleAppartment}
+                    className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
+                  />
+                </div>
+              </div>
+              <S.Heading>Payment information:</S.Heading>
+              <input
+                type="text"
+                placeholder="Card holder name"
+                value={holderName}
+                onChange={handleHolderName}
+                className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
+              />
+              <input
+                type="text"
+                placeholder="Card number 3567-****-****"
+                value={cardNumber}
+                onChange={handleCardNumber}
+                className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
+              />
+              <div className="flex flex-row w-full gap-2">
+                <div className="w-1/2">
+                  <input
+                    type="text"
+                    placeholder="Exp Date"
+                    value={expiryDate}
+                    onChange={handleExpiryDate}
+                    className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    placeholder="CVC"
+                    value={cvc}
+                    onChange={handleCvc}
+                    className=" border border-gray-200 rounded-md pl-4 my-2 h-[40px] w-full"
+                  />
+                </div>
               </div>
             </div>
-            <div className="flex items-center justify-center pt-5 gap-2">
-              <span className="w-44 h-[1px] bg-gray-300"></span>
-              <span className="text-gray-300 font-semibold">OR</span>
-              <span className="w-44 h-[1px] bg-gray-300"></span>
-            </div>
-            <S.Heading>Your Details:</S.Heading>
-            <input
-              type="text"
-              placeholder="Full name"
-              className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
-            />
-            <S.Heading>Billing address</S.Heading>
-            <input
-              type="text"
-              placeholder="Company name (optional)"
-              className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
-            />
-            <div className="flex flex-row w-full gap-2">
-              <div className="w-[70%]">
-                <input
-                  type="text"
-                  placeholder="Street address"
-                  className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
-                />
-              </div>
-              <div>
-                <input
-                  type="text"
-                  placeholder="Apt/Suite"
-                  className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
-                />
-              </div>
-            </div>
-            <S.Heading>Payment information:</S.Heading>
-            <input
-              type="text"
-              placeholder="Card holder name"
-              className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
-            />
-            <input
-              type="text"
-              placeholder="Card number
-               3567-****-****"
-              className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
-            />
-            <div className="flex flex-row w-full gap-2">
-              <div className="w-1/2">
-                <input
-                  type="text"
-                  placeholder="Exp Date"
-                  className=" border border-gray-200 rounded-md pl-4 mt-2 h-[40px] w-full"
-                />
-              </div>
-              <div>
-                <input
-                  type="text"
-                  placeholder="CVC"
-                  className=" border border-gray-200 rounded-md pl-4 my-2 h-[40px] w-full"
-                />
-              </div>
-            </div>
-            <button className="w-full py-2 text-white font-semibold text-sm rounded-md  bg-bgOne">
+            <button className="w-full py-2 text-white font-semibold text-sm rounded-md rounded-t-none  bg-bgOne">
               Pay now
             </button>
           </S.PaymentMethods>

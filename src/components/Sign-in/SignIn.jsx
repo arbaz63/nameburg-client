@@ -2,11 +2,17 @@ import { useState } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Checkbox from "@mui/material/Checkbox";
 import * as S from "./SignInStyled";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SignIn() {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleNavigation = () => {
+    navigate("/");
+  };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -42,7 +48,7 @@ function SignIn() {
         />
         <S.InputHeading>Password</S.InputHeading>
         <OutlinedInput
-          type="text"
+          type="password"
           placeholder="Password"
           onChange={handlePasswordChange}
           className="ml-[25px] mr-[25px] lg:ml-[70px] lg:mr-[70px] mt-2 h-[40px] "
@@ -55,7 +61,7 @@ function SignIn() {
           <S.ForgotPassword>Forgot Password?</S.ForgotPassword>
         </S.constainer>
         <button
-          onClick={handleSubmit}
+          onClick={handleNavigation}
           className="ml-[25px] mr-[25px] lg:ml-[70px] mt-2 lg:mr-[70px] h-[40px] bg-bgOne text-white rounded-lg"
         >
           Login

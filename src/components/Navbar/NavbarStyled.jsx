@@ -15,3 +15,6 @@ export const ButtonWrapper = tw.div`
 export const MenuWrapper = tw.div`
  block ml-[20px] lg:hidden
 `;
+export const CartAndAvatar = tw.div`
+ flex items-center mr-[80px] 
+`;
