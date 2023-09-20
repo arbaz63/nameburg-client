@@ -7,6 +7,8 @@ module.exports = {
       colors: {
         bgOne: "#BB6CFB",
         bgTwo: "#00F1EB",
+        admText: "#808080",
+        adminBg: "#F2F2F2",
       },
       fontFamily: {
         montserrat: ["Montserrat Alternates, sans-serif"],

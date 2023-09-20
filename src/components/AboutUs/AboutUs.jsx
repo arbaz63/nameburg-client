@@ -60,7 +60,7 @@ function AboutUs() {
           <div className="font-montserrat text-3xl font-bold text-center">
             Why Choose Us
           </div>
-          <div className="flex flex-col lg:flex-row gap-5 lg:gap-0 lg:justify-between mt-8 lg:mx-[80px]">
+          <div className="flex flex-col lg:flex-row gap-5 lg:gap-0 lg:justify-between mt-8 lg:mx-[170px]">
             <div className="w-[300px]">
               <div className="w-12 h-12 mx-auto lg:mx-0  rounded-full bg-white flex items-center justify-center">
                 <img src={Dollar} alt="" />
@@ -86,7 +86,7 @@ function AboutUs() {
               </div>
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row gap-5 lg:gap-0 lg:justify-between mt-8 lg:mx-[80px]">
+          <div className="flex flex-col lg:flex-row gap-5 lg:gap-0 lg:justify-between mt-8 lg:mx-[170px]">
             <div className="w-[300px]">
               <div className="w-12 h-12 mx-auto lg:mx-0 rounded-full bg-white flex items-center justify-center">
                 <img src={Star} alt="" />

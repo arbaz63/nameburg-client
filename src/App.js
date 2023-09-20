@@ -9,6 +9,13 @@ import ContactUs from "./components/ContactUs/ContactUs";
 import AllDomains from "./components/AllDomains/AllDomains";
 import UserSettings from "./components/UserSettings/UserSettings";
 import AboutUs from "./components/AboutUs/AboutUs";
+import AdminPannelAllDomains from "./components/AdminPannelAllDomains/AdminPannelAllDomains";
+import AdminPannelLogin from "./components/AdminPannel-Login/AdminPannelLogin";
+import AdminPannelViewDomain from "./components/AdminPannel-ViewDomain/AdminPannelViewDomain";
+import AdminPannel from "./components/AdminPannel/AdminPannel";
+import AdminPannelSettings from "./components/AdminPannelSettings/AdminPannelSettings";
+import PurchaseHistory from "./components/PurchaseHistory/PurchaseHistory";
+
 function App() {
   return (
     <Routes>
@@ -22,6 +29,18 @@ function App() {
       <Route path="/AllDomains/:id" element={<AllDomains />} />
       <Route path="/UserSettings" element={<UserSettings />} />
       <Route path="/AboutUs" element={<AboutUs />} />
+      <Route
+        path="/AdminPannel-AllDomains"
+        element={<AdminPannelAllDomains />}
+      />
+      <Route path="/AdminPannel-Login" element={<AdminPannelLogin />} />
+      <Route
+        path="AdminPannel-ViewDomain"
+        element={<AdminPannelViewDomain />}
+      />
+      <Route path="/AdminPannel" element={<AdminPannel />} />
+      <Route path="/Settings" element={<AdminPannelSettings />} />
+      <Route path="/Purchase" element={<PurchaseHistory />} />
     </Routes>
   );
 }

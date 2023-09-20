@@ -22,7 +22,7 @@ export const Heading = tw.div`
  text-xl  font-semibold
 `;
 export const SubText = tw.div`
-text-sm pt-4 
+text-sm pt-4 cursor-pointer
 `;
 export const Col3 = tw.div`
    my-4 pr-[10px] lg:pr-[50px] text-center

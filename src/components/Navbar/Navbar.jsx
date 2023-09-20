@@ -23,7 +23,7 @@ function Navbar() {
 
   const [mobileMenuAnchorEl, setMobileMenuAnchorEl] = useState(null);
   const [showCategoriesMenu, setShowCategoriesMenu] = useState(false);
-  const [showAvatarDropdown, setShowAvatarDropdown] = useState(false); // Add state for avatar dropdown
+  const [showAvatarDropdown, setShowAvatarDropdown] = useState(false);
 
   const handleMobileMenuClick = (event) => {
     setMobileMenuAnchorEl(event.currentTarget);
@@ -38,7 +38,7 @@ function Navbar() {
   };
 
   const toggleAvatarDropdown = () => {
-    setShowAvatarDropdown(!showAvatarDropdown); // Toggle the avatar dropdown
+    setShowAvatarDropdown(!showAvatarDropdown);
   };
 
   return (
