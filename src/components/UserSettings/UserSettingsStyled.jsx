@@ -1,10 +1,10 @@
 import tw from "tailwind-styled-components";
 
 export const ParentContainer = tw.div`
- lg:mx-28 my-16 px-5 mx-5 border border-gray-100 lg:border-none py-8 lg:py-0 
+ lg:mx-28 my-16 px-5 mx-5  py-8 lg:py-0 
 `;
 export const Heading = tw.div`
- font-montserrat text-base font-bold 
+ font-montserrat text-xl font-extrabold p-10 pt-0
 `;
 export const AvatarHolder = tw.div`
  my-5

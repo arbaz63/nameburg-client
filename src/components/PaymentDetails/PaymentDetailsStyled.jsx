@@ -7,7 +7,7 @@ export const Conatiner = tw.div`
 flex flex-col gap-7 lg:gap-0 lg:justify-between   lg:flex-row
 `;
 export const PaymentMethods = tw.div`
- shadow-md border border-gray-200  rounded-md w-[350px] mx-auto lg:mx-0 lg:w-[450px]
+ border border-gray-200  rounded-md w-[350px] mx-auto lg:mx-0 lg:w-[600px]
 `;
 
 export const Heading = tw.div`
@@ -18,7 +18,7 @@ export const InputHolder = tw.div`
 `;
 
 export const TopText = tw.div`
-  flex flex-row gap-5 items-center mb-7
+  flex flex-row gap-5 items-center mb-7 px-3 lg:px-1
 `;
 export const OrderSummary = tw.div`
   border border-gray-200 mx-auto lg:mx-0 

@@ -1,13 +1,19 @@
 import * as S from "./AboutUsStyled";
-import CustomerCare from "../../Images/Cc.png";
-import Low from "../../Images/Low.png";
-import Safe from "../../Images/Safe.png";
-import Dollar from "../../Images/Dollar.png";
-import HandShake from "../../Images/Handshake.png";
-import Star from "../../Images/StarAbout.png";
-import Secured from "../../Images/SecuredAgain.png";
+import CustomerCare from "../../Images/personService.svg";
+import Low from "../../Images/deposite.svg";
+import Safe from "../../Images/secureTick.svg";
+import Dollar from "../../Images/moneyHand.svg";
+import HandShake from "../../Images/handshake.svg";
+import Star from "../../Images/starSparcle.svg";
+import Secured from "../../Images/secureTickSmall.svg";
+import { useNavigate } from "react-router-dom";
 
 function AboutUs() {
+  const navigate = useNavigate();
+
+  const handleGetDomainClick = () => {
+    navigate("/");
+  };
   return (
     <S.ParentContainer>
       <S.HeroBanner>
@@ -17,7 +23,10 @@ function AboutUs() {
           Lorem ipsum dolor sit.
         </div>
         <div>
-          <button className="px-5 py-2 font-Montserrat text-sm bg-white mt-4 rounded-md">
+          <button
+            className="px-5 py-2 font-Montserrat text-sm bg-white mt-4 rounded-md"
+            onClick={handleGetDomainClick}
+          >
             Get Domain
           </button>
         </div>
@@ -56,11 +65,11 @@ function AboutUs() {
         </div>
       </div>
       <div className="bg-gray-100 w-full h-[950px] lg:h-[680px]">
-        <div className="p-10">
+        <div className="p-10 ">
           <div className="font-montserrat text-3xl font-bold text-center">
             Why Choose Us
           </div>
-          <div className="flex flex-col lg:flex-row gap-5 lg:gap-0 lg:justify-between mt-8 lg:mx-[80px]">
+          <div className="flex flex-col items-center lg:flex-row gap-5 lg:gap-0 lg:justify-between mx-0 mt-8 lg:mx-[170px]">
             <div className="w-[300px]">
               <div className="w-12 h-12 mx-auto lg:mx-0  rounded-full bg-white flex items-center justify-center">
                 <img src={Dollar} alt="" />
@@ -86,7 +95,7 @@ function AboutUs() {
               </div>
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row gap-5 lg:gap-0 lg:justify-between mt-8 lg:mx-[80px]">
+          <div className="flex flex-col items-center lg:flex-row gap-5 lg:gap-0 lg:justify-between mx- 0 mt-8 lg:mx-[170px]">
             <div className="w-[300px]">
               <div className="w-12 h-12 mx-auto lg:mx-0 rounded-full bg-white flex items-center justify-center">
                 <img src={Star} alt="" />

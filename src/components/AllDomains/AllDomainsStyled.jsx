@@ -1,17 +1,17 @@
 import tw from "tailwind-styled-components";
 
 export const HeroBanner = tw.div`
- flex flex-col items-center justify-center h-[350px]
-  bg-gradient-to-r from-bgOne via-bgOne to-bgTwo text-white
+flex flex-col items-center justify-center h-[350px]
+bg-gradient-to-r from-bgOne via-bgOne to-bgTwo text-white
 `;
 
 export const TextHolder = tw.div`
-flex flex-row gap-4 font-semibold text-3xl lg:text-5xl font-Montserrat
+font-normal text-[28px] lg:text-5xl font-Montserrat
 `;
 
 export const InputHolder = tw.div`
-inline-flex items-center border border-gray-300 rounded-sm
- p-[1px] pl-5 bg-white lg:w-[520px] h-[36px] py-2 pl-2 mt-10
+inline-flex items-center border border-gray-300 rounded-lg
+  bg-white lg:w-[520px] h-[46px] mt-10
 `;
 export const LeadHeading = tw.div`
 font-montserrat font-extrabold text-3xl lg:text-4xl text-black text-center pt-10

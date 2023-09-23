@@ -17,7 +17,7 @@ text-black
 ml-[25px] lg:ml-[70px] mt-[20px] font-montserrat font-bold
 `;
 export const constainer = tw.div`
-flex w-full 
+flex w-full mb-5
 `;
 export const checkboxStart = tw.div`
 ml-[20px]  lg:ml-[62px] w-full 

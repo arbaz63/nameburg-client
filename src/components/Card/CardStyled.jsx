@@ -1,14 +1,21 @@
 import tw from "tailwind-styled-components";
 
 export const main = tw.div`
-max-w-[300px] rounded-xl shadow-xl py-2 font-montserrat
+  max-w-[300px] rounded-xl border shadow-md py-2 font-montserrat hover:bg-gray-200
 `;
+
 export const container = tw.div`
-flex justify-between px-4
+  flex justify-between px-4
 `;
+
 export const holder = tw.div`
-flex items-center text-xs
+  flex items-center text-xs pb-6
 `;
+
 export const Text = tw.div`
-flex items-center justify-between border-t-[1px] px-2 lg:px-4
+  flex items-center justify-between border-t-[1px] px-2 lg:px-4
+`;
+
+export const ImageContainer = tw.div`
+ h-[80px] max-h-[80px] lg:h-[150px] lg:max-h-[150px] overflow-hidden
 `;

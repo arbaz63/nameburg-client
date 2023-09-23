@@ -1,11 +1,38 @@
-import React from "react";
-import CartIcon from "../../Images/cartIcon.png";
-import ClosedFilters from "../../Images/CloseFilters.png";
-import closeCartDrawer from "../../Images/closeCartDrawer.png";
+import React, { useState, useEffect } from "react";
+import CartIcon from "../../Images/cartIcon.svg";
+import ClosedFilters from "../../Images/blackCross.svg";
+import closeCartDrawer from "../../Images/purpleCross.svg";
+import { useNavigate } from "react-router-dom";
 
 function CartFilter(props) {
+  const [cart, setCart] = useState([]);
+  const navigate = useNavigate();
+
+  // Function to retrieve cart data from local storage
+  const getCartFromLocalStorage = () => {
+    const existingCart = localStorage.getItem("cart");
+    const cartArray = existingCart ? JSON.parse(existingCart) : [];
+    setCart(cartArray);
+  };
+
+  // Call the function when the component mounts
+  useEffect(() => {
+    getCartFromLocalStorage();
+  }, []);
+
   const handleFilterClose = () => {
     props.onClose();
+  };
+
+  const removeFromCart = (itemId) => {
+    const updatedCart = cart.filter((item) => item.id !== itemId);
+    setCart(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  };
+
+  const handleCheckoutClick = () => {
+    props.onClose();
+    navigate("/PaymentDetails");
   };
 
   return (
@@ -22,24 +49,32 @@ function CartFilter(props) {
       <div className="text-black text-base font-bold font-Montserrat mt-4">
         Domain Names :
       </div>
-      <div className=" px-2 flex justify-between items-center w-[277px] mt-4 bg-white h-10 text-sm font-Montserrat ">
-        <div className="pl-2">zylo.com</div>
-        <div className="flex items-center gap-2">
-          <div>$1000</div>
-          <div>
-            <img src={closeCartDrawer} alt="" />
+      {cart.map((item, index) => (
+        <div key={index} className="pl-2">
+          <div className=" px-2 flex justify-between items-center rounded-md mt-4 bg-white h-10 text-sm font-Montserrat ">
+            <div className="pl-2"> {item.name}</div>
+            <div className="flex items-center gap-2">
+              <div>{item.price}</div>
+              <div
+                onClick={() => removeFromCart(item.id)}
+                className="cursor-pointer"
+              >
+                <img src={closeCartDrawer} alt="" />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div className=" px-2 flex justify-between items-center w-[277px] mt-4 bg-white h-10 text-sm font-Montserrat ">
-        <div className="pl-2">zylo.me</div>
-        <div className="flex items-center gap-2">
-          <div>$1000</div>
-          <div>
-            <img src={closeCartDrawer} alt="" />
-          </div>
+      ))}
+      {cart.length > 0 && (
+        <div className="w-full flex justify-center mt-10">
+          <button
+            className="bg-bgOne h-[40px] w-fit rounded text-white border border-gray-100 font-Montserrat text-base font-semibold py-1 px-6"
+            onClick={handleCheckoutClick}
+          >
+            Checkout
+          </button>
         </div>
-      </div>
+      )}
     </div>
   );
 }
