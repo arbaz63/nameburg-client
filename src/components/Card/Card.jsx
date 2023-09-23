@@ -17,9 +17,12 @@ function Card({ domainData }) {
         </div>
       </S.container>
       {/* Brand Image */}
-      <div>
+      {/* <div>
         <img src={domainData.image && domainData.image} alt="" />
-      </div>
+      </div> */}
+      <S.ImageContainer>
+        <img src={domainData.image && domainData.image} alt="" />
+      </S.ImageContainer>
       <S.Text>
         <div className="pt-2">
           <p className="text-xs line-through decoration-[#ff0808]">

@@ -58,7 +58,7 @@ function AdminPannelEditDomain() {
 
   const [, setData] = useState();
   const [, setError] = useState();
-  const [selectedCategory, setSelectedCategory] = useState();
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const accessToken = localStorage.getItem("accessToken");
 
@@ -130,10 +130,11 @@ function AdminPannelEditDomain() {
         setDomainName(response.data.name);
         setMax(response.data.maxPrice);
         setMini(response.data.minPrice);
+        setText(response.data.description);
+        setKeywords(response.data.keywords);
         setImage(response.data.image ? response.data.image : gallery);
-        response.data.category.name &&
-          setSelectedCategory(response.data.category.name);
-        setText(response.data.text);
+        setSelectedCategory(response.data.category._id);
+        console.log(response.data, response.data.category.name);
       } catch (error) {
         setError("Error fetching domain details. Please try again.");
       }
@@ -222,7 +223,7 @@ function AdminPannelEditDomain() {
             <SelectCategoriesAdmin
               categories={categories}
               setSelectedCategory={setSelectedCategory}
-              selectedCategoriy={selectedCategory}
+              selectedCategory={selectedCategory}
             />
           </div>
           <div className="h-fit">

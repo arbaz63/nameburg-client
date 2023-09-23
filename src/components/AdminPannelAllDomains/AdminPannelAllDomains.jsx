@@ -150,7 +150,7 @@ function AdminPannelAllDomains() {
                           <img
                             src={domain.image}
                             alt="Img"
-                            className="shadow-lg mr-1 rounded-md"
+                            className="shadow-lg mr-1 rounded-md w-[50px]"
                           />
                           <div>{domain.name}</div>
                         </div>

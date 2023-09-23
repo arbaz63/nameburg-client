@@ -154,7 +154,7 @@ export const AllPurchases = () => {
                             <img
                               src={domain.image}
                               alt="Img"
-                              className="shadow-lg mr-1 rounded-md"
+                              className="shadow-lg mr-1 rounded-md w-[50px]"
                             />
                             <div>{domain.name}</div>{" "}
                           </div>
@@ -167,9 +167,12 @@ export const AllPurchases = () => {
                           <div className="px-6 py-4 flex justify-center items-center text-center">
                             {domain.currentPrice}
                           </div>
-                          <div className="px-6 py-4 flex justify-center items-center ">
-                            <div onClick={() => generatePDF(domain._id)}>
-                              <div className="">
+                          <div className="px-6 py-4 flex justify-center items-center">
+                            <div
+                              onClick={() => generatePDF(domain._id)}
+                              className="cursor-pointer"
+                            >
+                              <div className="hidden">
                                 <InvoicePdf
                                   name={domain.name}
                                   _id={domain._id}
