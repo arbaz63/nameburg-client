@@ -27,6 +27,16 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // Update isAdmin based on the user's role when the component mounts
     setIsAdmin(role === "admin" ? true : false);
+    if (accessToken) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+    if (role === "admin") {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
+    }
   }, [role]);
 
   return (

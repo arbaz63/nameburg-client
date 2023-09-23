@@ -26,13 +26,13 @@ function Filters(props) {
           Clear All
         </div>
       </div>
-      <div className=" text-black text-left font-Montserrat text-base font-bold pt-4">
-        Search In:
-      </div>
+      {/* <div className=" text-black text-left font-Montserrat text-base font-bold pt-4">
+        Search In: */}
+      {/* </div>
       <SearchInFilter
         selectedSearchIn={props.selectedSearchIn}
         setSelectedSearchIn={props.setSelectedSearchIn}
-      />
+      /> */}
       <div className="flex flex-row gap-5">
         <div>
           <div className=" text-black text-left font-Montserrat text-base font-bold pt-4">

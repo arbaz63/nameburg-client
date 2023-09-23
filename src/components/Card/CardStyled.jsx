@@ -1,7 +1,7 @@
 import tw from "tailwind-styled-components";
 
 export const main = tw.div`
-  max-w-[300px] rounded-xl border shadow-md py-2 font-montserrat
+  max-w-[300px] rounded-xl border shadow-md py-2 font-montserrat hover:bg-gray-200
 `;
 
 export const container = tw.div`

@@ -123,7 +123,7 @@ function AdminPannelSettings() {
             <S.Heading>Account settings</S.Heading>
             <div className="w-full border p-10 pt-5 rounded-lg">
               <div className="mt-3">
-                <div onClick={handleClick} className={"cursor-pointer"}>
+                {/* <div onClick={handleClick} className={"cursor-pointer"}>
                   <Avatar
                     alt={"MA"}
                     src={image}
@@ -139,7 +139,7 @@ function AdminPannelSettings() {
                     onChange={handleFileChange}
                   />
                 </div>
-                <div></div>
+                <div></div> */}
               </div>
               <S.InputHeading>Name</S.InputHeading>
               <input

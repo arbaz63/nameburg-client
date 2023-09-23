@@ -16,7 +16,7 @@ function ConditionalFooter() {
   const location = useLocation();
   const hideFooterRoutes = [
     "/Sign-in",
-    "/sign-up",
+    "/Sign-up",
     "/AdminPannel-AllDomains",
     "/AdminPannel-Login",
     "/AdminPannel",

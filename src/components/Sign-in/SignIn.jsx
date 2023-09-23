@@ -18,7 +18,7 @@ function SignIn() {
   const [, setRole] = useState("");
 
   const handleNavigation = () => {
-    navigate("/sign-up");
+    navigate("/Sign-up");
   };
 
   const handleChange = (e) => {

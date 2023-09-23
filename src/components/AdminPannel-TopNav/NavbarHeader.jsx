@@ -4,14 +4,17 @@ import ClickAwayListener from "@mui/material/ClickAwayListener";
 import { Link } from "react-router-dom";
 import ImgAvatar from "../Avatar/Avatar";
 import { useAuth } from "../../AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function NavbarHeader(props) {
   const name = localStorage.getItem("name");
   const [showAvatarDropdown, setShowAvatarDropdown] = useState(false);
   const { logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
+    navigate('/')
   };
 
   const CloseProfileMenu = () => {

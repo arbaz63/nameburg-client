@@ -14,33 +14,39 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
+import { useAuth } from "../../AuthContext";
 
 function DomainDetails() {
+  const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
 
   const handleNavigation = (id, name, price) => {
-    // Get the existing cart items from local storage
-    // Step 1: Retrieve the existing array from local storage (if any)
-    const existingCart = localStorage.getItem("cart");
+    if (isLoggedIn) {
+      // Get the existing cart items from local storage
+      // Step 1: Retrieve the existing array from local storage (if any)
+      const existingCart = localStorage.getItem("cart");
 
-    // Step 2: Parse the existing array from JSON
-    let cartArray = existingCart ? JSON.parse(existingCart) : [];
+      // Step 2: Parse the existing array from JSON
+      let cartArray = existingCart ? JSON.parse(existingCart) : [];
 
-    // Step 3: Check if the item with the same ID already exists in the cart
-    const itemExists = cartArray.some((item) => item.id === id);
+      // Step 3: Check if the item with the same ID already exists in the cart
+      const itemExists = cartArray.some((item) => item.id === id);
 
-    // Step 4: If the item doesn't exist, add it to the array
-    if (!itemExists) {
-      cartArray.push({ id, name, price });
+      // Step 4: If the item doesn't exist, add it to the array
+      if (!itemExists) {
+        cartArray.push({ id, name, price });
 
-      const updatedCart = JSON.stringify(cartArray);
+        const updatedCart = JSON.stringify(cartArray);
 
-      // Step 6: Store the JSON array back in local storage
-      localStorage.setItem("cart", updatedCart);
+        // Step 6: Store the JSON array back in local storage
+        localStorage.setItem("cart", updatedCart);
+      }
+      navigate("/PaymentDetails");
+    } else {
+      navigate('/Sign-in')
     }
-    navigate("/PaymentDetails");
   };
 
   useEffect(() => {
@@ -89,38 +95,42 @@ function DomainDetails() {
   const [success, setSuccess] = useState("");
 
   const handleCart = (id, name, price) => {
-    // Get the existing cart items from local storage
-    // Step 1: Retrieve the existing array from local storage (if any)
-    const existingCart = localStorage.getItem("cart");
+    if (isLoggedIn) {
+      // Get the existing cart items from local storage
+      // Step 1: Retrieve the existing array from local storage (if any)
+      const existingCart = localStorage.getItem("cart");
 
-    // Step 2: Parse the existing array from JSON
-    let cartArray = existingCart ? JSON.parse(existingCart) : [];
+      // Step 2: Parse the existing array from JSON
+      let cartArray = existingCart ? JSON.parse(existingCart) : [];
 
-    // Step 3: Check if the item with the same ID already exists in the cart
-    const itemExists = cartArray.some((item) => item.id === id);
+      // Step 3: Check if the item with the same ID already exists in the cart
+      const itemExists = cartArray.some((item) => item.id === id);
 
-    // Step 4: If the item doesn't exist, add it to the array
-    if (!itemExists) {
-      cartArray.push({ id, name, price });
+      // Step 4: If the item doesn't exist, add it to the array
+      if (!itemExists) {
+        cartArray.push({ id, name, price });
 
-      // Step 5: Convert the updated array back to JSON
-      const updatedCart = JSON.stringify(cartArray);
+        // Step 5: Convert the updated array back to JSON
+        const updatedCart = JSON.stringify(cartArray);
 
-      // Step 6: Store the JSON array back in local storage
-      localStorage.setItem("cart", updatedCart);
-      setSuccess("Item added to cart!");
-      console.log(updatedCart);
-      setCartError("");
+        // Step 6: Store the JSON array back in local storage
+        localStorage.setItem("cart", updatedCart);
+        setSuccess("Item added to cart!");
+        console.log(updatedCart);
+        setCartError("");
+      }
+
+      // Set success message
+      // Clear any previous error message
+      else {
+        // Set error message
+        setCartError("Item is already in the cart!");
+        setSuccess(""); // Clear any previous success message
+      }
+      console.log(existingCart);
+    } else {
+      navigate("/Sign-in");
     }
-
-    // Set success message
-    // Clear any previous error message
-    else {
-      // Set error message
-      setCartError("Item is already in the cart!");
-      setSuccess(""); // Clear any previous success message
-    }
-    console.log(existingCart);
   };
 
   useEffect(() => {
@@ -165,8 +175,12 @@ function DomainDetails() {
                       </p>
                     </div>
                   </div>
-                  <div className="py-14 ">
-                    <img src={data.image} alt="" />
+                  <div className="">
+                    <img
+                      src={data.image}
+                      alt=""
+                      className="lg:w-full lg:h-full"
+                    />
                   </div>
                   <div className="hidden lg:flex justify-between items-center bg-bgOne py-2 px-3 rounded-b-lg text-white">
                     <div>

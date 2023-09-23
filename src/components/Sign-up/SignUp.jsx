@@ -91,7 +91,7 @@ function SignUp() {
         termsAccepted: false,
       });
 
-      navigate("/sign-in");
+      navigate("/Sign-in");
     } catch (error) {
       console.error("Error signing up:", error);
       setError("Error signing up. Please try again.");
@@ -99,7 +99,7 @@ function SignUp() {
   };
 
   const handleSignInClick = () => {
-    navigate("/sign-in");
+    navigate("/Sign-in");
   };
 
   return (

@@ -294,7 +294,7 @@ function HomePage() {
             </S.IconsHolder>
             <S.ButtonHolder>
               <button
-                className="border border-black p-3 rounded-md font-semibold mt-8"
+                className="border border-black p-3 rounded-md font-semibold mt-8 hover:bg-gray-200"
                 onClick={handelMoreDomain}
               >
                 More Domains
@@ -325,7 +325,7 @@ function HomePage() {
             </S.IconsHolder>
             <S.ButtonHolder>
               <button
-                className="border border-black p-3 rounded-md font-semibold mt-8"
+                className="border border-black p-3 rounded-md font-semibold mt-8 hover:bg-gray-200"
                 onClick={handelMoreDomain}
               >
                 More Premium Domains
@@ -366,7 +366,7 @@ function HomePage() {
           </S.FieldsHolder>
           <S.ButtonHolderTwo>
             <button
-              className="p-3 border border-black rounded-md font-semibold mt-8"
+              className="p-3 border border-black rounded-md font-semibold mt-8 hover:bg-gray-200"
               onClick={handelMoreDomain}
             >
               Explore All Available Names
