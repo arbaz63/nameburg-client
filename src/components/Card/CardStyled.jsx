@@ -17,5 +17,5 @@ export const Text = tw.div`
 `;
 
 export const ImageContainer = tw.div`
-  h-[150px] max-h-[150px] overflow-hidden
+ h-[80px] max-h-[80px] lg:h-[150px] lg:max-h-[150px] overflow-hidden
 `;

@@ -6,24 +6,14 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { useLocation } from "react-router-dom";
-// import { Elements } from "@stripe/react-stripe-js";
-// import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import { AuthProvider } from "./AuthContext"; // Import your context
 
 function ConditionalFooter() {
   const location = useLocation();
-  // const hideFooterRoutes = [
-  //   "/Sign-in",
-  //   "/sign-up",
-  //   "/AdminPannel-AllDomains",
-  //   "/AdminPannel-Login",
-  //   "/AdminPannel-ViewDomain/*",
-  //   "/AdminPannel-EditDomain/*",
-  //   "/AdminPannel",
-  //   "/Settings",
-  // ];
   const hideFooterRoutes = [
     "/Sign-in",
     "/sign-up",
@@ -41,14 +31,7 @@ function ConditionalFooter() {
 
 function ConditionalNavbar() {
   const location = useLocation();
-  // const routesToHideNavbar = [
-  //   "/AdminPannel-AllDomains",
-  //   "/AdminPannel-Login",
-  //   "/AdminPannel-ViewDomain/*",
-  //   "/AdminPannel-EditDomain/*",
-  //   "/AdminPannel",
-  //   "/Settings",
-  // ];
+
   const routesToHideNavbar = [
     "/AdminPannel-AllDomains",
     "/AdminPannel-Login",
@@ -63,13 +46,13 @@ function ConditionalNavbar() {
   return shouldHideNavbar ? null : <Navbar />;
 }
 
-// const stripePromise = loadStripe(
-//   "pk_test_51NkLyjGAlP2vZLRLClzOe8EsDQeatTduQkIUyIuwRdzB2HdwfuSFQNVnaFw09wsqWLnj6QHUS6gMqGw6M3WnZEO200muuH9yyq"
-// );
+const stripePromise = loadStripe(
+  "pk_test_51NkLyjGAlP2vZLRLClzOe8EsDQeatTduQkIUyIuwRdzB2HdwfuSFQNVnaFw09wsqWLnj6QHUS6gMqGw6M3WnZEO200muuH9yyq"
+);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    {/* <Elements stripe={stripePromise}> */}
+    <Elements stripe={stripePromise}>
       <BrowserRouter>
         <AuthProvider>
           <ConditionalNavbar />
@@ -77,7 +60,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <ConditionalFooter />
         </AuthProvider>
       </BrowserRouter>
-    {/* </Elements> */}
+    </Elements>
   </React.StrictMode>
 );
 
