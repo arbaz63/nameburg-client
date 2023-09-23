@@ -6,7 +6,7 @@ import Avatar from "../../Images/IconAvatar.png";
 import back from "../../Images/backadminpannel.png";
 import create from "../../Images/createicon.png";
 
-function AdminPannelAllDomains() {
+function AdminPannelCreateInvoice() {
   return (
     <>
       <div className="fixed left-0 top-0 w-[21vw] h-[100vh]">
@@ -133,4 +133,4 @@ function AdminPannelAllDomains() {
   );
 }
 
-export default AdminPannelAllDomains;
+export default AdminPannelCreateInvoice;

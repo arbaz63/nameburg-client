@@ -1,46 +1,105 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Checkbox from "@mui/material/Checkbox";
 import * as S from "./SignUpStyled";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CountrySelector from "../CountrySelector";
+import axios from "axios";
 
 function SignUp() {
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    country: "Select Country",
+    termsAccepted: false,
+  });
+
+  const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
 
-  const handleNavigation = () => {
-    navigate("/Sign-in");
+    setError("");
   };
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
+  const handleCheckboxChange = (e) => {
+    setFormData({
+      ...formData,
+      termsAccepted: e.target.checked,
+    });
+
+    setError("");
   };
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
+  const validateFields = () => {
+    const { fullName, email, password, country, termsAccepted } = formData;
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
+    if (!fullName.trim()) {
+      setError("Please enter your fullName.");
+      return false;
+    }
 
-  const handleSubmit = (e) => {
-    if (email.trim() === "" || password.trim() === "" || name.trim() === "") {
-      alert("Please fill in all fields before submitting.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address.");
+      return false;
+    }
+
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long.");
+      return false;
+    }
+
+    if (country === "Select Country") {
+      setError("Please select your country.");
+      return false;
+    }
+
+    if (!termsAccepted) {
+      setError("Please accept the Terms and Conditions.");
+      return false;
+    }
+
+    return true;
+  };
+  // eslint-disable-next-line
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateFields()) {
       return;
     }
 
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Password:", password);
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/v1/auth/signup",
+        formData
+      );
 
-    setName("");
-    setEmail("");
-    setPassword("");
+      console.log("SignUp successful:", response.data, formData);
+
+      setFormData({
+        fullName: "",
+        email: "",
+        password: "",
+        country: "Select Country",
+        termsAccepted: false,
+      });
+
+      navigate("/sign-in");
+    } catch (error) {
+      console.error("Error signing up:", error);
+      setError("Error signing up. Please try again.");
+    }
+  };
+
+  const handleSignInClick = () => {
+    navigate("/sign-in");
   };
 
   return (
@@ -50,44 +109,78 @@ function SignUp() {
         <S.InputHeading>Full Name</S.InputHeading>
         <OutlinedInput
           type="text"
-          placeholder="Your name"
-          onChange={handleNameChange}
+          name="fullName"
+          value={formData.fullName}
+          placeholder="Your fullName"
+          onChange={handleChange}
           className="ml-[25px] mr-[25px] lg:ml-[70px] lg:mr-[70px] mt-2 h-[40px] "
         />
         <S.InputHeading>Email</S.InputHeading>
         <OutlinedInput
-          type="text"
+          type="email"
+          name="email"
+          value={formData.email}
           placeholder="Your email"
-          onChange={handleEmailChange}
+          onChange={handleChange}
           className="ml-[25px] mr-[25px] lg:ml-[70px] lg:mr-[70px] mt-2 h-[40px] "
         />
-        <CountrySelector />
+        <S.InputHeading>Country</S.InputHeading>
+        <CountrySelector
+          selectedCountry={formData.country}
+          setSelectedCountry={(country) =>
+            setFormData({ ...formData, country })
+          }
+          setError={setError}
+        />
         <S.InputHeading>Password</S.InputHeading>
         <OutlinedInput
           type="password"
+          name="password"
+          value={formData.password}
           placeholder="Password"
-          onChange={handlePasswordChange}
+          onChange={handleChange}
           className="ml-[25px] mr-[25px] lg:ml-[70px] lg:mr-[70px] mt-2 h-[40px] "
         />
         <S.constainer>
           <S.checkboxStart>
-            <Checkbox color="secondary" />
+            <Checkbox
+              color="secondary"
+              checked={formData.termsAccepted}
+              onChange={handleCheckboxChange}
+            />
             <span className="text-sm">
               I agree to the{" "}
-              <span className="underline">terms and conditions</span>{" "}
+              <span
+                className="underline cursor-pointer"
+                onClick={() => navigate("/TermsAndConditions")}
+              >
+                terms and conditions
+              </span>{" "}
             </span>
           </S.checkboxStart>
         </S.constainer>
-        <button
-          onClick={handleNavigation}
-          className="ml-[70px] mt-2 mr-[70px] h-[40px] bg-bgOne text-white rounded-lg"
-        >
-          Login
-        </button>
+
+        <S.constainer>
+          <div className="text-red-500 mt-2 flex justify-center w-full">
+            {error}
+          </div>
+        </S.constainer>
+        <S.constainer>
+          <button
+            onClick={handleSubmit}
+            className=" w-full mt-2 mx-[30px] lg:mx-[70px] h-[40px] bg-bgOne text-white rounded-lg"
+          >
+            Sign Up
+          </button>
+        </S.constainer>
+
         <S.lastPart>
-          Already have an account?
-          <span className="underline text-blue-400 hover:cursor-pointer ">
-            <Link to={"/Sign-in"}>Sign in</Link>
+          Already have an account?{" "}
+          <span
+            className="underline text-blue-400 hover:cursor-pointer "
+            onClick={handleSignInClick}
+          >
+            Sign in
           </span>
         </S.lastPart>
       </S.Card>

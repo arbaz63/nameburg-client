@@ -1,38 +1,98 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import Checkbox from "@mui/material/Checkbox";
 import * as S from "./SignInStyled";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useAuth } from "../../AuthContext";
 
 function SignIn() {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [error, setError] = useState("");
+  const [, setRole] = useState("");
 
   const handleNavigation = () => {
-    navigate("/");
+    navigate("/sign-up");
   };
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+
+    setError("");
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
+  const validateFields = () => {
+    const { email, password } = formData;
 
-  const handleSubmit = (e) => {
-    if (email.trim() === "" || password.trim() === "") {
-      alert("Please fill in all fields before submitting.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address.");
+      return false;
+    }
+
+    if (password.length < 5) {
+      setError("Password must be at least 5 characters long.");
+      return false;
+    }
+
+    return true;
+  };
+// eslint-disable-next-line
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateFields()) {
       return;
     }
 
-    console.log("Email:", email);
-    console.log("Password:", password);
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/v1/auth/signin",
+        formData
+      );
 
-    setEmail("");
-    setPassword("");
+      console.log("SignIn successful:", response.data);
+
+      // Remove existing tokens if they exist
+      localStorage.removeItem("userId");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("role");
+      localStorage.removeItem("name");
+      localStorage.removeItem("email");
+      localStorage.removeItem("country");
+
+
+      localStorage.setItem("userId", response.data.id);
+      localStorage.setItem("accessToken", response.data.accessToken);
+      localStorage.setItem("role", response.data.role);
+      localStorage.setItem("name", response.data.fullName);
+      localStorage.setItem("email", response.data.email);
+      localStorage.setItem("country", response.data.country);
+      login();
+
+      setRole(response.data.role);
+
+      setFormData({
+        email: "",
+        password: "",
+      });
+
+      if (response.data.role === "user") {
+        navigate("/");
+      } else {
+        navigate("/AdminPannel-AllDomains");
+      }
+    } catch (error) {
+      setError("Error signing in. Please try again.");
+    }
   };
 
   return (
@@ -42,34 +102,44 @@ function SignIn() {
         <S.InputHeading>Email</S.InputHeading>
         <OutlinedInput
           type="text"
+          name="email"
+          value={formData.email}
           placeholder="Your email"
-          onChange={handleEmailChange}
+          onChange={handleChange}
           className="ml-[25px] mr-[25px] lg:ml-[70px] lg:mr-[70px] mt-2 h-[40px] "
         />
         <S.InputHeading>Password</S.InputHeading>
         <OutlinedInput
           type="password"
+          name="password"
+          value={formData.password}
           placeholder="Password"
-          onChange={handlePasswordChange}
+          onChange={handleChange}
           className="ml-[25px] mr-[25px] lg:ml-[70px] lg:mr-[70px] mt-2 h-[40px] "
         />
         <S.constainer>
-          <S.checkboxStart>
+          {/* <S.checkboxStart>
             <Checkbox color="secondary" />
             <span className="text-sm">Remember me</span>
           </S.checkboxStart>
-          <S.ForgotPassword>Forgot Password?</S.ForgotPassword>
+          <S.ForgotPassword>Forgot Password?</S.ForgotPassword> */}
         </S.constainer>
+        <div className="text-red-500 mt-8 flex justify-center w-full">
+          {error}
+        </div>
         <button
-          onClick={handleNavigation}
+          onClick={handleSubmit}
           className="ml-[25px] mr-[25px] lg:ml-[70px] mt-2 lg:mr-[70px] h-[40px] bg-bgOne text-white rounded-lg"
         >
           Login
         </button>
         <S.lastPart>
-          Don't have an account?
-          <span className="underline text-blue-400 hover:cursor-pointer ">
-            <Link to={"/Sign-up"}>Sign up</Link>
+          Don't have an account?{" "}
+          <span
+            className="underline text-blue-400 hover:cursor-pointer"
+            onClick={handleNavigation}
+          >
+            Sign up
           </span>
         </S.lastPart>
       </S.Card>

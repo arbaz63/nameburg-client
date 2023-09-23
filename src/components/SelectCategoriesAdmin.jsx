@@ -1,37 +1,44 @@
-import { useState } from "react";
+import * as React from "react";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
-function SortByFilter() {
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const countries = [
-    "Sports Domain",
-    "HouseHold Domain",
-    "Furniture Domain",
-    "Pharma Domains",
-  ];
-
+// Your custom component
+function SortByFilter(props) {
   const handleCountryChange = (event) => {
-    setSelectedCountry(event.target.value);
+    props.setSelectedCategory(event.target.value);
   };
 
   return (
-    <div>
-      <select
-        id="country"
-        name="country"
-        value={selectedCountry}
+    <FormControl
+      sx={{
+        m: 1,
+        minWidth: "400px",
+        border: "none", // Remove the border
+      }}
+      size="small"
+      className="bg-gray-100"
+    >
+      <InputLabel id="">Select Category</InputLabel>
+      <Select
+        labelId="sort-by-label"
+        id="sort-by-select"
+        value={props.selectedCategory}
+        label="Select Category"
         onChange={handleCountryChange}
-        className="pl-4 bg-gray-100 text-sm pr-3 text-black ml-4 py-2 rounded-md mt-4 w-[400px] border border-gray-100"
       >
-        <option value="">
-          <span className="text-xs">Select</span>
-        </option>
-        {countries.map((country, index) => (
-          <option key={index} value={country}>
-            {country}
-          </option>
-        ))}
-      </select>
-    </div>
+        <MenuItem value="">
+          <em>None</em>
+        </MenuItem>
+        {props.categories &&
+          props.categories.map((category) => (
+            <MenuItem key={category._id} value={category._id}>
+              {category.name}
+            </MenuItem>
+          ))}
+      </Select>
+    </FormControl>
   );
 }
 

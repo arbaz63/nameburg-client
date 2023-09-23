@@ -1,7 +1,7 @@
 import Show from "../../Images/Show.png";
 import * as S from "./CardStyled";
 
-function Card({ image }) {
+function Card({ domainData }) {
   return (
     <S.main>
       <S.container>
@@ -9,7 +9,7 @@ function Card({ image }) {
           <span className="pr-1">
             <img src={Show} alt="" className="w-4" />
           </span>
-          <span>278</span>
+          <span>{domainData.views}</span>
         </S.holder>
         <div className="z-10">
           <p className="font-bold">49%</p>
@@ -18,15 +18,17 @@ function Card({ image }) {
       </S.container>
       {/* Brand Image */}
       <div>
-        <img src={image} alt="" />
+        <img src={domainData.image && domainData.image} alt="" />
       </div>
       <S.Text>
         <div className="pt-2">
-          <p className="text-xs line-through decoration-[#ff0808]">$1969</p>
-          <p className="text-sm font-bold">$1500</p>
+          <p className="text-xs line-through decoration-[#ff0808]">
+            ${domainData.maxPrice}
+          </p>
+          <p className="text-sm font-bold">${domainData.currentPrice}</p>
         </div>
         <div>
-          <p className="text-base font-normal">ario.com</p>
+          <p className="text-base font-normal">{domainData.name}</p>
         </div>
       </S.Text>
     </S.main>

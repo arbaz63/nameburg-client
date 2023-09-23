@@ -1,7 +1,7 @@
 import tw from "tailwind-styled-components";
 
 export const Footer = tw.div`
- bg-bgOne h-[800px] text-white lg:h-[400px] max-sm:flex max-sm:flex-col max-sm:justifty-center  
+ bg-bgOne h-[800px] bottom-0 text-white lg:h-[400px] max-sm:flex max-sm:flex-col max-sm:justifty-center  
 `;
 export const Container = tw.div`
 container mx-auto py-8 grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8 lg:pr-[0px] 
@@ -25,10 +25,10 @@ export const SubText = tw.div`
 text-sm pt-4 cursor-pointer
 `;
 export const Col3 = tw.div`
-   my-4 pr-[10px] lg:pr-[50px] text-center
+   my-4 pr-[10px] lg:pr-[50px] lg:text-left text-center
 `;
 export const InputHolder = tw.div`
-inline-flex items-center border border-gray-300 rounded-md p-[1px] pl-5 bg-white
+inline-flex items-center border border-gray-300 rounded-md p-[1px] pl-5 bg-white mt-5
 `;
 export const IconsWrapper = tw.div`
 flex gap-4 ml-[110px] lg:ml-[80px] 

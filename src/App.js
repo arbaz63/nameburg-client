@@ -10,11 +10,13 @@ import AllDomains from "./components/AllDomains/AllDomains";
 import UserSettings from "./components/UserSettings/UserSettings";
 import AboutUs from "./components/AboutUs/AboutUs";
 import AdminPannelAllDomains from "./components/AdminPannelAllDomains/AdminPannelAllDomains";
-import AdminPannelLogin from "./components/AdminPannel-Login/AdminPannelLogin";
 import AdminPannelViewDomain from "./components/AdminPannel-ViewDomain/AdminPannelViewDomain";
 import AdminPannel from "./components/AdminPannel/AdminPannel";
 import AdminPannelSettings from "./components/AdminPannelSettings/AdminPannelSettings";
-import PurchaseHistory from "./components/PurchaseHistory/PurchaseHistory";
+import AllDomainsId from "./components/AllDomains/AllDomainsId";
+import { PurchaseHistory } from "./components/PaymentDetails/PurchaseHistory";
+import AdminPannelEditDomain from "./components/AdminPannel/AdminPannel-EditDomain";
+import { AllPurchases } from "./components/AllDomains/AllPurchases";
 
 function App() {
   return (
@@ -26,21 +28,27 @@ function App() {
       <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
       <Route path="/PaymentDetails" element={<PaymentDetails />} />
       <Route path="ContactUs" element={<ContactUs />} />
-      <Route path="/AllDomains/:id" element={<AllDomains />} />
+      <Route path="/AllDomains" element={<AllDomains />} />
+      <Route path="/AllDomains/:id" element={<AllDomainsId />} />
       <Route path="/UserSettings" element={<UserSettings />} />
       <Route path="/AboutUs" element={<AboutUs />} />
       <Route
         path="/AdminPannel-AllDomains"
         element={<AdminPannelAllDomains />}
       />
-      <Route path="/AdminPannel-Login" element={<AdminPannelLogin />} />
+      {/* <Route path="/AdminPannel-Login" element={<AdminPannelLogin />} /> */}
       <Route
-        path="AdminPannel-ViewDomain"
+        path="AdminPannel-ViewDomain/:id"
         element={<AdminPannelViewDomain />}
+      />
+      <Route
+        path="AdminPannel-EditDomain/:id"
+        element={<AdminPannelEditDomain />}
       />
       <Route path="/AdminPannel" element={<AdminPannel />} />
       <Route path="/Settings" element={<AdminPannelSettings />} />
-      <Route path="/Purchase" element={<PurchaseHistory />} />
+      <Route path="/purchaseHistory" element={<PurchaseHistory />} />
+      <Route path="/AllPurchases" element={<AllPurchases />} />
     </Routes>
   );
 }

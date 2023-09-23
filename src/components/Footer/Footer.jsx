@@ -1,13 +1,9 @@
 import * as S from "./FooterStyled";
-import logo from "../../Images/Nameburg.png";
+import logo from "../../Images/Nameburg-Logo.svg";
 import { useNavigate } from "react-router-dom";
-import facebook from "../../Images/facebook.png";
-import instagram from "../../Images/instagram.png";
-import twitter from "../../Images/twitter.png";
-import Line from "../../Images/Line.png";
 import Line3 from "../../Images/Line3.png";
-//import SendIcon from "@mui/icons-material/Send";
 import SendIcon from "../../Images/SendIcon.png";
+
 function Footer() {
   const navigate = useNavigate();
   const handleNavigationHome = () => {
@@ -43,7 +39,6 @@ function Footer() {
           <S.SubText onClick={handleNavigationTerms}>
             Terms & conditions
           </S.SubText>
-          <S.SubText>FAQs</S.SubText>
         </S.Col2>
         <S.Col3>
           <S.Heading>News Letter</S.Heading>
@@ -62,23 +57,6 @@ function Footer() {
           </S.InputHolder>
         </S.Col3>
       </S.Container>
-      <S.IconsWrapper>
-        <div>
-          <img src={facebook} alt="" />
-        </div>
-        <div>
-          <img src={Line} alt="" />
-        </div>
-        <div>
-          <img src={instagram} alt="" />
-        </div>
-        <div>
-          <img src={Line} alt="" />
-        </div>
-        <div>
-          <img src={twitter} alt="" />
-        </div>
-      </S.IconsWrapper>
       <div className="w-[80%] mx-auto lg:w-[87%]">
         <img src={Line3} alt="" className="pt-4" />
       </div>

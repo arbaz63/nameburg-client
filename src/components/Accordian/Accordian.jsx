@@ -16,17 +16,22 @@ function CustomAccordion() {
 
   return (
     <div>
-      <Accordion expanded={isAccordionOpen} onChange={toggleAccordion}>
-        <AccordionSummary
-          id="panel1-header"
-          aria-controls="panel1a-content"
-          expandIcon={<ArrowDropDownIcon />}
-          className={`${
-            isAccordionOpen ? "text-purple-500" : "text-black"
-          } transition-colors duration-300`}
-        >
-          {/*CR7*/}
-          <Typography className="font-montserrat text-black py-2 ">
+      <Accordion
+        expanded={isAccordionOpen}
+        onChange={toggleAccordion}
+        sx={{
+          boxShadow: "none",
+          "& .css-xpdijk-MuiPaper-root-MuiAccordion-root": {
+            boxShadow: "none",
+          },
+        }}
+      >
+        <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+          <Typography
+            className={`font-montserrat text-black py-2 ${
+              isAccordionOpen ? "text-purple-500" : "text-black"
+            }`}
+          >
             Lorem ipsum dolor siiuuu consectetur adipisicing elit.
           </Typography>
         </AccordionSummary>

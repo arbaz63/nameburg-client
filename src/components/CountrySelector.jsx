@@ -1,7 +1,9 @@
-import { useState } from "react";
+import React from "react";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
-function CountrySelector() {
-  const [selectedCountry, setSelectedCountry] = useState("");
+function CountrySelector({ selectedCountry, setSelectedCountry, setError }) {
   const countries = [
     "United States",
     "Australia",
@@ -11,32 +13,29 @@ function CountrySelector() {
     "Ireland",
     "Saudi Arabia",
     "United Arab Emirates",
-    // Add more countries here
   ];
 
   const handleCountryChange = (event) => {
     setSelectedCountry(event.target.value);
+    setError("");
   };
 
   return (
-    <div>
-      <div className="text-black ml-[25px] lg:ml-[70px] mt-[20px] font-montserrat font-bold">
-        Select a Country
-      </div>
-      <select
-        id="country"
-        name="country"
-        value={selectedCountry}
-        onChange={handleCountryChange}
-        className="ml-[25px] w-[310px] lg:w-[460px] lg:pl-[20px] mr-[25px] lg:ml-[70px] lg:mr-[70px] mt-2 h-[40px] border border-gray-300"
-      >
-        <option value="">Select...</option>
-        {countries.map((country, index) => (
-          <option key={index} value={country}>
-            {country}
-          </option>
-        ))}
-      </select>
+    <div className="pt-2">
+      <FormControl fullWidth variant="outlined">
+        <Select
+          value={selectedCountry}
+          onChange={handleCountryChange}
+          className="ml-[25px] mr-[25px] lg:ml-[70px] lg:mr-[70px] mt-2 h-[40px]"
+          renderValue={(selected) => <div>{selected}</div>}
+        >
+          {countries.map((country, index) => (
+            <MenuItem key={index} value={country}>
+              {country}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
     </div>
   );
 }

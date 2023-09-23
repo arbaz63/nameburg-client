@@ -1,35 +1,38 @@
 import { useState } from "react";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
-function SearchInFilter() {
-  const [selectedCountry, setSelectedCountry] = useState("");
+function SearchInFilter(props) {
   const countries = [
     "Dummy Data 1",
     "Dummy Data 2",
     "Dummy Data 3",
     "Dummy Data 4",
-    // Add more countries here
   ];
 
-  const handleCountryChange = (event) => {
-    setSelectedCountry(event.target.value);
+  const handleSearchInChange = (event) => {
+    props.setSelectedSearchIn(event.target.value);
   };
 
   return (
-    <div>
-      <select
-        id="country"
-        name="country"
-        value={selectedCountry}
-        onChange={handleCountryChange}
-        className=" w-[275px] bg-white  mt-2 h-[30px] border border-gray-300"
-      >
-        <option value="">Select...</option>
-        {countries.map((country, index) => (
-          <option key={index} value={country}>
-            {country}
-          </option>
-        ))}
-      </select>
+    <div className="w-full">
+      <div className="pt-2 w-full">
+        <FormControl fullWidth variant="outlined">
+          <Select
+            value={props.selectedSearchIn}
+            onChange={handleSearchInChange}
+            className="mt-2 h-[40px]"
+            renderValue={(selected) => <div>{selected}</div>}
+          >
+            {countries.map((country, index) => (
+              <MenuItem key={index} value={country}>
+                {country}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
     </div>
   );
 }

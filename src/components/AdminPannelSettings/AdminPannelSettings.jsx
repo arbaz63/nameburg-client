@@ -1,128 +1,239 @@
-import AdminPannelNavbarSettings from "../AdminPannelNavbarSettings/AdminPannelNavSet";
-import SearchIcon from "@mui/icons-material/Search";
-import bell from "../../Images/bell.png";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import Avatar from "../../Images/IconAvatar.png";
-import { useState } from "react";
-import profile from "../../Images/profileicondropdown.png";
-import logout from "../../Images/logouticon.png";
+import * as S from "../UserSettings/UserSettingsStyled";
+import Avatar from "@mui/material/Avatar";
+import React, { useRef, useState } from "react";
+import axios from "axios";
+import AdminPannelNavbar from "../AdminPannelNavbar/AdminPannelNavbar";
+import NavbarHeader from "../AdminPannel-TopNav/NavbarHeader";
 
-function AdminPannelAllDomains() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+function AdminPannelSettings() {
+  const [image, setImage] = useState();
+  const [name, setName] = useState(localStorage.getItem("name"));
+  const [email, setEmail] = useState(localStorage.getItem("email"));
+  const [country, setCountry] = useState(localStorage.getItem("country"));
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+  const [nameError, setNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [countryError, setCountryError] = useState("");
+  const [newPasswordError, setNewPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [update, setUpdate] = useState(true);
+
+  const userId = localStorage.getItem("userId");
+  const accessToken = localStorage.getItem("accessToken");
+
+  const fetchData = async () => {
+    if (!handleSave()) {
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        `http://localhost:4000/api/v1/auth/${userId}`,
+        {
+          oldPassword: oldPassword,
+          newPassword: newPassword,
+          newFullName: name,
+          newEmail: email,
+          newCountry: country,
+        },
+        {
+          headers: {
+            Authorization: `${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response.data);
+      if (response.data) {
+        localStorage.setItem("name", name);
+        localStorage.setItem("email", email);
+        localStorage.setItem("country", country);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
+
+  const handleSave = () => {
+    setNameError("");
+    setEmailError("");
+    setCountryError("");
+    setNewPasswordError("");
+    setConfirmPasswordError("");
+
+    let hasErrors = false;
+
+    if (!name) {
+      setNameError("Name is required");
+      hasErrors = true;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setEmailError("Invalid email format");
+      hasErrors = true;
+    }
+
+    if (!country) {
+      setCountryError("Country is required");
+      hasErrors = true;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setNewPasswordError("Passwords do not match");
+      setConfirmPasswordError("Passwords do not match");
+      hasErrors = true;
+    }
+
+    if (hasErrors) {
+      return false;
+    } else {
+      setUpdate(!update);
+      return true
+    }
+  };
+
+  const fileInputRef = useRef();
+
+  const handleClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files?.[0];
+    if (selectedFile) {
+      setImage && setImage(URL.createObjectURL(selectedFile));
+    }
+  };
+
   return (
     <>
       <div className="fixed left-0 top-0 w-[21vw] h-[100vh]">
-        <AdminPannelNavbarSettings />
+        <AdminPannelNavbar selectedItem={"settings"} />
       </div>
       <div className="w-[79vw] ml-[21vw]">
-        <div className="h-[70px] shadow-md border border-gray-100 flex flex-row justify-between">
-          <div className="flex flex-row items-center justify-center">
-            <div className="font-montserrat text-xl pl-4">
-              Welcome,{" "}
-              <span className="font-montserrat text-sm font-medium">
-                {" "}
-                Jhon Doe
-              </span>
-            </div>
-            <div className="ml-12 h-[2px] mt-7 w-20 bg-bgOne "></div>
-          </div>
-          <div className="pr-14 flex flex-row gap-5 items-center">
-            <div
-              className="inline-flex items-center border border-gray-300 rounded-2xl
-                     p-[1px]  h-[36px] w-[300px] py-2 pl-2  bg-gray-50"
-            >
-              <div className="py-2 pr-2 rounded">
-                <SearchIcon className="text-gray-400" />
+        <NavbarHeader />
+        <div className=" pl-4 pt-7 pr-9">
+          <S.ParentContainer>
+            <S.Heading>Account settings</S.Heading>
+            <div className="w-full border p-10 pt-5 rounded-lg">
+              <div className="mt-3">
+                <div onClick={handleClick} className={"cursor-pointer"}>
+                  <Avatar
+                    alt={"MA"}
+                    src={image}
+                    sx={{
+                      width: 60,
+                      height: 60,
+                    }}
+                  />
+                  <input
+                    type="file"
+                    style={{ display: "none" }}
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                  />
+                </div>
+                <div></div>
               </div>
+              <S.InputHeading>Name</S.InputHeading>
               <input
                 type="text"
-                placeholder="Search domain name"
-                className="bg-gray-50"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className={`py-2 lg:w-[380px] border rounded-md pl-3 font-light bg-grey w-full ${
+                  nameError ? "border-red-500" : "border-gray-100"
+                }`}
               />
-            </div>
-            <div>
-              <img src={bell} alt="" />
-            </div>
-            <div className="w-[1px] h-6 bg-gray-200 "></div>
-            <div
-              className="flex flex-row cursor-pointer "
-              onClick={toggleDropdown}
-            >
-              <img src={Avatar} alt="" />
-              <span>
-                <ArrowDropDownIcon />
-              </span>
-              {isDropdownOpen && (
-                <div className="absolute top-10 right-0 bg-white border border-gray-300 rounded-md shadow-md w-[150px] mr-5">
-                  <ul>
-                    <li className="font-montserrat flex flex-row ml-3 mt-2 items-center gap-2 text-admText text-sm">
-                      {" "}
-                      <img src={profile} alt="" /> Profile
-                    </li>
-                    <div className="h-[1px] w-full bg-bgOne my-3" />
-                    <li className="font-montserrat flex flex-row ml-3 mt-2 items-center gap-2 text-admText text-sm">
-                      {" "}
-                      <img src={logout} alt="" /> Logout
-                    </li>
-                  </ul>
-                </div>
+              {nameError && <div className="text-red-500">{nameError}</div>}
+
+              <S.InputHeading>Email</S.InputHeading>
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={`py-2 lg:w-[380px] border rounded-md pl-3 font-light bg-grey w-full ${
+                  emailError ? "border-red-500" : "border-gray-100"
+                }`}
+              />
+              {emailError && <div className="text-red-500">{emailError}</div>}
+
+              <S.InputHeading>Country</S.InputHeading>
+              {/* <S.Display>USA</S.Display> */}
+              <input
+                type="text"
+                placeholder="Country"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                className={`py-2 lg:w-[380px] border rounded-md pl-3 font-light bg-grey w-full ${
+                  countryError ? "border-red-500" : "border-gray-100"
+                }`}
+              />
+              {countryError && (
+                <div className="text-red-500">{countryError}</div>
               )}
             </div>
-          </div>
-        </div>
-        <main className="bg-adminBg pl-4 pt-7 pr-9 h-[800px]">
-          <div className="font-montserrat text-2xl text-black font-extrabold">
-            Account Settings
-          </div>
-          <div className="mt-4 w-[983px] h-[200px] rounded-lg  bg-white px-4 ">
-            <div className="font-montserrat font-medium pt-3 ml-3 text-lg text-black">
-              Name
-            </div>
-            <div className="font-montserrat text-base  pl-4 bg-gray-100 text-black ml-3 py-2 rounded-md mt-2 h-[40px] w-[400px] border border-gray-100">
-              John Doe
-            </div>
-            <div className="font-montserrat font-medium ml-3 mt-4 text-lg text-black">
-              Email
-            </div>
-            <div className="font-montserrat  text-base  pl-4 bg-gray-100 text-black ml-3 py-2 rounded-md mt-2 h-[40px] w-[400px] border border-gray-100">
-              johndoe@gmail.com
-            </div>
-          </div>
-          <div className="font-montserrat mt-5 text-2xl text-black font-extrabold">
-            Change Password
-          </div>
-          <div className="mt-4 w-[983px] h-[270px] rounded-lg  bg-white px-4 ">
-            <div className="font-montserrat font-medium pt-3 ml-3 text-lg text-black">
-              New Password
-            </div>
-            <input
-              placeholder="New Password"
-              type="password"
-              className="font-montserrat text-base  pl-4 bg-gray-100 text-black ml-3 py-2 rounded-md mt-2 h-[40px] w-[400px] border border-gray-100"
-            />
 
-            <div className="font-montserrat font-medium ml-3 mt-4 text-lg text-black">
-              Confirm Password
+            <div className="w-full border p-10 pt-5 rounded-lg mt-5">
+              <S.ChangePassword>Change Password</S.ChangePassword>
+
+              <S.InputHeading>Old Password</S.InputHeading>
+              <input
+                type="password"
+                placeholder="Old password"
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
+                className={`py-2 lg:w-[380px] border rounded-md pl-3 font-light bg-grey w-full `}
+              />
+              <S.InputHeading>New Password</S.InputHeading>
+              <input
+                type="password"
+                placeholder="New password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className={`py-2 lg:w-[380px] border rounded-md pl-3 font-light bg-grey w-full ${
+                  newPasswordError ? "border-red-500" : "border-gray-100"
+                }`}
+              />
+              {newPasswordError && (
+                <div className="text-red-500">{newPasswordError}</div>
+              )}
+
+              <S.InputHeading>Confirm Password</S.InputHeading>
+              <input
+                type="password"
+                placeholder="Confirm password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className={`py-2 lg:w-[380px] border rounded-md pl-3 font-light bg-grey w-full ${
+                  confirmPasswordError ? "border-red-500" : "border-gray-100"
+                }`}
+              />
+              {confirmPasswordError && (
+                <div className="text-red-500">{confirmPasswordError}</div>
+              )}
+
+              <S.ButtonHolder>
+                <button
+                  className="bg-bgOne text-white py-2 px-7 rounded-md font-Montserrat font-semibold text-base mt-4"
+                  onClick={fetchData}
+                >
+                  Save
+                </button>
+              </S.ButtonHolder>
             </div>
-            <input
-              placeholder="Confirm Password"
-              type="password"
-              className="font-montserrat mt-3 text-base  pl-4 bg-gray-100 text-black ml-3 py-2 rounded-md  h-[40px] w-[400px] border border-gray-100"
-            />
-            <div>
-              <button className="mt-6 ml-3 font-montserrat rounded-md text-white bg-bgOne py-2 px-6">
-                Save
-              </button>
-            </div>
-          </div>
-        </main>
+          </S.ParentContainer>
+        </div>
       </div>
     </>
   );
 }
 
-export default AdminPannelAllDomains;
+export default AdminPannelSettings;

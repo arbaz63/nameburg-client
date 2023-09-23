@@ -1,52 +1,189 @@
 import * as S from "./HomePageStyled";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import { useState } from "react";
 import Card from "../Card/Card";
 import Button from "../Button/Button";
-import layer1 from "../../Images/layer1.png";
-import Redbooth from "../../Images/image 3.png";
-import secured from "../../Images/secured.png";
-import speed from "../../Images/litespeed-logo 1.png";
-import spectaculus from "../../Images/Rectangle 11.png";
-import nira from "../../Images/image 5.png";
-import cloud from "../../Images/Rectangle 13.png";
-import Ario from "../../Images/image 1.png";
-import GameMaker from "../../Images/image 9.png";
-import Zylo from "../../Images/image 7.png";
-import Credly from "../../Images/image 8.png";
-import Crimson from "../../Images/Brand.png";
-import QuantControl from "../../Images/image 13.png";
-import Vita from "../../Images/image 12.png";
-import AccuNatural from "../../Images/image 10.png";
+import layer1 from "../../Images/filter.svg";
+import Redbooth from "../../Images/redbooth.svg";
+import secured from "../../Images/securedImunify.svg";
+import speed from "../../Images/litespeed.svg";
+import spectaculus from "../../Images/softaculous.svg";
+import nira from "../../Images/nira.svg";
+import cloud from "../../Images/cloudfare.svg";
 import Colons from "../../Images/colons.png";
-import smColons from "../../Images/Page 1.png";
-import Profile from "../../Images/Profile Image.png";
-import star from "../../Images/Vector (1).png";
+import smColons from "../../Images/Quote.svg";
+import ProfileImage from "../../Images/floydImage.svg";
+import ProfileImageOne from "../../Images/ProfileImageOne.svg";
+import ProfileImageTwo from "../../Images/ProfileImageTwo.svg";
+import CircularProgress from "@mui/material/CircularProgress";
+import star from "../../Images/starGold.svg";
 import SearchIcon from "@mui/icons-material/Search";
 import { Drawer } from "@mui/material";
 import Filters from "../Filters/Filters";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
+  // http://nameburg.com/api/v1/domains/?page=1&limit=2&minPrice=2000&maxPrice=10000&extension=.io&keywords=hello,world,
+  // all&sort=high-low&minLength=2&maxLength=10&searchTerm=samp&category=64e8b28a9b5cc68f30994e7c
+
+  const navigate = useNavigate();
+  const [, setData] = useState(null);
+  const [, setError] = useState("");
+  const [domains, setDomains] = useState();
+  const [, setTotalPages] = useState(0);
+  const [currentPages, setCurrentPages] = useState(1);
+  const [categories, setCategories] = useState(0);
+  const [searchHit, setSearchHit] = useState(false);
+  const [fetchFiltersData, setFetchFiltersData] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [catLoading, setCatLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const baseUrl = "http://localhost:4000/api/v1/domains";
+
+        const queryParamsFilters = new URLSearchParams({
+          page: currentPages,
+          limit: 8,
+        });
+
+        if (searchBar) {
+          queryParamsFilters.set("searchTerm", searchBar);
+        }
+
+        if (maxPrice !== 0) {
+          queryParamsFilters.set("maxPrice", maxPrice);
+        }
+
+        if (minPrice !== 0) {
+          queryParamsFilters.set("minPrice", minPrice);
+        }
+
+        if (minLength !== 0) {
+          queryParamsFilters.set("minLength", minLength);
+        }
+
+        if (maxLength !== 0) {
+          queryParamsFilters.set("maxLength", maxLength);
+        }
+
+        if (selectedSearchIn !== "All") {
+          queryParamsFilters.set("selectedSearchIn", selectedSearchIn);
+        }
+
+        if (selectedSortFilter !== "All") {
+          queryParamsFilters.set("sort", selectedSortFilter);
+        }
+
+        const apiUrl = `${baseUrl}/?${queryParamsFilters.toString()}`;
+
+        const response = await axios.get(`${apiUrl}`);
+        setData(response.data);
+        setDomains(response.data.domains);
+        setTotalPages(response.data.totalPages);
+        setCurrentPages(response.data.currentPage);
+        console.log(response.data);
+        setLoading(false); // Set loading to false when data is successfully fetched
+      } catch (error) {
+        setError("Error fetching domains. Please try again.");
+        setLoading(false); // Set loading to false when data is successfully fetched
+      }
+    };
+
+    fetchData();
+    // eslint-disable-next-line
+  }, [searchHit, fetchFiltersData]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:4000/api/v1/categories"
+        );
+        setCategories(response.data);
+        console.log(response.data);
+        setCatLoading(false);
+      } catch (error) {
+        setError("Error fetching categories 123. Please try again.");
+        setCatLoading(false);
+      }
+    };
+
+    fetchCategories();
+    // eslint-disable-next-line
+  }, []);
+
   const [searchBar, setSearchBar] = useState();
+
+  const [maxPrice, setMaxPrice] = useState(0);
+  const [minPrice, setMinPrice] = useState(0);
+  const [minLength, setMinLength] = useState(0);
+  const [maxLength, setMaxLength] = useState(0);
+  const [clearAll, setClearAll] = useState(true);
+
+  const handleClearAllClick = () => {
+    setClearAll(false);
+  };
+  const [selectedTDL, setSelectedTDL] = useState();
+  const [selectedBrand, setSelectedBrand] = useState(null);
+  const [selectedSearchIn, setSelectedSearchIn] = useState("All");
+  const [selectedSearchType, setSelectedSearchType] = useState("Broad Match");
+  const [selectedSortFilter, setSelectedSortFilter] = useState("All");
+
+  useEffect(() => {
+    if (!clearAll) {
+      setMaxPrice(0);
+      setMinPrice(0);
+      setMinLength(0);
+      setMaxLength(0);
+      setSelectedSortFilter("All");
+      setSelectedSearchType("Board Match");
+      setSelectedSearchIn("All");
+      setSelectedBrand(null);
+      setSelectedTDL(null);
+      setClearAll(true);
+    }
+  }, [clearAll]);
+
+  const handleSave = () => {
+    setCurrentPages(1);
+    console.log(
+      maxPrice,
+      minPrice,
+      minLength,
+      maxLength,
+      selectedSearchType,
+      selectedSearchIn,
+      selectedTDL,
+      selectedBrand,
+      selectedSortFilter
+    );
+    setfiltersDrawer(false);
+    setFetchFiltersData(!fetchFiltersData);
+  };
 
   const handleSearchBar = (e) => {
     setSearchBar(e.target.value);
+    if (!e.target.value) {
+      setSearchHit(!searchHit);
+    }
+  };
+  const haldleSearch = () => {
+    console.log("->>>", searchBar);
+    setSearchHit(!searchHit);
   };
 
-  const [interventionLogDrawOpened, setInterventionLogDrawOpened] =
-    useState(false);
+  const [filtersDrawer, setfiltersDrawer] = useState(false);
+
+  const handleDomainClick = (id) => {
+    navigate(`/DomainDetails/${id}`);
+  };
 
   const handleFilterClose = () => {
-    setInterventionLogDrawOpened(false);
+    setfiltersDrawer(false);
   };
-
-  const [maxPrice, setMaxPrice] = useState();
-  const [minPrice, setMinPrice] = useState();
-  const [minLength, setMinLength] = useState();
-  const [maxLength, setMaxLength] = useState();
-  const [searchInFilter, setSearchInFilter] = useState();
-  const [searchTypeFilter, setSearchTypeFilter] = useState();
-  const [sortByFilter, setSortByFilter] = useState();
 
   const handleMaxPrice = (e) => {
     setMaxPrice(e.target.value);
@@ -64,19 +201,13 @@ function HomePage() {
     setMaxLength(e.target.value);
   };
 
-  const handleSearchInFilter = (e) => {
-    setSearchInFilter(e.target.value);
+  const handelMoreDomain = () => {
+    navigate("/AllDomains");
   };
 
-  const handleSearchTypeFilter = (e) => {
-    setSearchTypeFilter(e.target.value);
+  const handleCategoryClick = (id) => {
+    navigate(`/AllDomains/${id}`);
   };
-
-  const handleSortByFilter = (e) => {
-    setSortByFilter(e.target.value);
-  };
-
-  let id = "234nsg";
 
   return (
     <>
@@ -90,9 +221,12 @@ function HomePage() {
           </p>
         </S.TextHolder>
         <S.InputHolder>
-          <div className="py-2 pr-2 rounded">
-            <SearchIcon className="text-gray-400" />
-          </div>
+          <button
+            onClick={() => setfiltersDrawer(true)}
+            className=" bg-white py-1 px-2 rounded"
+          >
+            <img src={layer1} alt="" />
+          </button>
           <input
             type="text"
             placeholder="Search domain name"
@@ -100,13 +234,13 @@ function HomePage() {
             onChange={handleSearchBar}
             className=" border-none text-black bg-white outline-none lg:w-full "
           />
-          <button
-            onClick={() => setInterventionLogDrawOpened(true)}
-            className=" bg-white py-1 px-2 rounded"
+
+          <div
+            className="py-2 px-3 mx-[2px] rounded bg-bgOne cursor-pointer"
+            onClick={haldleSearch}
           >
-            <img src={layer1} alt="" />
-          </button>
-          {/*<Drawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />*/}
+            <SearchIcon className="text-white" />
+          </div>
         </S.InputHolder>
       </S.HeroBanner>
       <S.LeadHeading>
@@ -141,140 +275,104 @@ function HomePage() {
       </S.IconsSection>
       <S.Container>
         <S.Heading>Hot Domains</S.Heading>
-        <S.IconsHolder>
-          <Link to={`/DomainDetails/${id}`}>
-            <Card image={Ario} />
-          </Link>
-          <Link to={`/DomainDetails/${id}`}>
-            <Card image={GameMaker} />
-          </Link>
-          <Link to={`/DomainDetails/${id}`}>
-            <Card image={Zylo} />
-          </Link>
-          <Link to={`/DomainDetails/${id}`}>
-            <Card image={Credly} />
-          </Link>
-        </S.IconsHolder>
-        <S.IconsHolder className="pt-12">
-          <Link to={`/DomainDetails/${id}`}>
-            <Card image={Crimson} />
-          </Link>
-          <Link to={`/DomainDetails/${id}`}>
-            <Card image={QuantControl} />
-          </Link>
-          <Link to={`DomainDetails/${id}`}>
-            <Card image={Vita} />
-          </Link>
-          <Link to={`DomainDetails/${id}`}>
-            <Card image={AccuNatural} />
-          </Link>
-        </S.IconsHolder>
-        <S.ButtonHolder>
-          <button className="border border-black p-3 rounded-md font-semibold mt-8">
-            More Domains
-          </button>
-        </S.ButtonHolder>
+        {loading ? (
+          <div className="text-center">
+            <CircularProgress color="secondary" />{" "}
+          </div>
+        ) : domains.length > 0 && domains.length > 0 ? (
+          <>
+            <S.IconsHolder>
+              {domains.slice(0, 8).map((domain) => (
+                <div
+                  key={domain.id}
+                  onClick={() => handleDomainClick(domain._id)}
+                  className="cursor-pointer"
+                >
+                  <Card domainData={domain} />
+                </div>
+              ))}
+            </S.IconsHolder>
+            <S.ButtonHolder>
+              <button
+                className="border border-black p-3 rounded-md font-semibold mt-8"
+                onClick={handelMoreDomain}
+              >
+                More Domains
+              </button>
+            </S.ButtonHolder>
+          </>
+        ) : (
+          <div className="text-center"> No Domains To Show </div>
+        )}
+
         <S.Heading className="mt-10">Premium Domains</S.Heading>
-        <S.IconsHolder>
-          <Link to={`/DomainDetails/${id}`}>
-            <Card image={Ario} />
-          </Link>
-          <Link to={`/DomainDetails/${id}`}>
-            <Card image={GameMaker} />
-          </Link>
-          <Link to={`/DomainDetails/${id}`}>
-            <Card image={Zylo} />
-          </Link>
-          <Link to={`/DomainDetails/${id}`}>
-            <Card image={Credly} />
-          </Link>
-        </S.IconsHolder>
-        <S.IconsHolder className="pt-12">
-          <Link to={`/DomainDetails/${id}`}>
-            <Card image={Crimson} />
-          </Link>
-          <Link to={`/DomainDetails/${id}`}>
-            <Card image={QuantControl} />
-          </Link>
-          <Link to={`/DomainDetails/${id}`}>
-            <Card image={Vita} />
-          </Link>
-          <Link to={`/DomainDetails/${id}`}>
-            <Card image={AccuNatural} />
-          </Link>
-        </S.IconsHolder>
-        <S.ButtonHolder>
-          <button className="border border-black p-3 rounded-md font-semibold mt-8">
-            More Domains
-          </button>
-        </S.ButtonHolder>
-        <S.HeadingTwo>
-          Explore Business Titles Categorized by Style or field
-        </S.HeadingTwo>
-        <S.Subtext>
-          Discover the ideal business name to match your industry, field or
-          preferred
-        </S.Subtext>
-        <S.SubtextTwo>style</S.SubtextTwo>
-        <S.FieldsHolder>
-          <Button text="Sports" />
-          <Button text="Automotive" />
-          <Button text="NGO" />
-          <Button text="Kids" />
-        </S.FieldsHolder>
-        <S.FieldsHolder>
-          <Button text="Apparel" />
-          <Button text="Entertainment" />
-          <Button text="Management" />
-          <Button text="Finance" />
-        </S.FieldsHolder>
-        <S.FieldsHolder>
-          <Button text="Education" />
-          <Button text="Technology" />
-          <Button text="Health & Medical" />
-          <Button text="Environment" />
-        </S.FieldsHolder>
-        <S.FieldsHolder>
-          <Button text="Creative" />
-          <Button text="Games" />
-          <Button text="Furniture" />
-          <Button text="Industries" />
-        </S.FieldsHolder>
-        <S.FieldsHolder>
-          <Button text="Food" />
-          <Button text="Printing" />
-          <Button text="Travel & Local" />
-          <Button text="Software and Technology" />
-        </S.FieldsHolder>
-        <S.FieldsHolder>
-          <Button text="Short names" />
-          <Button text="Security and Compliance" />
-          <Button text="Search & Reference" />
-          <Button text="Mobile & Telecommunications" />
-        </S.FieldsHolder>
-        <S.FieldsHolder>
-          <Button text="Farming" />
-          <Button text="Luxury & Lifestyle" />
-          <Button text="News & Media" />
-          <Button text="Manufacturing & Logistics" />
-        </S.FieldsHolder>
-        <S.FieldsHolder>
-          <Button text="Space & Astronomy" />
-          <Button text="Retail & eCommerce" />
-          <Button text="Gym" />
-          <Button text="Events & Promotions" />
-        </S.FieldsHolder>
-        <S.FieldsHolder>
-          <Button text="Social Media" />
-          <Button text="Multimedia & Video" />
-          <Button text="Pets" />
-          <Button text="Arts & Designs" />
-        </S.FieldsHolder>
-        <S.ButtonHolderTwo>
-          <button className="p-3 border border-black rounded-md font-semibold mt-8">
-            Explore All Available Names
-          </button>
-        </S.ButtonHolderTwo>
+        {loading ? (
+          <div className="text-center">
+            <CircularProgress color="secondary" />{" "}
+          </div>
+        ) : domains.length > 0 && domains.length > 0 ? (
+          <>
+            <S.IconsHolder>
+              {domains.slice(0, 8).map((domain) => (
+                <div
+                  key={domain.id}
+                  onClick={() => handleDomainClick(domain._id)}
+                  className="cursor-pointer"
+                >
+                  <Card domainData={domain} />
+                </div>
+              ))}
+            </S.IconsHolder>
+            <S.ButtonHolder>
+              <button
+                className="border border-black p-3 rounded-md font-semibold mt-8"
+                onClick={handelMoreDomain}
+              >
+                More Premium Domains
+              </button>
+            </S.ButtonHolder>
+          </>
+        ) : (
+          <div className="text-center"> No Domains To Show </div>
+        )}
+
+        <div>
+          <S.HeadingTwo>
+            Explore Business Titles Categorized by Style or field
+          </S.HeadingTwo>
+          <S.Subtext>
+            Discover the ideal business name to match your industry, field or
+            preferred
+          </S.Subtext>
+          <S.SubtextTwo>style</S.SubtextTwo>
+          <S.FieldsHolder>
+            {catLoading ? (
+              <div className="text-center">
+                <CircularProgress color="secondary" />{" "}
+              </div>
+            ) : categories ? (
+              categories.map((category) => (
+                <div key={category.id}>
+                  <Button
+                    text={category.name}
+                    handleCategoryClick={handleCategoryClick}
+                    id={category._id}
+                  />
+                </div>
+              ))
+            ) : (
+              <div className="text-center"> No Categories To Show </div>
+            )}
+          </S.FieldsHolder>
+          <S.ButtonHolderTwo>
+            <button
+              className="p-3 border border-black rounded-md font-semibold mt-8"
+              onClick={handelMoreDomain}
+            >
+              Explore All Available Names
+            </button>
+          </S.ButtonHolderTwo>
+        </div>
 
         <div className="my-10 lg:max-w-[600px] mx-auto">
           <div className="relative">
@@ -293,9 +391,9 @@ function HomePage() {
               <div className="rounded-lg shadow-lg p-4">
                 <div className="flex items-center gap-4">
                   <div>
-                    <img src={Profile} alt="" />
+                    <img src={ProfileImage} alt="" />
                   </div>
-                  <div className="flex">
+                  <div className="flex space-x-1">
                     <img src={star} alt="" />
                     <img src={star} alt="" />
                     <img src={star} alt="" />
@@ -318,12 +416,12 @@ function HomePage() {
             </div>
             <div>
               {/* Card-2 */}
-              <div className="rounded-lg shadow-lg p-4">
+              <div className="rounded-lg shadow-lg p-4 w-full lg:w-[380px] lg:mt-0 mt-4">
                 <div className="flex items-center gap-4">
                   <div>
-                    <img src={Profile} alt="" />
+                    <img src={ProfileImageOne} alt="" />
                   </div>
-                  <div className="flex">
+                  <div className="flex space-x-1">
                     <img src={star} alt="" />
                     <img src={star} alt="" />
                     <img src={star} alt="" />
@@ -339,17 +437,17 @@ function HomePage() {
                       Aperiam modi dolor quaerat ipsum totam at corrupti unde
                       nam omnis similique nemo, libero voluptas beatae ullam?
                     </p>
-                    <p className="text-base font-bold mt-2">Floyd Miles</p>
+                    <p className="text-base font-bold mt-2">Jane Coope</p>
                   </div>
                 </div>
               </div>
               {/* Card-2 */}
-              <div className="rounded-lg shadow-lg p-4">
+              <div className="rounded-lg shadow-lg p-4 lg:mt-6 mt-4 w-full lg:w-[300px]">
                 <div className="flex items-center gap-4">
                   <div>
-                    <img src={Profile} alt="" />
+                    <img src={ProfileImageTwo} alt="" />
                   </div>
-                  <div className="flex">
+                  <div className="flex space-x-1">
                     <img src={star} alt="" />
                     <img src={star} alt="" />
                     <img src={star} alt="" />
@@ -362,10 +460,9 @@ function HomePage() {
                   <div>
                     <p>
                       Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Aperiam modi dolor quaerat ipsum totam at corrupti unde
-                      nam omnis similique nemo, libero voluptas beatae ullam?
+                      Aperiam modi
                     </p>
-                    <p className="text-base font-bold mt-2">Floyd Miles</p>
+                    <p className="text-base font-bold mt-2">Kristin Watson</p>
                   </div>
                 </div>
               </div>
@@ -374,28 +471,38 @@ function HomePage() {
           {/* Cards */}
           <Drawer
             anchor="right"
-            open={interventionLogDrawOpened}
+            open={filtersDrawer}
             onClose={handleFilterClose}
             style={{ zIndex: 1300 }}
           >
-            <div className={" w-[300px] overflow-auto  scrollbar-hide "}>
+            <div
+              className={" w-full md:w-[350px] overflow-auto  scrollbar-hide "}
+            >
               <div className="">
                 <Filters
                   maxPrice={maxPrice}
                   minPrice={minPrice}
                   minLength={minLength}
                   maxLength={maxLength}
-                  searchInFilter={searchInFilter}
-                  searchTypeFilter={searchTypeFilter}
-                  sortByFilter={sortByFilter}
                   handleMaxPrice={handleMaxPrice}
                   handleMinPrice={handleMinPrice}
                   handleMinLength={handleMinLength}
                   handleMaxLength={handleMaxLength}
-                  handleSearchInFilter={handleSearchInFilter}
-                  handleSearchTypeFilter={handleSearchTypeFilter}
-                  handleSortByFilter={handleSortByFilter}
                   onClose={handleFilterClose}
+                  handleClearAllClick={handleClearAllClick}
+                  handleSave={handleSave}
+                  selectedTDL={selectedTDL}
+                  setSelectedTDL={setSelectedTDL}
+                  setSelectedBrand={setSelectedBrand}
+                  selectedBrand={selectedBrand}
+                  selectedSearchIn={selectedSearchIn}
+                  setSelectedSearchIn={setSelectedSearchIn}
+                  selectedSearchType={selectedSearchType}
+                  setSelectedSearchType={setSelectedSearchType}
+                  selectedSortFilter={selectedSortFilter}
+                  setSelectedSortFilter={setSelectedSortFilter}
+                  setClearAll={setClearAll}
+                  clearAll={clearAll}
                 />
               </div>
             </div>

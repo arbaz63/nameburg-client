@@ -10,8 +10,8 @@ font-normal text-[28px] lg:text-5xl font-Montserrat
 `;
 
 export const InputHolder = tw.div`
-inline-flex items-center border border-gray-300 rounded-sm
- p-[1px] pl-5 bg-white lg:w-[520px] h-[36px] py-2 pl-2 mt-10
+inline-flex items-center border border-gray-300 rounded-lg
+  bg-white lg:w-[520px] h-[46px] mt-10
 `;
 export const LeadHeading = tw.div`
 font-montserrat font-extrabold text-3xl lg:text-4xl text-black text-center pt-10

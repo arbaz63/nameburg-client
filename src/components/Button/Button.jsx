@@ -1,9 +1,14 @@
 import React from "react";
 
-function Button({ text }) {
+function Button(props) {
   return (
     <div>
-      <button className=" w-72 h-11 shadow-md p-3 rounded-xl ">{text}</button>
+      <button
+        className=" w-72 h-13 border p-3 rounded-3xl "
+        onClick={() => props.handleCategoryClick(props.id)}
+      >
+        {props.text}
+      </button>
     </div>
   );
 }
