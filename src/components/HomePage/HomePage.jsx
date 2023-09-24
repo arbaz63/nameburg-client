@@ -279,7 +279,7 @@ function HomePage() {
           <div className="text-center">
             <CircularProgress color="secondary" />{" "}
           </div>
-        ) : domains.length > 0 && domains.length > 0 ? (
+        ) : domains && domains.length > 0 ? (
           <>
             <S.IconsHolder>
               {domains.slice(0, 8).map((domain) => (
@@ -310,7 +310,7 @@ function HomePage() {
           <div className="text-center">
             <CircularProgress color="secondary" />{" "}
           </div>
-        ) : domains.length > 0 && domains.length > 0 ? (
+        ) : domains && domains.length > 0 ? (
           <>
             <S.IconsHolder>
               {domains.slice(0, 8).map((domain) => (
