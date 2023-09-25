@@ -20,7 +20,7 @@ import { useAuth } from "../../AuthContext";
 
 function Navbar() {
   const navigate = useNavigate();
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, isAdmin } = useAuth();
 
   const [interventionLogDrawOpened, setInterventionLogDrawOpened] =
     useState(false);
@@ -248,6 +248,14 @@ function Navbar() {
                       </div>
                     </div>
                     <hr />
+                    {isAdmin && (
+                      <div
+                        className="mt-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
+                        onClick={() => navigate("/AdminPannel-AllDomains")}
+                      >
+                        Admin Panal
+                      </div>
+                    )}
                   </>
                 )}
                 {menuItems.map((item, index) => (
@@ -373,6 +381,16 @@ function Navbar() {
                     </div>
 
                     <hr></hr>
+
+                    {isAdmin && (
+                      <div
+                        className="mt-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
+                        onClick={() => navigate("/AdminPannel-AllDomains")}
+                      >
+                        Admin Panal
+                      </div>
+                    )}
+
                     <div
                       className="mt-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
                       onClick={handleLogout}

@@ -10,6 +10,7 @@ import Chip from "@mui/material/Chip";
 import createIcon from "../../Images/Add.svg";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function AdminPannelEditDomain() {
   const { id } = useParams();
@@ -20,6 +21,11 @@ function AdminPannelEditDomain() {
   const maxLength = 500;
   const [Dimage, setImage] = useState(gallery);
   const [imageFile, setImageFile] = useState();
+  const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [preLoading, setPreLoading] = useState(true);
 
   const fileInputRef = useRef();
 
@@ -63,7 +69,9 @@ function AdminPannelEditDomain() {
   const accessToken = localStorage.getItem("accessToken");
 
   const handleSubmit = (e) => {
+    setIsSubmitting(true);
     e.preventDefault();
+    setLoading(true);
 
     console.log(
       domainName,
@@ -94,12 +102,29 @@ function AdminPannelEditDomain() {
         },
       })
       .then((response) => {
-        console.log("Domain successfully created:", response.data);
+        console.log("Domain successfully edited:", response.data);
+        setMessage("Domain successfully edited");
+        setIsSubmitting(false);
+        setLoading(false);
       })
       .catch((error) => {
-        console.error("Error creating domain:", error);
+        console.error("Error editing domain:", error);
+        setErrorMessage(`Error editing domain, Please Try again`);
+        setIsSubmitting(false);
+        setLoading(false);
       });
   };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setMessage("");
+      setErrorMessage("");
+      setIsSubmitting(false);
+    }, 6000);
+
+    // Clear the timeout when the component unmounts to avoid memory leaks
+    return () => clearTimeout(timeout);
+  }, [message, errorMessage]);
 
   const [categories, setCategories] = useState();
 
@@ -122,6 +147,7 @@ function AdminPannelEditDomain() {
 
   useEffect(() => {
     const getData = async () => {
+      setPreLoading(true);
       try {
         const response = await axios.get(
           `http://localhost:4000/api/v1/domains/${id}`
@@ -135,8 +161,10 @@ function AdminPannelEditDomain() {
         setImage(response.data.image ? response.data.image : gallery);
         setSelectedCategory(response.data.category._id);
         console.log(response.data, response.data.category.name);
+        setPreLoading(false);
       } catch (error) {
         setError("Error fetching domain details. Please try again.");
+        setPreLoading(false);
       }
     };
 
@@ -166,22 +194,53 @@ function AdminPannelEditDomain() {
         <AdminPannelNavbar selectedItem={"createDomain"} />
       </div>
       <div className="w-[79vw] ml-[21vw]">
-        <NavbarHeader />
+        <NavbarHeader purchasePage={true} />
         <div className="bg-adminBg pl-4 pr-20 pb-10">
+          {preLoading && (
+            <div className="text-center flex p-5 items-center space-x-5 justify-center w-full">
+              <CircularProgress color="secondary" />
+              <p className="text-purple-600	 w-[100px] text-center">
+                Loading Data
+              </p>
+            </div>
+          )}
+
           <div className="  flex flex-row justify-between">
             <div className="text-sm pt-5 text-black font-montserrat ">
-              Create new domain in seven simple steps:
+              Edit domain in seven simple steps:
             </div>
-            <div className="pt-5">
+            {/* <div className="pt-5">
               <button
                 className="bg-bgOne py-3 px-4 rounded-md font-Montserrat text-xs text-white"
                 onClick={handleSubmit}
               >
                 Publish Domain
               </button>
+            </div> */}
+            <div className="pt-5">
+              <button
+                className="bg-bgOne gap-2 flex flex-row items-center justify-center py-2 px-4 rounded-md text-white font-semibold font-montserrat "
+                onClick={handleSubmit}
+              >
+                {isSubmitting ? "Creating Domain..." : "Publish Domain"}
+              </button>
             </div>
           </div>
-          <div className="font-montserrat text-xl pl-4">1- Domain Name</div>
+
+          {loading && (
+            <div className="text-center">
+              <CircularProgress color="secondary" />{" "}
+            </div>
+          )}
+          {message && (
+            <p className="text-green-500 w-full text-center">{message}</p>
+          )}
+          {errorMessage && (
+            <p className="text-red-500 w-full text-center">{errorMessage}</p>
+          )}
+          <div className="font-montserrat text-xl pl-4">
+            1- Edit Domain Name
+          </div>
           <div className="w-[983px] bg-white h-[70px] mt-4 rounded-md ">
             <input
               type="text"
@@ -191,11 +250,11 @@ function AdminPannelEditDomain() {
               className="pl-4 bg-gray-100 text-black ml-4 py-2 rounded-md mt-4 w-[400px] border border-gray-100"
             />
           </div>
-          <div className="font-montserrat text-xl pl-4 mt-4">2- Set Piece</div>
+          <div className="font-montserrat text-xl pl-4 mt-4">2- Edit Price</div>
           <div className="w-[983px] bg-white h-[70px] mt-2  rounded-md  ">
             <div className="flex flex-row items-center px-4 gap-10 ">
               <div className="w-1/2 flex flex-row gap-3 items-center pt-3">
-                <div className="text-black text-sm ">Max Price: </div>
+                <div className="text-black text-sm ">Edit Max Price: </div>
                 <input
                   type="number"
                   placeholder="Maximum price"
@@ -205,7 +264,7 @@ function AdminPannelEditDomain() {
                 />
               </div>
               <div className="w-1/2 flex flex-row gap-3 items-center pt-3">
-                <div className="text-black text-sm ">Min Price: </div>
+                <div className="text-black text-sm ">Edit Min Price: </div>
                 <input
                   type="number"
                   placeholder="Minimum price"
@@ -228,7 +287,7 @@ function AdminPannelEditDomain() {
           </div>
           <div className="h-fit">
             <div className="font-montserrat text-xl pl-4 mt-4">
-              5- Add Keywords
+              5- Add/Edit Keywords
             </div>
             <div className="flex flex-row flex-wrap gap-4 w-[983px] bg-white py-4 px-2 mt-4 rounded-md items-center">
               {keywords.map((keyword, index) => (
@@ -272,7 +331,7 @@ function AdminPannelEditDomain() {
             </div>
           </div>
           <div className="font-montserrat text-xl pl-4 mt-4">
-            6- Upload image{" "}
+            6- Upload image
           </div>
           <div className="w-[983px] bg-white mt-4 rounded-md p-3">
             <div className=" flex flex-col gap-8 justify-center items-center border border-dashed  border-gray-300  w-[250px] mr-3">
@@ -298,7 +357,7 @@ function AdminPannelEditDomain() {
             </div>
           </div>
           <div className="font-montserrat text-xl pl-4 mt-4">
-            7- Add Description
+            7- Edit Description
           </div>
           <div className="w-[983px] bg-white mt-4 rounded-md">
             <div className="relative">

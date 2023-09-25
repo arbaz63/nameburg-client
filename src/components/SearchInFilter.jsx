@@ -1,18 +1,41 @@
-import { useState } from "react";
+// import { useState } from "react";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 function SearchInFilter(props) {
-  const countries = [
-    "Dummy Data 1",
-    "Dummy Data 2",
-    "Dummy Data 3",
-    "Dummy Data 4",
-  ];
+  const [categories, setCategories] = useState();
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:4000/api/v1/categories"
+        );
+        setCategories(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.log("Error fetching categories 123. Please try again.");
+      }
+    };
+
+    fetchCategories();
+    // eslint-disable-next-line
+  }, []);
 
   const handleSearchInChange = (event) => {
-    props.setSelectedSearchIn(event.target.value);
+    props.setcategory(event.target.value);
+  };
+
+  const getCategoryNameById = (categoryId) => {
+    if (props.category !== "All") {
+      const category =
+        categories && categories.find((cat) => cat._id === categoryId);
+      return category ? category.name : props.category;
+    }
+    return props.category;
   };
 
   return (
@@ -20,16 +43,22 @@ function SearchInFilter(props) {
       <div className="pt-2 w-full">
         <FormControl fullWidth variant="outlined">
           <Select
-            value={props.selectedSearchIn}
+            value={props.category}
             onChange={handleSearchInChange}
-            className="mt-2 h-[40px]"
-            renderValue={(selected) => <div>{selected}</div>}
+            className="mt-2 max-h-[40px] overflow-scroll"
+            renderValue={(selected) => (
+              <div>{getCategoryNameById(selected)}</div>
+            )}
           >
-            {countries.map((country, index) => (
-              <MenuItem key={index} value={country}>
-                {country}
-              </MenuItem>
-            ))}
+            {categories &&
+              categories.map(
+                (category) =>
+                  category._id && (
+                    <MenuItem key={category._id} value={category._id}>
+                      {category.name && category.name}
+                    </MenuItem>
+                  )
+              )}
           </Select>
         </FormControl>
       </div>

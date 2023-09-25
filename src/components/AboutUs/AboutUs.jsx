@@ -7,9 +7,14 @@ import HandShake from "../../Images/handshake.svg";
 import Star from "../../Images/starSparcle.svg";
 import Secured from "../../Images/secureTickSmall.svg";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function AboutUs() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleGetDomainClick = () => {
     navigate("/");

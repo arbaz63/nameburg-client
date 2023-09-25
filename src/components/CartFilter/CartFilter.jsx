@@ -46,9 +46,15 @@ function CartFilter(props) {
           <div className="text-base font-medium font-Montserrat ">Cart</div>
         </div>
       </div>
-      <div className="text-black text-base font-bold font-Montserrat mt-4">
-        Domain Names :
-      </div>
+      {cart.length > 0 ? (
+        <div className="text-black text-base font-bold font-Montserrat mt-4">
+          Domain Names :
+        </div>
+      ) : (
+        <div className="text-black text-base font-bold font-Montserrat mt-4">
+          No Domain Added In Cart
+        </div>
+      )}
       {cart.map((item, index) => (
         <div key={index} className="pl-2">
           <div className=" px-2 flex justify-between items-center rounded-md mt-4 bg-white h-10 text-sm font-Montserrat ">

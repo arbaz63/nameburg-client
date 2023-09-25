@@ -19,10 +19,12 @@ import AdminPannelEditDomain from "./components/AdminPannel/AdminPannel-EditDoma
 import { AllPurchases } from "./components/AllDomains/AllPurchases";
 import ProtectedRoute from "./ProtectedRoutes";
 import ProtectedRouteUser from "./ProtectedRoutesUser";
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
+import NotFound from "./NotFound";
+import AllDomainsPremium from "./components/AllDomains/AllDomainsPremium";
+import AllCategories from "./components/AllDomains/AllCategories";
 
 function App() {
-
   return (
     <Routes>
       <Route path="/" element={<Dashboard />} />
@@ -32,6 +34,8 @@ function App() {
       <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
       <Route path="/ContactUs" element={<ContactUs />} />
       <Route path="/AllDomains" element={<AllDomains />} />
+      <Route path="/AllDomainsPremium" element={<AllDomainsPremium />} />
+      <Route path="/AllCategories" element={<AllCategories />} />
       <Route path="/AllDomains/:id" element={<AllDomainsId />} />
       <Route path="/AboutUs" element={<AboutUs />} />
 
@@ -102,6 +106,7 @@ function App() {
       <Route element={<ProtectedRoute />}>
         <Route element={<AllPurchases />} path="/AllPurchases" />
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

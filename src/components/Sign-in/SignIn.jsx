@@ -45,11 +45,15 @@ function SignIn() {
 
     return true;
   };
-// eslint-disable-next-line
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // eslint-disable-next-line
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsSubmitting(true);
     if (!validateFields()) {
+      setIsSubmitting(false);
       return;
     }
 
@@ -69,7 +73,6 @@ function SignIn() {
       localStorage.removeItem("email");
       localStorage.removeItem("country");
 
-
       localStorage.setItem("userId", response.data.id);
       localStorage.setItem("accessToken", response.data.accessToken);
       localStorage.setItem("role", response.data.role);
@@ -84,6 +87,7 @@ function SignIn() {
         email: "",
         password: "",
       });
+      setIsSubmitting(false);
 
       if (response.data.role === "user") {
         navigate("/");
@@ -91,6 +95,7 @@ function SignIn() {
         navigate("/AdminPannel-AllDomains");
       }
     } catch (error) {
+      setIsSubmitting(false);
       setError("Error signing in. Please try again.");
     }
   };
@@ -131,7 +136,7 @@ function SignIn() {
           onClick={handleSubmit}
           className="ml-[25px] mr-[25px] lg:ml-[70px] mt-2 lg:mr-[70px] h-[40px] bg-bgOne text-white rounded-lg"
         >
-          Login
+          {isSubmitting ? "Signing In..." : "Login"}
         </button>
         <S.lastPart>
           Don't have an account?{" "}

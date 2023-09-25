@@ -9,6 +9,7 @@ import Chip from "@mui/material/Chip";
 import createIcon from "../../Images/Add.svg";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function AdminPannel() {
   const [domainName, setDomainName] = useState();
@@ -56,12 +57,18 @@ function AdminPannel() {
 
   const [, setError] = useState();
   const [selectedCategory, setSelectedCategory] = useState();
-
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [keywords, setKeywords] = React.useState([]);
+  const [newKeyword, setNewKeyword] = React.useState("");
+  const [showKeywordInput, setShowKeywordInput] = React.useState(false);
   const accessToken = localStorage.getItem("accessToken");
 
   const handleSubmit = (e) => {
+    setIsSubmitting(true);
     e.preventDefault();
-
+    setLoading(true);
     const formData = {
       name: domainName,
       maxPrice: max,
@@ -80,10 +87,24 @@ function AdminPannel() {
         },
       })
       .then((response) => {
+        setLoading(false);
         console.log("Domain successfully created:", response.data);
+        setDomainName("");
+        setMax(0);
+        setMini(0);
+        setText("");
+        setImage(gallery);
+        setImageFile(null);
+        setSelectedCategory(null);
+        setKeywords([]);
+        setMessage("Domain successfully created");
+        setIsSubmitting(false);
       })
       .catch((error) => {
+        setLoading(false);
+        setIsSubmitting(false);
         console.error("Error creating domain:", error);
+        setErrorMessage(`Error creating domain, Please Try again`);
       });
   };
 
@@ -106,10 +127,6 @@ function AdminPannel() {
     // eslint-disable-next-line
   }, []);
 
-  const [keywords, setKeywords] = React.useState([]);
-  const [newKeyword, setNewKeyword] = React.useState("");
-  const [showKeywordInput, setShowKeywordInput] = React.useState(false);
-
   const handleAddKeyword = () => {
     if (newKeyword.trim() !== "") {
       setKeywords([...keywords, newKeyword]);
@@ -122,13 +139,26 @@ function AdminPannel() {
     setKeywords(updatedKeywords);
   };
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setMessage("");
+      setErrorMessage("");
+      setIsSubmitting(false);
+    }, 6000);
+
+    // Clear the timeout when the component unmounts to avoid memory leaks
+    return () => clearTimeout(timeout);
+  }, [message, errorMessage]);
+
   return (
     <>
       <div className="fixed left-0 top-0 w-[21vw] h-[100vh]">
         <AdminPannelNavbar selectedItem={"createDomain"} />
       </div>
       <div className="w-[79vw] ml-[21vw]">
-        <NavbarHeader />
+        <NavbarHeader purchasePage={true} />
         <div className="bg-adminBg pl-4 pr-20 pb-10">
           <div className="  flex flex-row justify-between">
             <div className="text-sm pt-5 text-black font-montserrat ">
@@ -139,10 +169,21 @@ function AdminPannel() {
                 className="bg-bgOne gap-2 flex flex-row items-center justify-center py-2 px-4 rounded-md text-white font-semibold font-montserrat "
                 onClick={handleSubmit}
               >
-                Publish Domain
+                {isSubmitting ? "Creating Domain..." : "Publish Domain"}
               </button>
             </div>
           </div>
+          {loading && (
+            <div className="text-center">
+              <CircularProgress color="secondary" />{" "}
+            </div>
+          )}
+          {message && (
+            <p className="text-green-500 w-full text-center">{message}</p>
+          )}
+          {errorMessage && (
+            <p className="text-red-500 w-full text-center">{errorMessage}</p>
+          )}
           <div className="font-montserrat text-xl pl-4">1- Domain Name</div>
           <div className="w-[983px] bg-white h-[70px] mt-4 rounded-md ">
             <input

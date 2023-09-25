@@ -34,13 +34,18 @@ function AllDomains() {
   const [maxLength, setMaxLength] = useState(0);
   const [selectedTDL, setSelectedTDL] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState(null);
-  const [selectedSearchIn, setSelectedSearchIn] = useState("All");
+  const [category, setcategory] = useState("All");
   const [selectedSearchType, setSelectedSearchType] = useState("Broad Match");
   const [selectedSortFilter, setSelectedSortFilter] = useState("All");
 
   const [searchBar, setSearchBar] = useState();
   const [searchHit, setSearchHit] = useState(false);
+  const [searchIn, setSearchIn] = useState(false);
   const [fetchFiltersData, setFetchFiltersData] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,6 +55,7 @@ function AllDomains() {
         const queryParamsFilters = new URLSearchParams({
           page: currentPages,
           limit: 32,
+          sold: false,
         });
 
         if (searchBar) {
@@ -72,9 +78,13 @@ function AllDomains() {
           queryParamsFilters.set("maxLength", maxLength);
         }
 
-        if (selectedSearchIn !== "All") {
-          queryParamsFilters.set("selectedSearchIn", selectedSearchIn);
+        if (category !== "All") {
+          queryParamsFilters.set("category", category);
         }
+
+        // if (category !== "All") {
+        //   queryParamsFilters.set("category", category);
+        // }
 
         if (selectedSortFilter !== "All") {
           queryParamsFilters.set("sort", selectedSortFilter);
@@ -103,6 +113,8 @@ function AllDomains() {
     setSearchBar(e.target.value);
     if (!e.target.value) {
       setSearchHit(!searchHit);
+      setLoading(true);
+      setCurrentPages(1);
     }
   };
 
@@ -137,6 +149,8 @@ function AllDomains() {
   const haldleSearch = () => {
     console.log("->>>", searchBar);
     setSearchHit(!searchHit);
+    setLoading(true);
+    setCurrentPages(1);
   };
 
   const handleSave = () => {
@@ -153,7 +167,7 @@ function AllDomains() {
       setMaxLength(0);
       setSelectedSortFilter("All");
       setSelectedSearchType("Board Match");
-      setSelectedSearchIn("All");
+      setcategory("All");
       setSelectedBrand(null);
       setSelectedTDL(null);
       setClearAll(true);
@@ -283,8 +297,8 @@ function AllDomains() {
                 setSelectedTDL={setSelectedTDL}
                 setSelectedBrand={setSelectedBrand}
                 selectedBrand={selectedBrand}
-                selectedSearchIn={selectedSearchIn}
-                setSelectedSearchIn={setSelectedSearchIn}
+                category={category}
+                setcategory={setcategory}
                 selectedSearchType={selectedSearchType}
                 setSelectedSearchType={setSelectedSearchType}
                 selectedSortFilter={selectedSortFilter}

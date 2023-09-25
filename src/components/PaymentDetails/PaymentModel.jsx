@@ -16,13 +16,12 @@ export const PaymentModel = (props) => {
 
   return (
     <div className="w-full h-full">
-      <div
+      {/* <div
         className="flex justify-end mx-3 pt-2 cursor-pointer"
         onClick={props.onClose}
       >
-        {/*  eslint-disable-next-line */}
         <img src={ClosedFilters} />
-      </div>
+      </div> */}
       {props.success ? (
         <div className="flex flex-col pt-5 items-center w-full">
           <div className="mb-8">

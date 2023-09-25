@@ -1,4 +1,10 @@
+import { useEffect } from "react";
+
 function TermsAndConditions() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className=" px-7 lg:px-0 lg:mx-[65px] my-[35px] w-full lg:w-[60%] ">
       <div className="text-3xl font-extrabold text-black font-montserrat ">
