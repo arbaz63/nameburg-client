@@ -48,7 +48,7 @@ function AdminPannelViewDomains() {
         <AdminPannelNavbar />
       </div>
       <div className="w-[78vw] ml-[21vw] overflow-x-hidden ">
-        <NavbarHeader />
+        <NavbarHeader purchasePage={true} />
         <main className=" text-white bg-gray-50 ">
           <>
             {data && (

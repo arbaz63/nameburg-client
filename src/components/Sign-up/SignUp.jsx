@@ -7,6 +7,7 @@ import CountrySelector from "../CountrySelector";
 import axios from "axios";
 
 function SignUp() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -70,8 +71,9 @@ function SignUp() {
   // eslint-disable-next-line
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsSubmitting(true);
     if (!validateFields()) {
+      setIsSubmitting(false);
       return;
     }
 
@@ -90,11 +92,12 @@ function SignUp() {
         country: "Select Country",
         termsAccepted: false,
       });
-
+      setIsSubmitting(false);
       navigate("/Sign-in");
     } catch (error) {
       console.error("Error signing up:", error);
       setError("Error signing up. Please try again.");
+      setIsSubmitting(false);
     }
   };
 
@@ -111,7 +114,7 @@ function SignUp() {
           type="text"
           name="fullName"
           value={formData.fullName}
-          placeholder="Your fullName"
+          placeholder="Your Full Name"
           onChange={handleChange}
           className="ml-[25px] mr-[25px] lg:ml-[70px] lg:mr-[70px] mt-2 h-[40px] "
         />
@@ -170,7 +173,7 @@ function SignUp() {
             onClick={handleSubmit}
             className=" w-full mt-2 mx-[30px] lg:mx-[70px] h-[40px] bg-bgOne text-white rounded-lg"
           >
-            Sign Up
+            {isSubmitting ? "Signing Up..." : "Sign Up"}
           </button>
         </S.constainer>
 

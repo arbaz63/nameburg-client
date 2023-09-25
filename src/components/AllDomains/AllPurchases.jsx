@@ -4,36 +4,55 @@ import pdf from "../../Images/pdf.svg";
 import jsPDF from "jspdf";
 import AdminPannelNavbar from "../AdminPannelNavbar/AdminPannelNavbar";
 import NavbarHeader from "../AdminPannel-TopNav/NavbarHeader";
+import Pagination from "@mui/material/Pagination";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const AllPurchases = () => {
   const accessToken = localStorage.getItem("accessToken");
   const buyerId = localStorage.getItem("userId");
-
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPages, setCurrentPages] = useState(1);
   const [purchases, setPurchases] = useState();
+  const [loading, setLoading] = useState(true);
+
+  const handlePageClick = (pageNumber) => {
+    setCurrentPages(pageNumber);
+  };
 
   useEffect(() => {
     console.log(buyerId);
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const responseTwo = await axios.get(
-          `http://localhost:4000/api/v1/purchases`,
-          {
-            headers: {
-              Authorization: `${accessToken}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        console.log(responseTwo.data.purchases);
+        const baseUrl = "http://localhost:4000/api/v1/purchases";
+
+        const queryParamsFilters = new URLSearchParams({
+          page: currentPages,
+          limit: 10,
+        });
+
+        const apiUrl = `${baseUrl}/?${queryParamsFilters.toString()}`;
+        const responseTwo = await axios.get(`${apiUrl}`, {
+          headers: {
+            Authorization: `${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        console.log(responseTwo.data);
         setPurchases(responseTwo.data.purchases);
+        setTotalPages(responseTwo.data.totalPages);
+        setCurrentPages(responseTwo.data.currentPage);
+        setLoading(false);
       } catch (error) {
+        setLoading(false);
         console.error("Error:", error);
       }
     };
 
     fetchData();
     // eslint-disable-next-line
-  }, []);
+  }, [currentPages]);
 
   function formatDate(inputDate) {
     const date = new Date(inputDate);
@@ -119,7 +138,7 @@ export const AllPurchases = () => {
         <AdminPannelNavbar selectedItem={"AllPurchases"} />
       </div>
       <div className="w-[79vw] ml-[21vw]">
-        <NavbarHeader />
+        <NavbarHeader purchasePage={true} />
 
         <div className="text-3xl text-black flex justify-center my-5 font-extrabold pt-10 font-Montserrat">
           All Purchases
@@ -141,7 +160,12 @@ export const AllPurchases = () => {
             <hr className="w-full" />
 
             <div className="space-y-1">
-              {purchases &&
+              {loading ? (
+                <div className="text-center p-5">
+                  <CircularProgress color="secondary" />{" "}
+                </div>
+              ) : (
+                purchases &&
                 purchases.map((purchase) => (
                   <div
                     key={purchase._id}
@@ -156,8 +180,9 @@ export const AllPurchases = () => {
                               alt="Img"
                               className="shadow-lg mr-1 rounded-md w-[50px]"
                             />
-                            <div>{domain.name}</div>{" "}
+                            <div className="truncate w-20">{domain.name}</div>
                           </div>
+
                           <div className="px-6 py-4 flex justify-center items-center text-center">
                             {formatDate(purchase.purchaseDate)}
                           </div>
@@ -188,10 +213,23 @@ export const AllPurchases = () => {
                       </>
                     ))}
                   </div>
-                ))}
+                ))
+              )}
             </div>
           </div>
         </div>
+        {totalPages > 0 && (
+          <div className="flex justify-center pt-5 pb-10">
+            <Pagination
+              count={totalPages}
+              variant="outlined"
+              shape="rounded"
+              color="secondary"
+              page={currentPages}
+              onChange={(event, pageNumber) => handlePageClick(pageNumber)}
+            />
+          </div>
+        )}
       </div>
       {/* </div> */}
     </>

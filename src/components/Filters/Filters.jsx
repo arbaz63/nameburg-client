@@ -2,6 +2,8 @@ import CloseFilters from "../../Images/blackCross.svg";
 import SearchInFilter from "../SearchInFilter";
 import SortByFilter from "../SortByFilters";
 import OutlinedInput from "@mui/material/OutlinedInput";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 function Filters(props) {
   const handleFilterClose = () => {
@@ -26,13 +28,13 @@ function Filters(props) {
           Clear All
         </div>
       </div>
-      {/* <div className=" text-black text-left font-Montserrat text-base font-bold pt-4">
-        Search In: */}
-      {/* </div>
+      <div className=" text-black text-left font-Montserrat text-base font-bold pt-4">
+        Search In:
+      </div>
       <SearchInFilter
-        selectedSearchIn={props.selectedSearchIn}
-        setSelectedSearchIn={props.setSelectedSearchIn}
-      /> */}
+        category={props.category}
+        setcategory={props.setcategory}
+      />
       <div className="flex flex-row gap-5">
         <div>
           <div className=" text-black text-left font-Montserrat text-base font-bold pt-4">

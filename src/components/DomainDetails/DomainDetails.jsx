@@ -45,7 +45,7 @@ function DomainDetails() {
       }
       navigate("/PaymentDetails");
     } else {
-      navigate('/Sign-in')
+      navigate("/Sign-in");
     }
   };
 
@@ -69,6 +69,10 @@ function DomainDetails() {
 
   const [data, setData] = useState();
   const [, setError] = useState();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -166,7 +170,7 @@ function DomainDetails() {
                         {data.name}
                       </a>
                     </div>
-                    <div className="invisible lg:visible text-white">
+                    <div className=" text-white">
                       <p className="font-semibold text-sm">
                         ${data.currentPrice}
                       </p>
@@ -177,12 +181,12 @@ function DomainDetails() {
                   </div>
                   <div className="">
                     <img
-                      src={data.image}
+                      src={data.bigImage}
                       alt=""
-                      className="lg:w-full lg:h-full"
+                      className="lg:w-full min-h-[250px] lg:h-full"
                     />
                   </div>
-                  <div className="hidden lg:flex justify-between items-center bg-bgOne py-2 px-3 rounded-b-lg text-white">
+                  <div className="flex justify-between items-center bg-bgOne py-2 px-3 rounded-b-lg text-white">
                     <div>
                       <p className="relative font-semibold text-sm after:content-[''] after:absolute after:top-1/2 after:left-0 after:w-3/4 after:h-[1.5px] after:bg-[#ff0808] after:rotate-6">
                         ${data.maxPrice}
@@ -191,10 +195,15 @@ function DomainDetails() {
                         Actual Price
                       </p>
                     </div>
-                    <div>
-                      <p className="font-semibold text-sm">-49%</p>
-                      <p className="italic text-[10px] opacity-90">OFF</p>
-                    </div>
+
+                    {data.discount !== 0 && (
+                      <div>
+                        <p className="font-semibold text-sm">
+                          {Math.floor(data.discount)}%
+                        </p>
+                        <p className="italic text-[10px] opacity-90">OFF</p>
+                      </div>
+                    )}
                   </div>
                 </S.main>
               </div>
@@ -296,14 +305,16 @@ function DomainDetails() {
               Keywords
             </div>
             <div className=" w-full flex-wrap lg:justify-start justify-center flex lg:w-1/2 mr-4 ml-4 lg:mr-0 lg:ml-0">
-              {data.keywords ? (
+              {data.keywords.length > 0 ? (
                 data.keywords.map((keyword) => (
                   <div key={keyword}>
                     <Keywords text={keyword} />
                   </div>
                 ))
               ) : (
-                <div>No Keywords</div>
+                <div className="text-base text-center lg:text-left font-montserrat text-black mt-3">
+                  No Keywords Assigned
+                </div>
               )}
             </div>
             <div className=" text-2xl text-black font-bold text-center mt-10 lg:text-left font-montserrat">

@@ -11,10 +11,15 @@ function Card({ domainData }) {
           </span>
           <span>{domainData.views}</span>
         </S.holder>
-        <div className="z-10">
-          <p className="font-bold">49%</p>
-          <p className="text-xs leading-[3px] pt-0 text-right uppercase">off</p>
-        </div>
+        {domainData.discount !== 0 && (
+          <div className="z-10">
+            <p className="font-bold">{Math.floor(domainData.discount)}%</p>
+
+            <p className="text-xs leading-[3px] pt-0 text-right uppercase">
+              off
+            </p>
+          </div>
+        )}
       </S.container>
       {/* Brand Image */}
       {/* <div>

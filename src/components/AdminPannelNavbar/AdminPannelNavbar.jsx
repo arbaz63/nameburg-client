@@ -19,10 +19,14 @@ function AdminPannelNavbar(props) {
     navigate(path);
   };
 
-
   return (
     <div className="h-full border border-gray-100 shadow-xl py-6 px-3 bg-white">
-      <div className="mt-3 mx-auto">
+      <div
+        className="mt-3 mx-auto cursor-pointer"
+        onClick={() => {
+          navigate("/");
+        }}
+      >
         <img src={logo} alt="" />
       </div>
       <div className="mx-auto mt-20">

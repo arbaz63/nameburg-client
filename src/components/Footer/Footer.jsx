@@ -23,7 +23,9 @@ function Footer() {
       <S.Container>
         <S.Col1>
           <S.ImageHolder>
-            <img src={logo} alt="Nameburg Logo" className="" />
+            <div className="cursor-pointer" onClick={() => navigate("/")}>
+              <img src={logo} alt="Nameburg Logo" className="" />
+            </div>
           </S.ImageHolder>
           <S.Text>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima sed

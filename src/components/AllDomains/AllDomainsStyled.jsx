@@ -26,10 +26,10 @@ export const Heading = tw.div`
 text-4xl font-Montserrat text-black font-extrabold my-10 text-center
 `;
 export const Container = tw.div`
-ml-10 mr-10
+ml-10 mr-10 items-center justify-center
 `;
 export const IconsHolder = tw.div`
-grid grid-cols-2 lg:grid-cols-4 gap-4 
+grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 
 `;
 export const HeadingTwo = tw.div`
  flex justify-center text-4xl font-montserrat text-black font-extrabold mt-10

@@ -117,7 +117,7 @@ function AdminPannelSettings() {
         <AdminPannelNavbar selectedItem={"settings"} />
       </div>
       <div className="w-[79vw] ml-[21vw]">
-        <NavbarHeader />
+        <NavbarHeader purchasePage={true} />
         <div className=" pl-4 pt-7 pr-9">
           <S.ParentContainer>
             <S.Heading>Account settings</S.Heading>

@@ -7,6 +7,7 @@ import NavbarHeader from "../AdminPannel-TopNav/NavbarHeader";
 import axios from "axios";
 import Pagination from "@mui/material/Pagination";
 import { useNavigate } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function AdminPannelAllDomains() {
   const navigate = useNavigate();
@@ -31,11 +32,13 @@ function AdminPannelAllDomains() {
   }
 
   const [searchItem, setSearchItem] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        console.log('here')
+        console.log("here");
         const baseUrl = "http://localhost:4000/api/v1/domains";
 
         const queryParamsFilters = new URLSearchParams({
@@ -55,8 +58,10 @@ function AdminPannelAllDomains() {
         setTotalPages(response.data.totalPages);
         setCurrentPages(response.data.currentPage);
         console.log(response.data);
+        setLoading(false);
       } catch (error) {
         setError("Error fetching domains. Please try again.");
+        setLoading(false);
       }
     };
 
@@ -106,6 +111,7 @@ function AdminPannelAllDomains() {
           setSearchItem={setSearchItem}
           searchItem={searchItem}
           setCurrentPages={setCurrentPages}
+          purchasePage={false}
         />
         <div className=" bg-adminBg h-screen pt-5 pl-4 pr-14 text-white pb-10 ">
           <div className="w-full flex justify-end">
@@ -138,21 +144,25 @@ function AdminPannelAllDomains() {
                 </div>
               </div>
               <div className="space-y-1">
-                {domains &&
+                {loading ? (
+                  <div className="text-center p-5">
+                    <CircularProgress color="secondary" />{" "}
+                  </div>
+                ) : (
+                  domains &&
                   domains.map((domain) => (
                     <div
                       key={domain._id}
                       className="bg-white border-b duration-500"
                     >
                       <div className="grid grid-cols-6">
-                        {" "}
                         <div className="px-6 py-4 font-normal text-gray-900 whitespace-nowrap flex space-x-2 items-center justify-center">
                           <img
                             src={domain.image}
                             alt="Img"
                             className="shadow-lg mr-1 rounded-md w-[50px]"
                           />
-                          <div>{domain.name}</div>
+                          <div className="text-left truncate w-20">{domain.name}</div>
                         </div>
                         <div className="px-6 py-4 flex justify-center items-center text-center">
                           {formatDate(domain.date)}
@@ -163,7 +173,7 @@ function AdminPannelAllDomains() {
                             : "No Category"}
                         </div>
                         <div className="px-6 py-4 flex justify-center items-center text-center">
-                          {domain.currentPrice}
+                          ${domain.currentPrice}
                         </div>
                         <div className="px-6 py-4 flex justify-center items-center ">
                           {domain.sold ? (
@@ -198,7 +208,8 @@ function AdminPannelAllDomains() {
                         </div>
                       </div>
                     </div>
-                  ))}
+                  ))
+                )}
               </div>
             </div>
           </div>

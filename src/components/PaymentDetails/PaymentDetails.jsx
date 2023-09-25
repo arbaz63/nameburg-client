@@ -77,39 +77,36 @@ function PaymentDetails() {
     setCardNumberError("");
     setExpiryDateError("");
     setCvcError("");
+    let check = true;
 
     if (!name) {
       setNameError("Name is required.");
+      check = false;
     }
     if (!email) {
       setEmailError("Email is required.");
+      check = false;
     } else {
       const isValidEmail = emailPattern.test(email);
       if (!isValidEmail) {
         setEmailError("Email is Invalid.");
+        check = false;
       }
     }
     if (!streetAddress) {
       setStreetAddressError("Address is required.");
+      check = false;
     }
     if (!appartment) {
       setAppartmentError("Apt No is required.");
+      check = false;
     }
     if (!holderName) {
       setHolderNameError("Holder's Name is required.");
+      check = false;
     }
 
-    if (
-      nameError ||
-      emailError ||
-      companyNameError ||
-      streetAddressError ||
-      appartmentError ||
-      holderNameError ||
-      cardNumberError ||
-      expiryDateError ||
-      cvcError
-    ) {
+    if (!check) {
       return false;
     } else {
       setPayment(!payment);
@@ -165,76 +162,85 @@ function PaymentDetails() {
     getCartFromLocalStorage();
     // eslint-disable-next-line
   }, []);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     if (!handlePayment()) {
+      console.log("in if");
+      setIsSubmitting(false);
+
       return;
-    }
-
-    if (!stripe || !elements) {
-      return;
-    }
-
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: "card",
-      card: elements.getElement(CardNumberElement),
-    });
-
-    if (error) {
-      console.log("the error", error);
-      setCardNumberError(error.message);
     } else {
-      console.log("Payment method created:", paymentMethod, paymentMethod.id);
+      console.log("in else");
+      if (!stripe || !elements) {
+        return;
+      }
 
-      if (paymentMethod && paymentMethod.id) {
-        try {
-          // Make an API request using Axios
-          const response = await axios.post(
-            "http://localhost:4000/api/v1/stripe/payment",
-            {
-              paymentMethodId: paymentMethod.id,
-              amount: price,
-            },
-            {
-              headers: {
-                Authorization: `${accessToken}`, // Assuming it's a Bearer token
-                "Content-Type": "application/json",
-              },
-            }
-          );
+      const { error, paymentMethod } = await stripe.createPaymentMethod({
+        type: "card",
+        card: elements.getElement(CardNumberElement),
+      });
 
-          setPaymentSuccess(response.data.success);
-          setOpenModal(true);
+      if (error) {
+        console.log("the error", error);
+        setCardNumberError(error.message);
+        setIsSubmitting(false);
+      } else {
+        console.log("Payment method created:", paymentMethod, paymentMethod.id);
 
-          // Check if the API request was successful
-          if (response.data.success) {
-            console.log("Payment successful:", response.data.success);
-
-            const responseTwo = await axios.post(
-              "http://localhost:4000/api/v1/purchases",
+        if (paymentMethod && paymentMethod.id) {
+          try {
+            // Make an API request using Axios
+            const response = await axios.post(
+              "http://localhost:4000/api/v1/stripe/payment",
               {
-                domains: domainIds,
-                buyer: userId,
+                paymentMethodId: paymentMethod.id,
+                amount: price,
               },
               {
                 headers: {
-                  Authorization: `${accessToken}`,
+                  Authorization: `${accessToken}`, // Assuming it's a Bearer token
                   "Content-Type": "application/json",
                 },
               }
             );
-            console.log("2nd api responce -> ", responseTwo);
-          } else {
-            console.error("Payment failed:", response.data.success);
-            // setPaymentSuccess(false);
-            // setOpenModal(true);
+
+            setPaymentSuccess(response.data.success);
+            setOpenModal(true);
+            setIsSubmitting(false);
+
+            // Check if the API request was successful
+            if (response.data.success) {
+              console.log("Payment successful:", response.data.success);
+
+              const responseTwo = await axios.post(
+                "http://localhost:4000/api/v1/purchases",
+                {
+                  domains: domainIds,
+                  buyer: userId,
+                },
+                {
+                  headers: {
+                    Authorization: `${accessToken}`,
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+              console.log("2nd api responce -> ", responseTwo);
+            } else {
+              console.error("Payment failed:", response.data.success);
+              // setPaymentSuccess(false);
+              // setOpenModal(true);
+            }
+          } catch (apiError) {
+            console.error("API request error:", apiError);
+            setPaymentSuccess(false);
+            setOpenModal(true);
+            setIsSubmitting(false)
           }
-        } catch (apiError) {
-          console.error("API request error:", apiError);
-          setPaymentSuccess(false);
-          setOpenModal(true);
         }
       }
     }
@@ -445,8 +451,12 @@ function PaymentDetails() {
                 </div>
               </div>
 
-              <button className="w-full py-2 mt-5 text-white font-semibold text-sm rounded-md rounded-t-none  bg-bgOne">
-                Pay now
+              <button
+                type="submit"
+                className="w-full py-2 mt-5 text-white font-semibold text-sm rounded-md rounded-t-none  bg-bgOne"
+                disabled={isSubmitting} // Disable the button when submitting
+              >
+                {isSubmitting ? "Submitting..." : "Pay now"}
               </button>
             </form>
             {/* </div> */}

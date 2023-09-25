@@ -1,5 +1,6 @@
 import * as S from "./AllDomainsStyled";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import Card from "../Card/Card";
 import layer1 from "../../Images/layer1.png";
 import SearchIcon from "@mui/icons-material/Search";
@@ -8,37 +9,24 @@ import { Drawer } from "@mui/material";
 import Filters from "../Filters/Filters";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import CircularProgress from "@mui/material/CircularProgress";
 
-function AllDomainsId() {
+function AllDomainsPremium() {
   const navigate = useNavigate();
-
-  const [searchBar, setSearchBar] = useState();
-  const { id } = useParams();
-
-  const handleSearchBar = (e) => {
-    setSearchBar(e.target.value);
-    if (!e.target.value) {
-      setSearchHit(!searchHit);
-      setLoading(true);
-      setCurrentPages(1);
-    }
-  };
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   const [, setData] = useState(null);
   const [, setError] = useState("");
   const [domains, setDomains] = useState();
   const [totalPages, setTotalPages] = useState(0);
   const [currentPages, setCurrentPages] = useState(1);
-  const [searchHit, setSearchHit] = useState(false);
-  const [fetchFiltersData, setFetchFiltersData] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const handlePageClick = (pageNumber) => {
+    setCurrentPages(pageNumber);
+  };
+
+  const [filtersDrawer, setfiltersDrawer] = useState(false);
+  const [clearAll, setClearAll] = useState(true);
 
   const [maxPrice, setMaxPrice] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
@@ -46,30 +34,18 @@ function AllDomainsId() {
   const [maxLength, setMaxLength] = useState(0);
   const [selectedTDL, setSelectedTDL] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState(null);
+  const [category, setcategory] = useState("All");
   const [selectedSearchType, setSelectedSearchType] = useState("Broad Match");
-  const [selectedSortFilter, setSelectedSortFilter] = useState("All");
-  const [clearAll, setClearAll] = useState(true);
+  const [selectedSortFilter, setSelectedSortFilter] = useState("views");
 
-  const [categories, setCategories] = useState();
+  const [searchBar, setSearchBar] = useState();
+  const [searchHit, setSearchHit] = useState(false);
+  const [searchIn, setSearchIn] = useState(false);
+  const [fetchFiltersData, setFetchFiltersData] = useState(false);
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:4000/api/v1/categories"
-        );
-        setCategories(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.log("Error fetching categories 123. Please try again.");
-      }
-    };
-
-    fetchCategories();
-    // eslint-disable-next-line
+    window.scrollTo(0, 0);
   }, []);
-
-  const [selectedSearchIn, setSelectedSearchIn] = useState(id ? id : "All");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,7 +55,6 @@ function AllDomainsId() {
         const queryParamsFilters = new URLSearchParams({
           page: currentPages,
           limit: 32,
-          category: id,
           sold: false,
         });
 
@@ -103,9 +78,13 @@ function AllDomainsId() {
           queryParamsFilters.set("maxLength", maxLength);
         }
 
-        if (selectedSearchIn !== "All") {
-          queryParamsFilters.set("category", selectedSearchIn);
+        if (category !== "All") {
+          queryParamsFilters.set("category", category);
         }
+
+        // if (category !== "All") {
+        //   queryParamsFilters.set("category", category);
+        // }
 
         if (selectedSortFilter !== "All") {
           queryParamsFilters.set("sort", selectedSortFilter);
@@ -118,7 +97,7 @@ function AllDomainsId() {
         setDomains(response.data.domains);
         setTotalPages(response.data.totalPages);
         setCurrentPages(response.data.currentPage);
-        console.log("-> cat -> ", response.data);
+        console.log(response.data);
         setLoading(false);
       } catch (error) {
         setError("Error fetching domains. Please try again.");
@@ -130,11 +109,14 @@ function AllDomainsId() {
     // eslint-disable-next-line
   }, [currentPages, searchHit, fetchFiltersData]);
 
-  const handlePageClick = (pageNumber) => {
-    setCurrentPages(pageNumber);
+  const handleSearchBar = (e) => {
+    setSearchBar(e.target.value);
+    if (!e.target.value) {
+      setSearchHit(!searchHit);
+      setLoading(true);
+      setCurrentPages(1);
+    }
   };
-
-  const [filtersDrawer, setfiltersDrawer] = useState(false);
 
   const handleDomainClick = (id) => {
     navigate(`/DomainDetails/${id}`);
@@ -143,21 +125,6 @@ function AllDomainsId() {
   const handleClearAllClick = () => {
     setClearAll(false);
   };
-
-  useEffect(() => {
-    if (!clearAll) {
-      setMaxPrice(0);
-      setMinPrice(0);
-      setMinLength(0);
-      setMaxLength(0);
-      setSelectedSortFilter("All");
-      setSelectedSearchType("Board Match");
-      setSelectedSearchIn("All");
-      setSelectedBrand(null);
-      setSelectedTDL(null);
-      setClearAll(true);
-    }
-  }, [clearAll]);
 
   const handleFilterClose = () => {
     setfiltersDrawer(false);
@@ -188,30 +155,35 @@ function AllDomainsId() {
 
   const handleSave = () => {
     setCurrentPages(1);
-    console.log(
-      maxPrice,
-      minPrice,
-      minLength,
-      maxLength,
-      selectedSearchType,
-      selectedSearchIn,
-      selectedTDL,
-      selectedBrand,
-      selectedSortFilter
-    );
     setfiltersDrawer(false);
     setFetchFiltersData(!fetchFiltersData);
   };
 
+  useEffect(() => {
+    if (!clearAll) {
+      setMaxPrice(0);
+      setMinPrice(0);
+      setMinLength(0);
+      setMaxLength(0);
+      setSelectedSortFilter("All");
+      setSelectedSearchType("Board Match");
+      setcategory("All");
+      setSelectedBrand(null);
+      setSelectedTDL(null);
+      setClearAll(true);
+    }
+  }, [clearAll]);
+
   return (
     <>
       <S.HeroBanner>
-        <span className="font-semibold text-3xl lg:text-5xl font-Montserrat">
-          Find, Buy, And Dominate
-        </span>
         <S.TextHolder>
-          <span>With</span>
-          <span className="font-bold">Premium Domains.</span>
+          <p>Find, Buy, And Dominate</p>
+
+          <p>
+            <span>With</span>{" "}
+            <span className="font-semibold">Premium Domains.</span>
+          </p>
         </S.TextHolder>
         <S.InputHolder>
           <button
@@ -236,8 +208,10 @@ function AllDomainsId() {
           </div>
         </S.InputHolder>
       </S.HeroBanner>
+
       <S.Container>
-        <S.Heading>All Domains</S.Heading>
+        <S.Heading>All Premium Domains</S.Heading>
+
         {loading ? (
           <div className="text-center">
             <CircularProgress color="secondary" />{" "}
@@ -263,6 +237,7 @@ function AllDomainsId() {
 
       {totalPages > 0 && (
         <div className="flex justify-center mt-10">
+          {/* Render your pagination component here */}
           <Pagination
             count={totalPages}
             variant="outlined"
@@ -273,6 +248,7 @@ function AllDomainsId() {
           />
         </div>
       )}
+
       <div className="w-full bg-white lg:pl-36 lg:mr-36 mt-12 overflow-x-hidden ">
         <div className=" text-2xl text-black font-bold text-center mt-10 lg:text-left font-Montserrat lg:mb-7">
           Frequently Asked Questions {"(FAQ)"}
@@ -321,8 +297,8 @@ function AllDomainsId() {
                 setSelectedTDL={setSelectedTDL}
                 setSelectedBrand={setSelectedBrand}
                 selectedBrand={selectedBrand}
-                category={selectedSearchIn}
-                setcategory={setSelectedSearchIn}
+                category={category}
+                setcategory={setcategory}
                 selectedSearchType={selectedSearchType}
                 setSelectedSearchType={setSelectedSearchType}
                 selectedSortFilter={selectedSortFilter}
@@ -338,4 +314,4 @@ function AllDomainsId() {
   );
 }
 
-export default AllDomainsId;
+export default AllDomainsPremium;

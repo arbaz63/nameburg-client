@@ -14,7 +14,7 @@ function NavbarHeader(props) {
 
   const handleLogout = () => {
     logout();
-    navigate('/')
+    navigate("/");
   };
 
   const CloseProfileMenu = () => {
@@ -40,18 +40,20 @@ function NavbarHeader(props) {
         {/* <div className="ml-12 h-[2px] mt-7 w-20 bg-bgOne "></div> */}
       </div>
       <div className="pr-14 flex flex-row gap-5 items-center">
-        <div className="inline-flex items-center border border-gray-300 rounded-2xl p-[1px] h-[36px] w-[300px] py-2 pl-2 bg-gray-50">
-          <div className="py-2 pr-2 rounded">
-            <SearchIcon className="text-gray-400" />
+        {!props.purchasePage && (
+          <div className="inline-flex items-center border border-gray-300 rounded-2xl p-[1px] h-[36px] w-[300px] py-2 pl-2 bg-gray-50">
+            <div className="py-2 pr-2 rounded">
+              <SearchIcon className="text-gray-400" />
+            </div>
+            <input
+              type="text"
+              placeholder="Search domain name"
+              value={props.searchItem}
+              onChange={handleSearchBar}
+              className="bg-gray-50 w-full mr-5"
+            />
           </div>
-          <input
-            type="text"
-            placeholder="Search domain name"
-            value={props.searchItem}
-            onChange={handleSearchBar}
-            className="bg-gray-50 w-full mr-5"
-          />
-        </div>
+        )}
         <div>{/* <img src={bell} alt="" /> */}</div>
         <div className="flex items-center lg:mr-[10px]">
           <div className="w-[1px] mx-4 h-6 bg-black"></div>

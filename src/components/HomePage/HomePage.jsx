@@ -31,13 +31,16 @@ function HomePage() {
   const [, setData] = useState(null);
   const [, setError] = useState("");
   const [domains, setDomains] = useState();
+  const [premiumDomains, setPremiumDomains] = useState();
   const [, setTotalPages] = useState(0);
   const [currentPages, setCurrentPages] = useState(1);
-  const [categories, setCategories] = useState(0);
   const [searchHit, setSearchHit] = useState(false);
   const [fetchFiltersData, setFetchFiltersData] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [premiumLoading, setPremiumLoading] = useState(true);
+
   const [catLoading, setCatLoading] = useState(true);
+  const [categories, setCategories] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,6 +50,7 @@ function HomePage() {
         const queryParamsFilters = new URLSearchParams({
           page: currentPages,
           limit: 8,
+          sold: false,
         });
 
         if (searchBar) {
@@ -69,8 +73,8 @@ function HomePage() {
           queryParamsFilters.set("maxLength", maxLength);
         }
 
-        if (selectedSearchIn !== "All") {
-          queryParamsFilters.set("selectedSearchIn", selectedSearchIn);
+        if (category !== "All") {
+          queryParamsFilters.set("category", category);
         }
 
         if (selectedSortFilter !== "All") {
@@ -89,6 +93,65 @@ function HomePage() {
       } catch (error) {
         setError("Error fetching domains. Please try again.");
         setLoading(false); // Set loading to false when data is successfully fetched
+      }
+    };
+
+    fetchData();
+    // eslint-disable-next-line
+  }, [searchHit, fetchFiltersData]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const baseUrl = "http://localhost:4000/api/v1/domains";
+
+        const queryParamsFilters = new URLSearchParams({
+          page: currentPages,
+          limit: 8,
+          sold: false,
+          sort: "views",
+        });
+
+        if (searchBar) {
+          queryParamsFilters.set("searchTerm", searchBar);
+        }
+
+        if (maxPrice !== 0) {
+          queryParamsFilters.set("maxPrice", maxPrice);
+        }
+
+        if (minPrice !== 0) {
+          queryParamsFilters.set("minPrice", minPrice);
+        }
+
+        if (minLength !== 0) {
+          queryParamsFilters.set("minLength", minLength);
+        }
+
+        if (maxLength !== 0) {
+          queryParamsFilters.set("maxLength", maxLength);
+        }
+
+        if (category !== "All") {
+          queryParamsFilters.set("category", category);
+        }
+
+        if (selectedSortFilter !== "All") {
+          queryParamsFilters.set("sort", selectedSortFilter);
+        }
+
+        const apiUrl = `${baseUrl}/?${queryParamsFilters.toString()}`;
+
+        const response = await axios.get(`${apiUrl}`);
+        // setData(response.data);
+        setPremiumDomains(response.data.domains);
+        // setTotalPages(response.data.totalPages);
+        // setCurrentPages(response.data.currentPage);
+        console.log("premium ->> ", response.data);
+        setPremiumLoading(false); // Set loading to false when data is successfully fetched
+      } catch (error) {
+        setError("Error fetching domains. Please try again.");
+        setPremiumLoading(false); // Set loading to false when data is successfully fetched
       }
     };
 
@@ -128,7 +191,7 @@ function HomePage() {
   };
   const [selectedTDL, setSelectedTDL] = useState();
   const [selectedBrand, setSelectedBrand] = useState(null);
-  const [selectedSearchIn, setSelectedSearchIn] = useState("All");
+  const [category, setcategory] = useState("All");
   const [selectedSearchType, setSelectedSearchType] = useState("Broad Match");
   const [selectedSortFilter, setSelectedSortFilter] = useState("All");
 
@@ -140,7 +203,7 @@ function HomePage() {
       setMaxLength(0);
       setSelectedSortFilter("All");
       setSelectedSearchType("Board Match");
-      setSelectedSearchIn("All");
+      setcategory("All");
       setSelectedBrand(null);
       setSelectedTDL(null);
       setClearAll(true);
@@ -155,7 +218,7 @@ function HomePage() {
       minLength,
       maxLength,
       selectedSearchType,
-      selectedSearchIn,
+      category,
       selectedTDL,
       selectedBrand,
       selectedSortFilter
@@ -164,15 +227,23 @@ function HomePage() {
     setFetchFiltersData(!fetchFiltersData);
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const handleSearchBar = (e) => {
     setSearchBar(e.target.value);
     if (!e.target.value) {
       setSearchHit(!searchHit);
+      setLoading(true);
+      setCurrentPages(1);
     }
   };
   const haldleSearch = () => {
     console.log("->>>", searchBar);
     setSearchHit(!searchHit);
+    setLoading(true);
+    setCurrentPages(1);
   };
 
   const [filtersDrawer, setfiltersDrawer] = useState(false);
@@ -306,14 +377,14 @@ function HomePage() {
         )}
 
         <S.Heading className="mt-10">Premium Domains</S.Heading>
-        {loading ? (
+        {premiumLoading ? (
           <div className="text-center">
             <CircularProgress color="secondary" />{" "}
           </div>
-        ) : domains && domains.length > 0 ? (
+        ) : premiumDomains && premiumDomains.length > 0 ? (
           <>
             <S.IconsHolder>
-              {domains.slice(0, 8).map((domain) => (
+              {premiumDomains.slice(0, 8).map((domain) => (
                 <div
                   key={domain.id}
                   onClick={() => handleDomainClick(domain._id)}
@@ -326,7 +397,9 @@ function HomePage() {
             <S.ButtonHolder>
               <button
                 className="border border-black p-3 rounded-md font-semibold mt-8 hover:bg-gray-200"
-                onClick={handelMoreDomain}
+                onClick={() => {
+                  navigate("/AllDomainsPremium");
+                }}
               >
                 More Premium Domains
               </button>
@@ -367,7 +440,9 @@ function HomePage() {
           <S.ButtonHolderTwo>
             <button
               className="p-3 border border-black rounded-md font-semibold mt-8 hover:bg-gray-200"
-              onClick={handelMoreDomain}
+              onClick={() => {
+                navigate("/AllCategories");
+              }}
             >
               Explore All Available Names
             </button>
@@ -495,8 +570,8 @@ function HomePage() {
                   setSelectedTDL={setSelectedTDL}
                   setSelectedBrand={setSelectedBrand}
                   selectedBrand={selectedBrand}
-                  selectedSearchIn={selectedSearchIn}
-                  setSelectedSearchIn={setSelectedSearchIn}
+                  category={category}
+                  setcategory={setcategory}
                   selectedSearchType={selectedSearchType}
                   setSelectedSearchType={setSelectedSearchType}
                   selectedSortFilter={selectedSortFilter}
