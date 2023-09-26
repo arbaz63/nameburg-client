@@ -162,7 +162,7 @@ export const PurchaseHistory = () => {
                           {purchase.invoiceNo}
                         </div>
                         <div className="px-6 py-4 flex justify-center items-center text-center">
-                          {domain.currentPrice}
+                          ${domain.currentPrice}
                         </div>
                         <div className="px-6 py-4 flex justify-center items-center">
                           <div

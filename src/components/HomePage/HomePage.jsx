@@ -236,6 +236,7 @@ function HomePage() {
     if (!e.target.value) {
       setSearchHit(!searchHit);
       setLoading(true);
+      setPremiumLoading(true)
       setCurrentPages(1);
     }
   };
@@ -243,6 +244,7 @@ function HomePage() {
     console.log("->>>", searchBar);
     setSearchHit(!searchHit);
     setLoading(true);
+    setPremiumLoading(true)
     setCurrentPages(1);
   };
 

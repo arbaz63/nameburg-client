@@ -10,7 +10,7 @@ import createIcon from "../../Images/Add.svg";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import CircularProgress from "@mui/material/CircularProgress";
-import axiosInstance from '../../axios-config'; // Import the Axios instance
+import axiosInstance from "../../axios-config"; // Import the Axios instance
 
 function AdminPannelEditDomain() {
   const { id } = useParams();
@@ -109,7 +109,8 @@ function AdminPannelEditDomain() {
       })
       .catch((error) => {
         console.error("Error editing domain:", error);
-        setErrorMessage(`Error editing domain, Please Try again`);
+        // setErrorMessage(`Error editing domain, Please Try again`);
+        setErrorMessage(`Error creating domain, ${error.response.data.error}`);
         setIsSubmitting(false);
         setLoading(false);
       });
@@ -131,9 +132,7 @@ function AdminPannelEditDomain() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axiosInstance.get(
-          "/categories"
-        );
+        const response = await axiosInstance.get("/categories");
         setCategories(response.data);
         console.log(response.data);
       } catch (error) {
@@ -149,9 +148,7 @@ function AdminPannelEditDomain() {
     const getData = async () => {
       setPreLoading(true);
       try {
-        const response = await axiosInstance.get(
-          `/domains/${id}`
-        );
+        const response = await axiosInstance.get(`/domains/${id}`);
         setData(response.data);
         setDomainName(response.data.name);
         setMax(response.data.maxPrice);
