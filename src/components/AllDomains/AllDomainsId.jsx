@@ -6,11 +6,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import CustomAccordion from "../Accordian/Accordian";
 import { Drawer } from "@mui/material";
 import Filters from "../Filters/Filters";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import CircularProgress from "@mui/material/CircularProgress";
+import axiosInstance from '../../axios-config'; // Import the Axios instance
 
 function AllDomainsId() {
   const navigate = useNavigate();
@@ -55,7 +55,7 @@ function AllDomainsId() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(
+        const response = await axiosInstance.get(
           "http://localhost:4000/api/v1/categories"
         );
         setCategories(response.data);
@@ -113,7 +113,7 @@ function AllDomainsId() {
 
         const apiUrl = `${baseUrl}/?${queryParamsFilters.toString()}`;
 
-        const response = await axios.get(`${apiUrl}`);
+        const response = await axiosInstance.get(`${apiUrl}`);
         setData(response.data);
         setDomains(response.data.domains);
         setTotalPages(response.data.totalPages);

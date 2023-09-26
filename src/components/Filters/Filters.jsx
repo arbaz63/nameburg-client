@@ -3,7 +3,7 @@ import SearchInFilter from "../SearchInFilter";
 import SortByFilter from "../SortByFilters";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from '../../axios-config'; // Import the Axios instance
 
 function Filters(props) {
   const handleFilterClose = () => {

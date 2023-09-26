@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from '../../axios-config'; // Import the Axios instance
 import pdf from "../../Images/pdf.svg";
 import jsPDF from "jspdf";
 import AdminPannelNavbar from "../AdminPannelNavbar/AdminPannelNavbar";
@@ -32,7 +32,7 @@ export const AllPurchases = () => {
         });
 
         const apiUrl = `${baseUrl}/?${queryParamsFilters.toString()}`;
-        const responseTwo = await axios.get(`${apiUrl}`, {
+        const responseTwo = await axiosInstance.get(`${apiUrl}`, {
           headers: {
             Authorization: `${accessToken}`,
             "Content-Type": "application/json",

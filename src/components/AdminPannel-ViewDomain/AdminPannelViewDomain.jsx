@@ -7,7 +7,7 @@ import { useState } from "react";
 import NavbarHeader from "../AdminPannel-TopNav/NavbarHeader";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import axios from "axios";
+import axiosInstance from '../../axios-config'; // Import the Axios instance
 
 function AdminPannelViewDomains() {
   const { id } = useParams();
@@ -28,7 +28,7 @@ function AdminPannelViewDomains() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
+        const response = await axiosInstance.get(
           `http://localhost:4000/api/v1/domains/${id}`
         );
         setData(response.data);

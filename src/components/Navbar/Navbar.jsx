@@ -12,7 +12,7 @@ import * as S from "./NavbarStyled";
 import CartFilter from "../CartFilter/CartFilter";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import axios from "axios";
+import axiosInstance from '../../axios-config'; // Import the Axios instance
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import HistoryIcon from "../../Images/history.svg";
 import { List, ListItem, ListItemText } from "@mui/material";
@@ -52,7 +52,7 @@ function Navbar() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(
+        const response = await axiosInstance.get(
           "http://localhost:4000/api/v1/categories"
         );
         setCategories(response.data);
@@ -127,7 +127,7 @@ function Navbar() {
   // useEffect(() => {
   //   const fetchUserData = async () => {
   //     try {
-  //       const response = await axios.get(
+  //       const response = await axiosInstance.get(
   //         `http://localhost:4000/api/v1/auth/${userId}`,
   //         {
   //           headers: {

@@ -1,9 +1,9 @@
 import * as S from "../UserSettings/UserSettingsStyled";
 import Avatar from "@mui/material/Avatar";
 import React, { useRef, useState } from "react";
-import axios from "axios";
 import AdminPannelNavbar from "../AdminPannelNavbar/AdminPannelNavbar";
 import NavbarHeader from "../AdminPannel-TopNav/NavbarHeader";
+import axiosInstance from '../../axios-config'; // Import the Axios instance
 
 function AdminPannelSettings() {
   const [image, setImage] = useState();
@@ -30,7 +30,7 @@ function AdminPannelSettings() {
     }
 
     try {
-      const response = await axios.put(
+      const response = await axiosInstance.put(
         `http://localhost:4000/api/v1/auth/${userId}`,
         {
           oldPassword: oldPassword,

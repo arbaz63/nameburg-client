@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from '../../axios-config'; // Import the Axios instance
 import pdf from "../../Images/pdf.svg";
 import jsPDF from "jspdf";
 
@@ -13,7 +13,7 @@ export const PurchaseHistory = () => {
     console.log(buyerId);
     const fetchData = async () => {
       try {
-        const responseTwo = await axios.get(
+        const responseTwo = await axiosInstance.get(
           `http://localhost:4000/api/v1/purchases/buyer/${buyerId}`,
           {
             headers: {

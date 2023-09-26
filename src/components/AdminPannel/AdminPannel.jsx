@@ -4,12 +4,12 @@ import gallery from "../../Images/gallery 1.png";
 import { useState } from "react";
 import NavbarHeader from "../AdminPannel-TopNav/NavbarHeader";
 import { useEffect, useRef } from "react";
-import axios from "axios";
 import Chip from "@mui/material/Chip";
 import createIcon from "../../Images/Add.svg";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import CircularProgress from "@mui/material/CircularProgress";
+import axiosInstance from '../../axios-config'; // Import the Axios instance
 
 function AdminPannel() {
   const [domainName, setDomainName] = useState();
@@ -79,7 +79,7 @@ function AdminPannel() {
       image: imageFile,
     };
 
-    axios
+    axiosInstance
       .post(`http://localhost:4000/api/v1/domains/`, formData, {
         headers: {
           Authorization: `${accessToken}`,
@@ -113,7 +113,7 @@ function AdminPannel() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(
+        const response = await axiosInstance.get(
           "http://localhost:4000/api/v1/categories"
         );
         setCategories(response.data);

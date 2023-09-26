@@ -20,8 +20,8 @@ import star from "../../Images/starGold.svg";
 import SearchIcon from "@mui/icons-material/Search";
 import { Drawer } from "@mui/material";
 import Filters from "../Filters/Filters";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from '../../axios-config'; // Import the Axios instance
 
 function HomePage() {
   // http://nameburg.com/api/v1/domains/?page=1&limit=2&minPrice=2000&maxPrice=10000&extension=.io&keywords=hello,world,
@@ -45,7 +45,7 @@ function HomePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const baseUrl = "http://localhost:4000/api/v1/domains";
+        const baseUrl = "/domains";
 
         const queryParamsFilters = new URLSearchParams({
           page: currentPages,
@@ -83,7 +83,7 @@ function HomePage() {
 
         const apiUrl = `${baseUrl}/?${queryParamsFilters.toString()}`;
 
-        const response = await axios.get(`${apiUrl}`);
+        const response = await axiosInstance.get(`${apiUrl}`);
         setData(response.data);
         setDomains(response.data.domains);
         setTotalPages(response.data.totalPages);
@@ -103,7 +103,7 @@ function HomePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const baseUrl = "http://localhost:4000/api/v1/domains";
+        const baseUrl = "/domains";
 
         const queryParamsFilters = new URLSearchParams({
           page: currentPages,
@@ -142,7 +142,7 @@ function HomePage() {
 
         const apiUrl = `${baseUrl}/?${queryParamsFilters.toString()}`;
 
-        const response = await axios.get(`${apiUrl}`);
+        const response = await axiosInstance.get(`${apiUrl}`);
         // setData(response.data);
         setPremiumDomains(response.data.domains);
         // setTotalPages(response.data.totalPages);
@@ -162,8 +162,8 @@ function HomePage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/v1/categories"
+        const response = await axiosInstance.get(
+          "/categories"
         );
         setCategories(response.data);
         console.log(response.data);
