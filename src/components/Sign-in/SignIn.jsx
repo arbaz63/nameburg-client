@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import * as S from "./SignInStyled";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from '../../axios-config'; // Import the Axios instance
 import { useAuth } from "../../AuthContext";
 
 function SignIn() {
@@ -58,7 +58,7 @@ function SignIn() {
     }
 
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         "http://localhost:4000/api/v1/auth/signin",
         formData
       );

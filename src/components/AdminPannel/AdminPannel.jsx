@@ -4,12 +4,12 @@ import gallery from "../../Images/gallery 1.png";
 import { useState } from "react";
 import NavbarHeader from "../AdminPannel-TopNav/NavbarHeader";
 import { useEffect, useRef } from "react";
-import axios from "axios";
 import Chip from "@mui/material/Chip";
 import createIcon from "../../Images/Add.svg";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import CircularProgress from "@mui/material/CircularProgress";
+import axiosInstance from "../../axios-config"; // Import the Axios instance
 
 function AdminPannel() {
   const [domainName, setDomainName] = useState();
@@ -19,6 +19,7 @@ function AdminPannel() {
   const maxLength = 500;
   const [image, setImage] = useState(gallery);
   const [imageFile, setImageFile] = useState();
+  const MAX_FILE_SIZE_MB = 1; // Maximum file size in megabytes
 
   const fileInputRef = useRef();
 
@@ -28,11 +29,33 @@ function AdminPannel() {
     }
   };
 
+  // const handleFileChange = (event) => {
+  //   const selectedFile = event.target.files?.[0];
+  //   if (selectedFile) {
+  //     setImageFile(selectedFile);
+  //     setImage && setImage(URL.createObjectURL(selectedFile));
+  //   }
+  // };
+  const [imageError, setImageError] = useState(null);
+
   const handleFileChange = (event) => {
     const selectedFile = event.target.files?.[0];
+
     if (selectedFile) {
-      setImageFile(selectedFile);
-      setImage && setImage(URL.createObjectURL(selectedFile));
+      // Check if the selected file size is within the allowed limit
+      if (selectedFile.size <= MAX_FILE_SIZE_MB * 1024 * 1024) {
+        setImageFile(selectedFile);
+        setImage && setImage(URL.createObjectURL(selectedFile));
+        setImageError(null);
+      } else {
+        // Display an error message or take appropriate action
+        setImageError(
+          `File size exceeds ${MAX_FILE_SIZE_MB} MB. Please choose a smaller file.`
+        );
+
+        // Optionally, you can clear the file input to allow the user to select a new file
+        event.target.value = null;
+      }
     }
   };
 
@@ -77,9 +100,10 @@ function AdminPannel() {
       keywords: keywords,
       description: text,
       image: imageFile,
+      currentPrice: max,
     };
 
-    axios
+    axiosInstance
       .post(`http://localhost:4000/api/v1/domains/`, formData, {
         headers: {
           Authorization: `${accessToken}`,
@@ -95,7 +119,7 @@ function AdminPannel() {
         setText("");
         setImage(gallery);
         setImageFile(null);
-        setSelectedCategory(null);
+        setSelectedCategory("");
         setKeywords([]);
         setMessage("Domain successfully created");
         setIsSubmitting(false);
@@ -103,8 +127,8 @@ function AdminPannel() {
       .catch((error) => {
         setLoading(false);
         setIsSubmitting(false);
-        console.error("Error creating domain:", error);
-        setErrorMessage(`Error creating domain, Please Try again`);
+        console.error("Error creating domain:", error.response.data.error);
+        setErrorMessage(`Error creating domain, ${error.response.data.error}`);
       });
   };
 
@@ -113,7 +137,7 @@ function AdminPannel() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(
+        const response = await axiosInstance.get(
           "http://localhost:4000/api/v1/categories"
         );
         setCategories(response.data);
@@ -226,7 +250,7 @@ function AdminPannel() {
             <SelectCategoriesAdmin
               categories={categories}
               setSelectedCategory={setSelectedCategory}
-              selectedCategoriy={selectedCategory}
+              selectedCategory={selectedCategory}
             />
           </div>
           <div className="h-fit">
@@ -277,6 +301,8 @@ function AdminPannel() {
           <div className="font-montserrat text-xl pl-4 mt-4">
             6- Upload image{" "}
           </div>
+          {imageError && <div className="text-red-500">{imageError}</div>}
+
           <div className="w-[983px] bg-white mt-4 rounded-md p-3">
             <div className=" flex flex-col gap-8 justify-center items-center border border-dashed  border-gray-300  w-[250px] mr-3">
               <div

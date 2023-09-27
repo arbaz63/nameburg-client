@@ -4,7 +4,7 @@ import Checkbox from "@mui/material/Checkbox";
 import * as S from "./SignUpStyled";
 import { useNavigate } from "react-router-dom";
 import CountrySelector from "../CountrySelector";
-import axios from "axios";
+import axiosInstance from '../../axios-config'; // Import the Axios instance
 
 function SignUp() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -78,7 +78,7 @@ function SignUp() {
     }
 
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         "http://localhost:4000/api/v1/auth/signup",
         formData
       );

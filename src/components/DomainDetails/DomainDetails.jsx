@@ -13,7 +13,7 @@ import CustomAccordion from "../Accordian/Accordian";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from '../../axios-config'; // Import the Axios instance
 import { useAuth } from "../../AuthContext";
 
 function DomainDetails() {
@@ -53,7 +53,7 @@ function DomainDetails() {
     const viewsIncrement = async () => {
       console.log("id", id);
       try {
-        const response = await axios.put(
+        const response = await axiosInstance.put(
           `http://localhost:4000/api/v1/domains/${id}/increment-views`
         );
 
@@ -77,7 +77,7 @@ function DomainDetails() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
+        const response = await axiosInstance.get(
           `http://localhost:4000/api/v1/domains/${id}`
         );
         setData(response.data);

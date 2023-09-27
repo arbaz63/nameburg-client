@@ -3,7 +3,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from '../axios-config'; // Import the Axios instance
 
 function SearchInFilter(props) {
   const [categories, setCategories] = useState();
@@ -11,8 +11,8 @@ function SearchInFilter(props) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/v1/categories"
+        const response = await axiosInstance.get(
+          "/categories"
         );
         setCategories(response.data);
         console.log(response.data);

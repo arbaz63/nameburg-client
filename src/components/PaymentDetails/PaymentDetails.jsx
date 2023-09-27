@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Line from "../../Images/Line 14.png";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
-import axios from "axios";
+import axiosInstance from '../../axios-config'; // Import the Axios instance
 import { useStripe, useElements } from "@stripe/react-stripe-js";
 import {
   CardNumberElement,
@@ -194,7 +194,7 @@ function PaymentDetails() {
         if (paymentMethod && paymentMethod.id) {
           try {
             // Make an API request using Axios
-            const response = await axios.post(
+            const response = await axiosInstance.post(
               "http://localhost:4000/api/v1/stripe/payment",
               {
                 paymentMethodId: paymentMethod.id,
@@ -216,7 +216,7 @@ function PaymentDetails() {
             if (response.data.success) {
               console.log("Payment successful:", response.data.success);
 
-              const responseTwo = await axios.post(
+              const responseTwo = await axiosInstance.post(
                 "http://localhost:4000/api/v1/purchases",
                 {
                   domains: domainIds,

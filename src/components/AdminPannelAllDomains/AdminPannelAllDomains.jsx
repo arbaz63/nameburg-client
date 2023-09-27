@@ -4,10 +4,10 @@ import pen from "../../Images/edit.svg";
 import createIconWhite from "../../Images/createWhite.svg";
 import { useState, useEffect } from "react";
 import NavbarHeader from "../AdminPannel-TopNav/NavbarHeader";
-import axios from "axios";
 import Pagination from "@mui/material/Pagination";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
+import axiosInstance from "../../axios-config"; // Import the Axios instance
 
 function AdminPannelAllDomains() {
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ function AdminPannelAllDomains() {
 
         const apiUrl = `${baseUrl}/?${queryParamsFilters.toString()}`;
 
-        const response = await axios.get(`${apiUrl}`);
+        const response = await axiosInstance.get(`${apiUrl}`);
         setData(response.data);
         setDomains(response.data.domains);
         setTotalPages(response.data.totalPages);
@@ -81,7 +81,7 @@ function AdminPannelAllDomains() {
   const handleDeleteClick = (id) => {
     console.log("Delete clicked for domain:", id);
 
-    axios
+    axiosInstance
       .delete(`http://localhost:4000/api/v1/domains/${id}`, {
         headers: {
           Authorization: `${accessToken}`,
@@ -162,7 +162,9 @@ function AdminPannelAllDomains() {
                             alt="Img"
                             className="shadow-lg mr-1 rounded-md w-[50px]"
                           />
-                          <div className="text-left truncate w-20">{domain.name}</div>
+                          <div className="text-left truncate w-20">
+                            {domain.name}
+                          </div>
                         </div>
                         <div className="px-6 py-4 flex justify-center items-center text-center">
                           {formatDate(domain.date)}

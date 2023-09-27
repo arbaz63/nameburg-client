@@ -4,11 +4,13 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
-// Your custom component
-function SortByFilter(props) {
+function SelectCategoriesAdmin(props) {
+
   const handleCountryChange = (event) => {
     props.setSelectedCategory(event.target.value);
   };
+
+  console.log(props.selectedCategory)
 
   return (
     <FormControl
@@ -42,4 +44,4 @@ function SortByFilter(props) {
   );
 }
 
-export default SortByFilter;
+export default SelectCategoriesAdmin;

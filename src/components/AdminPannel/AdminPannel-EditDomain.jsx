@@ -5,12 +5,12 @@ import { useState } from "react";
 import NavbarHeader from "../AdminPannel-TopNav/NavbarHeader";
 import { useParams } from "react-router-dom";
 import { useEffect, useRef } from "react";
-import axios from "axios";
 import Chip from "@mui/material/Chip";
 import createIcon from "../../Images/Add.svg";
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import CircularProgress from "@mui/material/CircularProgress";
+import axiosInstance from "../../axios-config"; // Import the Axios instance
 
 function AdminPannelEditDomain() {
   const { id } = useParams();
@@ -94,8 +94,8 @@ function AdminPannelEditDomain() {
       image: imageFile,
     };
 
-    axios
-      .put(`http://localhost:4000/api/v1/domains/${id}`, formData, {
+    axiosInstance
+      .put(`/domains/${id}`, formData, {
         headers: {
           Authorization: `${accessToken}`,
           "Content-Type": "multipart/form-data",
@@ -109,7 +109,8 @@ function AdminPannelEditDomain() {
       })
       .catch((error) => {
         console.error("Error editing domain:", error);
-        setErrorMessage(`Error editing domain, Please Try again`);
+        // setErrorMessage(`Error editing domain, Please Try again`);
+        setErrorMessage(`Error creating domain, ${error.response.data.error}`);
         setIsSubmitting(false);
         setLoading(false);
       });
@@ -131,9 +132,7 @@ function AdminPannelEditDomain() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/v1/categories"
-        );
+        const response = await axiosInstance.get("/categories");
         setCategories(response.data);
         console.log(response.data);
       } catch (error) {
@@ -149,9 +148,7 @@ function AdminPannelEditDomain() {
     const getData = async () => {
       setPreLoading(true);
       try {
-        const response = await axios.get(
-          `http://localhost:4000/api/v1/domains/${id}`
-        );
+        const response = await axiosInstance.get(`/domains/${id}`);
         setData(response.data);
         setDomainName(response.data.name);
         setMax(response.data.maxPrice);

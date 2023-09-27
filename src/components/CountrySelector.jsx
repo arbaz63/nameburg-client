@@ -3,7 +3,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import CircularProgress from "@mui/material/CircularProgress";
-import axios from "axios";
+import axiosInstance from '../axios-config'; // Import the Axios instance
 
 function CountrySelector({ selectedCountry, setSelectedCountry, setError }) {
   const [countries, setCountries] = useState([]);
@@ -11,7 +11,7 @@ function CountrySelector({ selectedCountry, setSelectedCountry, setError }) {
 
   useEffect(() => {
     // Fetch the list of countries when the component mounts
-    axios
+    axiosInstance
       .get("https://restcountries.com/v2/all")
       .then((response) => {
         const countryNames = response.data.map((country) => country.name);
