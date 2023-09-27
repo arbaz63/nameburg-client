@@ -4,7 +4,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
 function SortByFilter(props) {
-  const countries = ["High To Low", "Low To High", "Discount"];
+  const countries = ["High To Low", "Low To High", "Discount", "Date"];
 
   const handleSortFilterChange = (event) => {
     if (event.target.value === "High To Low") {
@@ -15,6 +15,9 @@ function SortByFilter(props) {
     }
     if (event.target.value === "Discount") {
       props.setSelectedSortFilter("discount");
+    }
+    if (event.target.value === "Date") {
+      props.setSelectedSortFilter("date");
     }
   };
 
