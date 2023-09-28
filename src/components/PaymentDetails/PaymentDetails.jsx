@@ -487,7 +487,7 @@ function PaymentDetails() {
               What you get
             </div>
             <span className="text-xs font-montserrat text-black font-medium pt-4">
-              Domain name:
+              Domain name:{" "}
               <span className=" font-montserrat text-xs w-full  text-bgOne">
                 Zylo.com
               </span>

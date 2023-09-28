@@ -119,7 +119,6 @@ function AdminPannel() {
         setText("");
         setImage(gallery);
         setImageFile(null);
-        setSelectedCategory("");
         setKeywords([]);
         setMessage("Domain successfully created");
         setIsSubmitting(false);
@@ -128,7 +127,13 @@ function AdminPannel() {
         setLoading(false);
         setIsSubmitting(false);
         console.error("Error creating domain:", error.response.data.error);
-        setErrorMessage(`Error creating domain, ${error.response.data.error}`);
+        if (error.response.data.error) {
+          setErrorMessage(
+            `Error creating domain, ${error.response.data.error}`
+          );
+        } else {
+          setErrorMessage("An error occurred while creating the domain.");
+        }
       });
   };
 

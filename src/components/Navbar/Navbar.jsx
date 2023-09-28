@@ -12,7 +12,7 @@ import * as S from "./NavbarStyled";
 import CartFilter from "../CartFilter/CartFilter";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import axiosInstance from '../../axios-config'; // Import the Axios instance
+import axiosInstance from "../../axios-config"; // Import the Axios instance
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import HistoryIcon from "../../Images/history.svg";
 import { List, ListItem, ListItemText } from "@mui/material";
@@ -47,7 +47,7 @@ function Navbar() {
     logout();
   };
 
-  const [categories, setCategories] = useState(0);
+  const [categories, setCategories] = useState(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -298,7 +298,7 @@ function Navbar() {
               </span>
               <ArrowDropDownIcon />
               {/* Categories Dropdown */}
-              {showCategoriesMenu && categories && (
+              {categories && categories.length > 0 && showCategoriesMenu && (
                 <div className="absolute w-max top-full  overflow-y-scroll max-h-[500px] left-0 mt-2 py-2 px-3 bg-white border border-gray-200 shadow-lg rounded-lg z-10">
                   {categories.map((category) => (
                     <div

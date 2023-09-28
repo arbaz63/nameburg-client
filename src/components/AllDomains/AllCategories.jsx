@@ -212,7 +212,7 @@ function AllCategories() {
             <span className="font-semibold">Premium Domains.</span>
           </p>
         </S.TextHolder>
-        <S.InputHolder>
+        {/* <S.InputHolder>
           <button
             onClick={() => setfiltersDrawer(true)}
             className=" bg-white py-1 px-2 rounded"
@@ -232,8 +232,8 @@ function AllCategories() {
             onClick={haldleSearch}
           >
             <SearchIcon className="text-white" />
-          </div>
-        </S.InputHolder>
+          </div> */}
+        {/* </S.InputHolder> */}
       </S.HeroBanner>
       <S.Heading>All Categories</S.Heading>
 
