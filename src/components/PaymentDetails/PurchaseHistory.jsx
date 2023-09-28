@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axiosInstance from '../../axios-config'; // Import the Axios instance
+import axiosInstance from "../../axios-config"; // Import the Axios instance
 import pdf from "../../Images/pdf.svg";
 import jsPDF from "jspdf";
 
@@ -117,7 +117,7 @@ export const PurchaseHistory = () => {
   };
 
   return (
-    <>
+    <div className="h-screen">
       <div className="text-3xl text-black flex justify-center my-5 font-extrabold pt-10 font-Montserrat">
         Purchase History
       </div>
@@ -138,7 +138,7 @@ export const PurchaseHistory = () => {
           <hr className="w-full" />
 
           <div className="space-y-1">
-            {purchases &&
+            {purchases ? (
               purchases.map((purchase) => (
                 <div
                   key={purchase._id}
@@ -185,10 +185,13 @@ export const PurchaseHistory = () => {
                     </>
                   ))}
                 </div>
-              ))}
+              ))
+            ) : (
+              <div className="p-10"> There Are No Purchases Yet</div>
+            )}
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

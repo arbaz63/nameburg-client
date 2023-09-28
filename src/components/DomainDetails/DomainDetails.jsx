@@ -13,7 +13,7 @@ import CustomAccordion from "../Accordian/Accordian";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
-import axiosInstance from '../../axios-config'; // Import the Axios instance
+import axiosInstance from "../../axios-config"; // Import the Axios instance
 import { useAuth } from "../../AuthContext";
 
 function DomainDetails() {
@@ -229,7 +229,7 @@ function DomainDetails() {
                       What you get
                     </div>
                     <span className="text-xs font-montserrat text-black font-medium pt-4">
-                      Domain name:
+                      Domain name:{" "}
                       <span className=" font-montserrat text-xs w-full  text-bgOne">
                         {data.name}
                       </span>
@@ -249,12 +249,16 @@ function DomainDetails() {
                       </div>
                       <div>${data.currentPrice}</div>
                     </div>
-                    <div className="flex justify-between pt-1">
-                      <div className="text-base font-montserrat text-black">
-                        Discount
+                    {data.discount !== 0 ? (
+                      <div className="flex justify-between pt-1">
+                        <div className="text-base font-montserrat text-black">
+                          Discount
+                        </div>
+                        <div>${Math.floor(data.discount)}%</div>
                       </div>
-                      <div>${data.currentPrice}</div>
-                    </div>
+                    ) : (
+                      <div className="py-5"></div>
+                    )}
                     <div className="flex justify-between pt-4">
                       <div className="text-base font-montserrat text-black font-bold">
                         Total:
@@ -326,8 +330,8 @@ function DomainDetails() {
             <div className=" text-2xl text-black font-bold text-center mt-10 lg:text-left font-montserrat">
               How it works
             </div>
-            <div className="flex flex-col w-full lg:flex-row mt-5 lg:w-1/2 gap-8 justify-center lg:mt-6">
-              <div>
+            <div className="flex flex-col w-full lg:flex-row mt-5 lg:w-1/2 justify-between lg:mt-6">
+              <div className="lg:w-1/2 w-full">
                 {/*Unlock Component Wrapper*/}
                 <div>
                   <img src={unlock} alt="" className="mx-auto" />
@@ -337,10 +341,14 @@ function DomainDetails() {
                   it for transfer
                 </div>
               </div>
-              <div>
+              <div className="lg:w-1/2 w-full">
                 {/*Enlvelope Component Wrapper*/}
                 <div>
-                  <img src={envelope} alt="" className="  mx-auto lg:mt-2" />
+                  <img
+                    src={envelope}
+                    alt=""
+                    className="  mx-auto lg:mt-0 mt-3"
+                  />
                 </div>
                 <div className="text-center text-sm mt-3 font-Montserrat text-black lg:mt-10">
                   We email you domain transfer instructions and your unique
@@ -351,8 +359,8 @@ function DomainDetails() {
             <div className="hidden lg:block">
               <img src={separator} alt="" className="lg:my-8" />
             </div>
-            <div className="flex flex-col w-full lg:flex-row lg:w-1/2 gap-8 justify-center lg:mt-6">
-              <div className="mt-5 lg:mt-0">
+            <div className="flex flex-col w-full lg:flex-row lg:w-1/2 justify-between  lg:mt-6">
+              <div className="mt-5 lg:mt-0 lg:w-1/2 w-full">
                 {/*Link Component Wrapper*/}
                 <div>
                   <img src={link} alt="" className="mx-auto " />
@@ -361,12 +369,12 @@ function DomainDetails() {
                   We email you a secure download link for your domain pack
                 </div>
               </div>
-              <div className="lg:pl-9">
+              <div className="lg:w-1/2 w-full">
                 {/* cross Component Wrapper*/}
                 <div>
-                  <img src={cross} alt="" className=" mx-auto " />
+                  <img src={cross} alt="" className=" mx-auto lg:mt-0 mt-3" />
                 </div>
-                <div className="text-center text-sm mt-3 font-Montserrat text-black lg:mt-2">
+                <div className="text-center text-sm mt-3 font-Montserrat text-black lg:mt-1">
                   The name and logos are removed from the Nameburg website and
                   Google search results
                 </div>

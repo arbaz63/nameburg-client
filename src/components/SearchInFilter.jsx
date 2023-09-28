@@ -45,7 +45,7 @@ function SearchInFilter(props) {
           <Select
             value={props.category}
             onChange={handleSearchInChange}
-            className="mt-2 max-h-[40px] overflow-scroll"
+            className="mt-2 max-h-[40px]"
             renderValue={(selected) => (
               <div>{getCategoryNameById(selected)}</div>
             )}
