@@ -104,7 +104,7 @@ function AdminPannel() {
     };
 
     axiosInstance
-      .post(`http://localhost:4000/api/v1/domains/`, formData, {
+      .post(`/domains/`, formData, {
         headers: {
           Authorization: `${accessToken}`,
           "Content-Type": "multipart/form-data",
@@ -143,7 +143,7 @@ function AdminPannel() {
     const fetchCategories = async () => {
       try {
         const response = await axiosInstance.get(
-          "http://localhost:4000/api/v1/categories"
+          "/categories"
         );
         setCategories(response.data);
         console.log(response.data);

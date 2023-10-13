@@ -32,7 +32,7 @@ function UserSettings() {
 
     try {
       const response = await axiosInstance.put(
-        `http://localhost:4000/api/v1/auth/${userId}`,
+        `/auth/${userId}`,
         {
           oldPassword: oldPassword,
           newPassword: newPassword,

@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import CircularProgress from "@mui/material/CircularProgress";
-import axiosInstance from '../../axios-config'; // Import the Axios instance
+import axiosInstance from "../../axios-config"; // Import the Axios instance
 
 function AllDomainsId() {
   const navigate = useNavigate();
@@ -55,9 +55,7 @@ function AllDomainsId() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axiosInstance.get(
-          "http://localhost:4000/api/v1/categories"
-        );
+        const response = await axiosInstance.get("/categories");
         setCategories(response.data);
         console.log(response.data);
       } catch (error) {
@@ -74,7 +72,7 @@ function AllDomainsId() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const baseUrl = "http://localhost:4000/api/v1/domains";
+        const baseUrl = "/domains";
 
         const queryParamsFilters = new URLSearchParams({
           page: currentPages,

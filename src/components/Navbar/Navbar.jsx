@@ -52,9 +52,7 @@ function Navbar() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axiosInstance.get(
-          "http://localhost:4000/api/v1/categories"
-        );
+        const response = await axiosInstance.get("/categories");
         setCategories(response.data);
       } catch (error) {
         console.log("Error fetching categories. Please try again.");
@@ -128,7 +126,7 @@ function Navbar() {
   //   const fetchUserData = async () => {
   //     try {
   //       const response = await axiosInstance.get(
-  //         `http://localhost:4000/api/v1/auth/${userId}`,
+  //         `/auth/${userId}`,
   //         {
   //           headers: {
   //             Authorization: `${accessToken}`, // Assuming it's a Bearer token

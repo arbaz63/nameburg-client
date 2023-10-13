@@ -195,7 +195,7 @@ function PaymentDetails() {
           try {
             // Make an API request using Axios
             const response = await axiosInstance.post(
-              "http://localhost:4000/api/v1/stripe/payment",
+              "/stripe/payment",
               {
                 paymentMethodId: paymentMethod.id,
                 amount: price,
@@ -217,7 +217,7 @@ function PaymentDetails() {
               console.log("Payment successful:", response.data.success);
 
               const responseTwo = await axiosInstance.post(
-                "http://localhost:4000/api/v1/purchases",
+                "/purchases",
                 {
                   domains: domainIds,
                   buyer: userId,
