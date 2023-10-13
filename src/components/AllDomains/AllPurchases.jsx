@@ -24,7 +24,7 @@ export const AllPurchases = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const baseUrl = "http://localhost:4000/api/v1/purchases";
+        const baseUrl = "/purchases";
 
         const queryParamsFilters = new URLSearchParams({
           page: currentPages,

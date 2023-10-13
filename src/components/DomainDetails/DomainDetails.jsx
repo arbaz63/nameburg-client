@@ -54,7 +54,7 @@ function DomainDetails() {
       console.log("id", id);
       try {
         const response = await axiosInstance.put(
-          `http://localhost:4000/api/v1/domains/${id}/increment-views`
+          `/domains/${id}/increment-views`
         );
 
         console.log(response.data);
@@ -78,7 +78,7 @@ function DomainDetails() {
     const fetchData = async () => {
       try {
         const response = await axiosInstance.get(
-          `http://localhost:4000/api/v1/domains/${id}`
+          `/domains/${id}`
         );
         setData(response.data);
         // console.log(id, response);

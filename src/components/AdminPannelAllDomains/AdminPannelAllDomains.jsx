@@ -39,7 +39,7 @@ function AdminPannelAllDomains() {
       setLoading(true);
       try {
         console.log("here");
-        const baseUrl = "http://localhost:4000/api/v1/domains";
+        const baseUrl = "/domains";
 
         const queryParamsFilters = new URLSearchParams({
           page: currentPages,
@@ -82,7 +82,7 @@ function AdminPannelAllDomains() {
     console.log("Delete clicked for domain:", id);
 
     axiosInstance
-      .delete(`http://localhost:4000/api/v1/domains/${id}`, {
+      .delete(`/domains/${id}`, {
         headers: {
           Authorization: `${accessToken}`,
           "Content-Type": "multipart/form-data",

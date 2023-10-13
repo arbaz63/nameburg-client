@@ -50,7 +50,7 @@ function AllDomains() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const baseUrl = "http://localhost:4000/api/v1/domains";
+        const baseUrl = "/domains";
 
         const queryParamsFilters = new URLSearchParams({
           page: currentPages,

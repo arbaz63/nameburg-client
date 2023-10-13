@@ -59,7 +59,7 @@ function SignIn() {
 
     try {
       const response = await axiosInstance.post(
-        "http://localhost:4000/api/v1/auth/signin",
+        "/auth/signin",
         formData
       );
 
